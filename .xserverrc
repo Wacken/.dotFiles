@@ -1,0 +1,4 @@
+#!/bin/sh
+# sudo wlan-38C8
+exec /usr/bin/Xorg -nolisten tcp "$@" vt$XDG_VTNR
+# xmodmap -e "keycode 94 = Escape"
