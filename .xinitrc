@@ -1,2 +1,2 @@
-exec xmonad ; 
-exec setxkbmap -variant dvp
+[[ -f ~/.Xmodmap ]] && xmodmap ~/.Xmodmap 
+exec xmonad 
