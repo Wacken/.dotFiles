@@ -59,11 +59,11 @@ preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 # Alias
 
 alias ls='ls -Alh --color=always'
-alias emacs='emacsclient -nc -s 1'
+#alias emacs='emacsclient -nc -s 1'
 alias br='broot -dp'
 alias mv='mv -i'
 alias rm='rm -i'
-alias config='/usr/bin/git --git-dir=/home/wacken/dotFiles --work-tree=/home/wacken'
+alias config='/usr/bin/git --git-dir=/home/wacken/.dotFiles --work-tree=/home/wacken'
 
 # Use lf to switch directories and bind it to ctrl-o
 lfcd () {

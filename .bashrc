@@ -15,7 +15,7 @@ alias rm='rm -i'
 
 # PS1='[\u@\h \W]\$ '
 
-alias config='/usr/bin/git --git-dir=/home/wacken/dotFiles --work-tree=/home/wacken'
+alias config='/usr/bin/git --git-dir=/home/wacken/.dotFiles --work-tree=/home/wacken'
 set -o vi
 
 source /home/wacken/.config/broot/launcher/bash/br
