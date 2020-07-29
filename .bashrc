@@ -18,4 +18,4 @@ alias rm='rm -i'
 alias config='/usr/bin/git --git-dir=/home/wacken/.dotFiles --work-tree=/home/wacken'
 set -o vi
 
-source /home/wacken/.config/broot/launcher/bash/br
+#source /home/wacken/.config/broot/launcher/bash/br
