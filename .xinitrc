@@ -1,3 +1,2 @@
-[[ -f ~/.Xmodmap ]] && xmodmap ~/.Xmodmap 
+[[ -f ~/.config/Xmodmap ]] && xmodmap ~/.config/Xmodmap 
 exec xmonad 
-# exec emacs
