@@ -1,11 +1,10 @@
-# Created by newuser for 5.8
-# Luke's config for the Zoomer Shell
-
 # Enable colors and change prompt:
 autoload -U colors && colors	# Load colors
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 setopt autocd		# Automatically cd into typed directory.
 stty stop undef		# Disable ctrl-s to freeze terminal.
+
+export PATH="${XDG_CONFIG_HOME:-$HOME/.config}/emacs/bin:$PATH"
 
 # History in cache directory:
 HISTSIZE=10000
@@ -55,15 +54,6 @@ zle-line-init() {
 zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
-
-# Alias
-
-alias ls='ls -Alh --color=always'
-#alias emacs='emacsclient -nc -s 1'
-alias br='broot -dp'
-alias mv='mv -i'
-alias rm='rm -i'
-alias config='/usr/bin/git --git-dir=/home/wacken/.dotFiles --work-tree=/home/wacken'
 
 # Use lf to switch directories and bind it to ctrl-o
 lfcd () {
