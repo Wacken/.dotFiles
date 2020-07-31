@@ -3,6 +3,8 @@
 import XMonad
 import Data.Monoid
 import System.Exit
+import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, shorten, PP(..))
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
@@ -253,15 +255,8 @@ myStartupHook = do
 --
 main = do
   xmproc <- spawnPipe ("sudo xmobar " ++ myXmobarrc)
-  xmonad $ docks defaults
+  xmonad $ docks def {
 
--- A structure containing your configuration settings, overriding
--- fields in the default config. Any you don't override, will
--- use the defaults defined in xmonad/XMonad/Config.hs
---
--- No need to modify this.
---
-defaults = def {
       -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
@@ -278,9 +273,12 @@ defaults = def {
 
       -- hooks, layouts
         layoutHook         = myLayout,
-        manageHook         = myManageHook,
+        manageHook         = myManageHook <+> manageDocks,
         handleEventHook    = myEventHook,
-        logHook            = myLogHook,
+        logHook            = myLogHook <+> dynamicLogWithPP xmobarPP
+        {
+          ppOutput = \x -> hPutStrLn xmproc x
+        },
         startupHook        = myStartupHook
     }
 
