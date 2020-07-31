@@ -34,6 +34,8 @@ myBorderWidth   = 2
 --
 myModMask       = mod4Mask
 
+myXmobarrc = "~/.config/xmobar/xmobarrc"
+
 -- The default number of workspaces (virtual screens) and their names.
 -- By default we use numeric strings, but any string may be used as a
 -- workspace name. The number of workspaces is determined by the length
@@ -43,12 +45,13 @@ myModMask       = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
+myWorkspaces = ["1:term","2:web","3:code","4:vm","5:media"] ++ map show [6..9]
+
 
 -- Border colors for unfocused and focused windows, respectively.
 --
 myNormalBorderColor  = "#dddddd"
-myFocusedBorderColor = "#ff0000"
+myFocusedBorderColor = "#800080"
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -249,8 +252,8 @@ myStartupHook = do
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main = do
-	xmproc <- spawnPipe "sudo xmobar -x 0 /home/wacken/.config/xmobar/xmobarrc" 
-	xmonad $ docks defaults
+  xmproc <- spawnPipe ("sudo xmobar" ++ myXmobarrc)
+  xmonad $ docks defaults
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
