@@ -5,6 +5,7 @@ import Data.Monoid
 import System.Exit
 import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, shorten, PP(..))
 import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.ManageDocks
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
@@ -47,7 +48,7 @@ myXmobarrc = "~/.config/xmobar/xmobarrc"
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces = ["1:term","2:web","3:code","4:vm","5:media"] ++ map show [6..9]
+myWorkspaces = ["1:term","2:web","3:code","4:university","5:learning","6:media"] ++ map show [7..9]
 
 
 -- Border colors for unfocused and focused windows, respectively.
@@ -255,7 +256,7 @@ myStartupHook = do
 --
 main = do
   xmproc <- spawnPipe ("sudo xmobar " ++ myXmobarrc)
-  xmonad $ docks def {
+  xmonad $ ewmh def {
 
       -- simple stuff
         terminal           = myTerminal,
@@ -273,8 +274,8 @@ main = do
 
       -- hooks, layouts
         layoutHook         = myLayout,
-        manageHook         = myManageHook <+> manageDocks,
-        handleEventHook    = myEventHook,
+        manageHook         = ( isFullscreen --> doFullFloat ) <+> myManageHook <+> manageDocks,
+        handleEventHook    = myEventHook <+> docksEventHook,
         logHook            = myLogHook <+> dynamicLogWithPP xmobarPP
         {
           ppOutput = \x -> hPutStrLn xmproc x,
