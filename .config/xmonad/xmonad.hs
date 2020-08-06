@@ -48,7 +48,7 @@ myXmobarrc = "~/.config/xmobar/xmobarrc"
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces = ["1:term","2:web","3:code","4:university","5:learning","6:media"] ++ map show [7..9]
+myWorkspaces = ["1:term","2:web","3:code","4:uni","5:learn","6:media"] ++ map show [7..9]
 
 
 -- Border colors for unfocused and focused windows, respectively.
