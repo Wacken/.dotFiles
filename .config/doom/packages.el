@@ -8,8 +8,8 @@
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;;(package! exwm)
-(package! org-brain)
-(package! omnisharp)
+;;(package! org-brain)
+;;(package! omnisharp)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
