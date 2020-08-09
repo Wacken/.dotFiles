@@ -3,6 +3,7 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
+;; emacs as window manager
 ;;(require 'exwM)
 ;;(require 'exwm-config)
 ;;(exwm-config-default)
@@ -47,6 +48,10 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
 
+(after! doom-modeline
+  (doom-modeline-def-modeline 'main
+    '(bar matches buffer-info remote-host buffer-position parrot selection-info)
+    '(misc-info minor-modes input-method buffer-encoding major-mode process vcs checker " "))) ; <-- added padding here
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
