@@ -7,6 +7,8 @@ import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, s
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.ManageDocks
+import XMonad.Layout.LayoutModifier
+import XMonad.Layout.NoBorders
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
 
@@ -16,6 +18,7 @@ import qualified Data.Map        as M
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
+myTerminal :: String
 myTerminal      = "alacritty"
 
 -- Whether focus follows the mouse pointer.
@@ -28,6 +31,7 @@ myClickJustFocuses = False
 
 -- Width of the window border in pixels.
 --
+myBorderWidth :: Dimension
 myBorderWidth   = 2
 
 -- modMask lets you specify which modkey you want to use. The default
@@ -35,8 +39,10 @@ myBorderWidth   = 2
 -- ("right alt"), which does not conflict with emacs keybindings. The
 -- "windows key" is usually mod4Mask.
 --
+myModMask :: KeyMask
 myModMask       = mod4Mask
 
+myXmobarrc :: String
 myXmobarrc = "~/.config/xmobar/xmobarrc"
 
 -- The default number of workspaces (virtual screens) and their names.
@@ -48,17 +54,21 @@ myXmobarrc = "~/.config/xmobar/xmobarrc"
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
+myWorkspaces :: [String]
 myWorkspaces = ["1:term","2:web","3:code","4:uni","5:learn","6:media"] ++ map show [7..9]
 
 
 -- Border colors for unfocused and focused windows, respectively.
 --
+myNormalBorderColor :: String
 myNormalBorderColor  = "#dddddd"
+myFocusedBorderColor :: String
 myFocusedBorderColor = "#800080"
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 --
+myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- launch a terminal
@@ -156,6 +166,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 ------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
 --
+myMouseBindings :: XConfig l -> M.Map (KeyMask, Button) (Window -> X ())
 myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- mod-button1, Set the window to floating mode and move by dragging
@@ -183,6 +194,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
+myLayout :: XMonad.Layout.LayoutModifier.ModifiedLayout AvoidStruts (Choose Tall (Choose (Mirror Tall) Full)) a
 myLayout = avoidStruts ( tiled ||| Mirror tiled ||| Full )
   where
      -- default tiling algorithm partitions the screen into two panes
@@ -212,6 +224,7 @@ myLayout = avoidStruts ( tiled ||| Mirror tiled ||| Full )
 -- To match on the WM_NAME, you can use 'title' in the same way that
 -- 'className' and 'resource' are used below.
 --
+myManageHook :: Query (Endo WindowSet)
 myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
@@ -227,6 +240,7 @@ myManageHook = composeAll
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
+myEventHook :: Event -> X All
 myEventHook = mempty
 
 ------------------------------------------------------------------------
@@ -235,6 +249,7 @@ myEventHook = mempty
 -- Perform an arbitrary action on each internal state change or X event.
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
+myLogHook :: X ()
 myLogHook = return ()
 
 ------------------------------------------------------------------------
@@ -245,6 +260,7 @@ myLogHook = return ()
 -- per-workspace layout choices.
 --
 -- By default, do nothing.
+myStartupHook :: X ()
 myStartupHook = do
         spawnOnce "nitrogen --restore &"
         spawnOnce "compton &"
@@ -254,6 +270,7 @@ myStartupHook = do
 
 -- Run xmonad with the settings you specify. No need to modify this.
 --
+main :: IO ()
 main = do
   xmproc <- spawnPipe ("sudo xmobar " ++ myXmobarrc)
   xmonad $ ewmh def {
@@ -275,7 +292,7 @@ main = do
       -- hooks, layouts
         layoutHook         = myLayout,
         manageHook         = ( isFullscreen --> doFullFloat ) <+> myManageHook <+> manageDocks,
-        handleEventHook    = myEventHook <+> docksEventHook,
+        handleEventHook    = myEventHook <+> docksEventHook <+> fullscreenEventHook,
         logHook            = myLogHook <+> dynamicLogWithPP xmobarPP
         {
           ppOutput = \x -> hPutStrLn xmproc x,
