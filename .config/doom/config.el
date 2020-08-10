@@ -46,7 +46,9 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type 'relative)
+(setq display-line-numbers-type 'relative
+      which-key-idle-delay 0.2
+      company-idle-delay 0.2)
 
 (after! doom-modeline
   (doom-modeline-def-modeline 'main

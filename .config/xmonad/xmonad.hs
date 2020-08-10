@@ -4,6 +4,8 @@ import XMonad
 import Data.Monoid
 import System.Exit
 
+import XMonad.Actions.CycleWS (moveTo, WSType(..))
+
 import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, shorten, PP(..))
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
@@ -51,23 +53,15 @@ myModMask       = mod4Mask
 myXmobarrc :: String
 myXmobarrc = "~/.config/xmobar/xmobarrc"
 
--- The default number of workspaces (virtual screens) and their names.
--- By default we use numeric strings, but any string may be used as a
--- workspace name. The number of workspaces is determined by the length
--- of this list.
---
--- A tagging example:
---
--- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
---
 myWorkspaces :: [String]
-myWorkspaces = ["1:term","2:web","3:code","4:uni","5:learn","6:media"] ++ map show [7..9]
+myWorkspaces = ["1:term","2:web","3:code","4:engine","5:read","6:write","7:media","8","9:game"]
 
 
 -- Border colors for unfocused and focused windows, respectively.
 --
 myNormalBorderColor :: String
 myNormalBorderColor  = "#dddddd"
+
 myFocusedBorderColor :: String
 myFocusedBorderColor = "#800080"
 
@@ -82,9 +76,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- launch dmenu
     , ((modm,               xK_p     ), spawn "dmenu_run")
-
-    -- launch gmrun
-    , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
@@ -148,6 +139,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Run xmessage with a summary of the default keybindings (useful for beginners)
     , ((modm .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
+
+    , ((modm .|. shiftMask, xK_n), moveTo Next noNSP)  -- Shifts focused window to next ws
+    , ((modm .|. shiftMask, xK_p), moveTo Prev noNSP)  -- Shifts focused window to prev ws
     ]
     ++
 
@@ -167,6 +161,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+
+  where noNSP          = WSIs (return (\ws -> W.tag ws /= "nsp"))
+
 
 
 ------------------------------------------------------------------------
@@ -202,6 +199,10 @@ tall     = renamed [Replace "tall"]
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
+myLayout :: ModifiedLayout SmartBorder
+  (ModifiedLayout AvoidStruts
+   (Choose (ModifiedLayout Rename ResizableTall)
+    (Choose (Mirror (ModifiedLayout Rename ResizableTall)) Full))) a
 myLayout = smartBorders . avoidStruts $ myDefaultLayout
   where
     myDefaultLayout = ( tall ||| Mirror tall ||| Full )
