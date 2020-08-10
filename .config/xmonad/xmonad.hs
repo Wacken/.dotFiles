@@ -3,12 +3,18 @@
 import XMonad
 import Data.Monoid
 import System.Exit
+
 import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, shorten, PP(..))
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.ManageDocks
+
+import XMonad.Layout.ResizableTile
+
 import XMonad.Layout.LayoutModifier
 import XMonad.Layout.NoBorders
+import XMonad.Layout.Renamed (renamed, Rename(Replace))
+
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
 
@@ -185,7 +191,9 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 
 ------------------------------------------------------------------------
 -- Layouts:
-
+tall :: ModifiedLayout Rename ResizableTall a
+tall     = renamed [Replace "tall"]
+           $ ResizableTall 1 (3/100) (1/2) []
 -- You can specify and transform your layouts by modifying these values.
 -- If you change layout bindings be sure to use 'mod-shift-space' after
 -- restarting (with 'mod-q') to reset your layout state to the new
@@ -194,20 +202,9 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout :: XMonad.Layout.LayoutModifier.ModifiedLayout AvoidStruts (Choose Tall (Choose (Mirror Tall) Full)) a
-myLayout = avoidStruts ( tiled ||| Mirror tiled ||| Full )
+myLayout = smartBorders . avoidStruts $ myDefaultLayout
   where
-     -- default tiling algorithm partitions the screen into two panes
-     tiled   = Tall nmaster delta ratio
-
-     -- The default number of windows in the master pane
-     nmaster = 1
-
-     -- Default proportion of screen occupied by master pane
-     ratio   = 1/2
-
-     -- Percent of screen to increment by when resizing panes
-     delta   = 3/100
+    myDefaultLayout = ( tall ||| Mirror tall ||| Full )
 
 ------------------------------------------------------------------------
 -- Window rules:
