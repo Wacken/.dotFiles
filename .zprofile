@@ -32,7 +32,7 @@ export XMONAD_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}/xmonad"
 export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/config
-export _JAVA_OPTIONS="-"
+export JAVA_OPTIONS="-"
 #export WINEPREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/wineprefixes/default"
 #export KODI_DATA="${XDG_DATA_HOME:-$HOME/.local/share}/kodi"
 #export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/password-store"
@@ -44,6 +44,8 @@ export _JAVA_OPTIONS="-"
 #export UNISON="${XDG_DATA_HOME:-$HOME/.local/share}/unison"
 #export HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/history"
 export HISTFILE="$XDG_DATA_HOME"/zsh/history
+export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
+#export DOTNET_CLI_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/dotnet"
 
 # Other program settings:
 #export DICS="/usr/share/stardict/dic/"
