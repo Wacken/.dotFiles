@@ -5,6 +5,7 @@ import Data.Monoid
 import System.Exit
 
 import XMonad.Actions.CycleWS (moveTo, WSType(..))
+import XMonad.Actions.CopyWindow
 
 import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, shorten, PP(..))
 import XMonad.Hooks.EwmhDesktops
@@ -54,7 +55,7 @@ myXmobarrc :: String
 myXmobarrc = "~/.config/xmobar/xmobarrc"
 
 myWorkspaces :: [String]
-myWorkspaces = ["1:term","2:web","3:code","4:engine","5:read","6:write","7:media","8","9:game"]
+myWorkspaces = ["1:term","2:web","3:code","4:engine","5:read","6:write","7:media","8:game","9:orga"]
 
 
 -- Border colors for unfocused and focused windows, respectively.
@@ -142,6 +143,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     , ((modm .|. shiftMask, xK_n), moveTo Next noNSP)  -- Shifts focused window to next ws
     , ((modm .|. shiftMask, xK_p), moveTo Prev noNSP)  -- Shifts focused window to prev ws
+    , ((modm , xK_a), windows copyToAll)   -- copy window to all workspaces
+    , ((modm , xK_d), killAllOtherCopies)  -- kill copies of window on other workspaces
     ]
     ++
 
@@ -226,6 +229,7 @@ myManageHook :: Query (Endo WindowSet)
 myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
+    , title =? "Picture-in-picture" --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore ]
 
