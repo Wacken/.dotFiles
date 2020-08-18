@@ -7,9 +7,13 @@ stty stop undef		# Disable ctrl-s to freeze terminal.
 export PATH="${XDG_CONFIG_HOME:-$HOME/.config}/emacs/bin:$PATH"
 
 # History in cache directory:
-HISTSIZE=10000
-SAVEHIST=10000
-HISTFILE=~/.cache/zsh/history
+export HISTSIZE=1000000
+export HISTFILESIZE=1000000
+export SAVEHIST=1000000
+setopt SHARE_HISTORY
+export HISTTIMEFORMAT="[%F %T] "
+setopt EXTENDED_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
 
 # Load aliases and shortcuts if existent.
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shortcutrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shortcutrc"

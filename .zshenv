@@ -19,6 +19,7 @@ export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/config
 export JAVA_OPTIONS="-"
-export HISTFILE="$XDG_DATA_HOME"/zsh/history
+
+export HISTFILE="$XDG_CACHE_HOME"/zsh/history
 export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
 #export DOTNET_CLI_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/# Environment variables
