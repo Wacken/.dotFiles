@@ -18,6 +18,7 @@ export XMONAD_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}/xmonad"
 export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/config
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export JAVA_OPTIONS="-"
 
 export HISTFILE="$XDG_CACHE_HOME"/zsh/history
