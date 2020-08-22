@@ -231,7 +231,8 @@ myManageHook = composeAll
     , className =? "Gimp"           --> doFloat
     , title =? "Picture-in-picture" --> doFloat
     , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore ]
+    , resource  =? "kdesktop"       --> doIgnore
+    ]
 
 ------------------------------------------------------------------------
 -- Event handling
@@ -264,8 +265,10 @@ myLogHook = return ()
 -- By default, do nothing.
 myStartupHook :: X ()
 myStartupHook = do
-        spawnOnce "nitrogen --restore &"
-        spawnOnce "compton &"
+  spawnOnce "rescuetime &"
+  spawnOnce "redshift -l 48:11 &"
+  spawnOnce "nitrogen --restore &"
+  spawnOnce "compton &"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
