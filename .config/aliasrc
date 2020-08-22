@@ -5,4 +5,5 @@ alias \
       alias br='broot -dp' \
       alias mv='mv -i' \
       alias rm='rm -i' \
-      alias config='/usr/bin/git --git-dir=$HOME/.config/dotFiles --work-tree=$HOME'
+      alias config='/usr/bin/git --git-dir=$HOME/.config/dotFiles --work-tree=$HOME' \
+      alias history='history 0'
