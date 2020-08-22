@@ -50,6 +50,8 @@
       which-key-idle-delay 0.2
       company-idle-delay 0.2)
 
+(setq image-dired-external-viewer 'sxiv)
+
 (after! doom-modeline
   (doom-modeline-def-modeline 'main
     '(bar matches buffer-info remote-host buffer-position parrot selection-info)
