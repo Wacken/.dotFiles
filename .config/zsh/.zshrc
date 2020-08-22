@@ -7,9 +7,9 @@ stty stop undef		# Disable ctrl-s to freeze terminal.
 export PATH="${XDG_CONFIG_HOME:-$HOME/.config}/emacs/bin:$PATH"
 
 # History in cache directory:
-export HISTSIZE=1000000
-export HISTFILESIZE=1000000
-export SAVEHIST=1000000
+HISTSIZE=1000000
+HISTFILESIZE=1000000
+SAVEHIST=1000000
 setopt SHARE_HISTORY
 export HISTTIMEFORMAT="[%F %T] "
 setopt EXTENDED_HISTORY
