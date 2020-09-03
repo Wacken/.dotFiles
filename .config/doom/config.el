@@ -1,9 +1,8 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-;; Place your private configuration here! Remember, you do not need to run 'doom
-;; sync' after modifying this file!
 
 ;; emacs as window manager
+
 ;;(require 'exwM)
 ;;(require 'exwm-config)
 ;;(exwm-config-default)
@@ -17,8 +16,6 @@
 ;;(require 'exwm-systemtray)
 ;;(exwm-systemtray-enable)
 
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets.
 (setq user-full-name "wacken"
       user-mail-address "sebastianwalchi@gmail.com")
 
@@ -40,9 +37,13 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-dracula)
 
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "~/org/"
+      projectile-project-search-path '("/data/Projects/Clojure/"
+                                       "/data/Projects/C#/"
+                                       "/data/Projects/Unity/"
+                                       "/data/Projects/Python/"
+                                       "/data/Projects/Java"
+                                       "/data/Projects/"))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -50,13 +51,20 @@
       which-key-idle-delay 0.2
       company-idle-delay 0.2)
 
-(setq image-dired-external-viewer 'sxiv)
+;; fix error with clj mode
+(setq cljr-inject-dependencies-at-jack-in nil)
 
+;; make rightmost symbol not cut off
 (after! doom-modeline
   (doom-modeline-def-modeline 'main
     '(bar matches buffer-info remote-host buffer-position parrot selection-info)
     '(misc-info minor-modes input-method buffer-encoding major-mode process vcs checker " "))) ; <-- added padding here
 
+(after! yasnippet
+  (define-key evil-insert-state-map (kbd "SPC") yas-maybe-expand))
+
+(after! company
+  (define-key evil-insert-state-map (kbd "<f1>") 'company-show-location))
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
