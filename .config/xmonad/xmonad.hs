@@ -27,6 +27,10 @@ import qualified Data.Map        as M
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
+
+myFont :: String
+myFont = "xft:Ubuntu Mono:bold:size=9:antialias=true:hinting=true"
+
 myTerminal :: String
 myTerminal      = "alacritty"
 
