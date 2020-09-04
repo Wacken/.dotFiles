@@ -1,27 +1,183 @@
-* interface tweaks
+* constants
 #+BEGIN_SRC emacs-lisp
+  (defconst emacs-config-path "~/.config/emacsOwn/")
+#+END_SRC
+* sensible defaults
+#+BEGIN_SRC emacs-lisp
+  (setq delete-old-versions -1 )		; delete excess backup versions silently
+  (setq version-control t )		; use version control
+  (setq vc-make-backup-files t )		; make backups file even when in version controlled dir
+  (setq backup-directory-alist `(("." . ,(concat emacs-config-path "backups"))) ) ; which directory to put backups file
+  (setq vc-follow-symlinks t )				       ; don't ask for confirmation when opening symlinked file
+  (setq auto-save-file-name-transforms `((".*" ,(concat emacs-config-path "auto-save-list/") t)) ) ;transform backups file name
+  (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
+  (setq ring-bell-function 'ignore )	; silent bell when you make a mistake
+  (setq coding-system-for-read 'utf-8 )	; use utf-8 by default
+  (setq coding-system-for-write 'utf-8 )
+  (setq sentence-end-double-space nil)	; sentence SHOULD end with only a point.
+  (setq default-fill-column 80)		; toggle wrapping text at the 80th character
+  (setq initial-scratch-message "Welcome in Emacs") ; print a default message in the empty scratch buffer opened at startup 
   (setq inhibit-startup-message t)
   (tool-bar-mode -1)
   (fset 'yes-or-no-p 'y-or-n-p)
-  (global-set-key (kbd "<f5>") 'revert-buffer)
+#+END_SRC
+
+* general
+** setup
+#+BEGIN_SRC emacs-lisp
+  (use-package general :ensure t)
+
+  (defconst my-leader "SPC")
+  (general-create-definer my-leader-def
+    :prefix my-leader
+    :non-normal-prefix (concat "C-" my-leader))
+#+END_SRC
+
+** simple commands
+#+BEGIN_SRC emacs-lisp
+  (my-leader-def
+    :states '(normal visual insert emacs)
+
+    "." 'counsel-find-file
+    "SPC" 'counsel-M-x
+    )
+  (general-define-key
+   :states '(normal visual insert emacs)
+
+   "<f5>" 'revert-buffer
+   )
+#+END_SRC
+
+** files
+#+BEGIN_SRC emacs-lisp
+  (my-leader-def
+     :states '(normal visual insert emacs)
+
+     "f" '(:ignore t :which-key "files")
+     "ff" 'counsel-find-file
+     "fs" 'save-buffer
+     "fr" 'counsel-recentf
+     )
+#+END_SRC
+
+** window
+#+BEGIN_SRC emacs-lisp
+  (my-leader-def
+     :states '(normal visual insert emacs)
+
+     "w" '(:ignore t :which-key "windows")
+     "wd" 'evil-window-delete
+     )
+#+END_SRC
+
+* diminish
+#+BEGIN_SRC emacs-lisp
+  (use-package diminish
+    :ensure t)
 #+END_SRC
 
 * try
 #+BEGIN_SRC emacs-lisp
-(use-package try
-  :ensure t)
+  (use-package try
+    :ensure t)
 #+END_SRC
 
 * which-key
 #+BEGIN_SRC emacs-lisp
-(use-package which-key
-  :ensure t
-  :config
-  (which-key-mode)
-  (setq which-key-idle-delay 1
-      which-key-show-operator-state-maps t))
+  (use-package which-key
+    :ensure t
+    :diminish which-key-mode 
+    :config
+    (which-key-mode)
+    (setq which-key-idle-delay 1
+	  which-key-show-operator-state-maps t)
+    )
 #+END_SRC
 
+* evil
+** Setup
+#+BEGIN_SRC emacs-lisp
+  (use-package evil
+    :ensure t
+    :config
+    (evil-mode 1))
+#+END_SRC
+** Other
+   Normal state as default
+
+#+BEGIN_SRC emacs-lisp
+  (setq evil-emacs-state-modes nil)
+  ;; don't put into normal mode in REPL (setq evil-insert-state-modes nil)
+  (setq evil-motion-state-modes nil)
+#+END_SRC
+
+* counsel/swiper/ivy
+#+BEGIN_SRC emacs-lisp
+  (use-package counsel
+    :diminish (ivy-mode . "")
+    :ensure t
+    :config
+    (ivy-mode 1))
+
+  (setq ivy-height 20)
+  (setq ivy-count-format "(%d/%d) ")
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t)
+  ;; enable this if you want `swiper' to use it
+  (setq search-default-mode #'char-fold-to-regexp)
+  (define-key evil-normal-state-map (kbd "/") 'swiper)
+  (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  (global-set-key (kbd "<f6>") 'ivy-resume)
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
+  (global-set-key (kbd "<f1> l") 'counsel-find-library)
+  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  (global-set-key (kbd "C-c g") 'counsel-git)
+  (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  (global-set-key (kbd "C-c k") 'counsel-ag)
+  (global-set-key (kbd "C-x l") 'counsel-locate)
+  (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+#+END_SRC
+
+* ibuffer
+#+BEGIN_SRC emacs-lisp
+  (defalias 'list-buffers 'ibuffer)
+#+END_SRC
+
+* ace window
+#+BEGIN_SRC emacs-lisp
+  (use-package ace-window
+    :ensure t
+    :init
+    (progn
+      (global-set-key [remap other-window] 'ace-window)
+      (custom-set-faces
+       '(aw-leading-char-face
+	 ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
+
+  (setq aw-keys '(?a ?o ?e ?u ?i ?d ?h ?t ?n ?s))
+#+END_SRC
+
+* avy
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+    :ensure t
+    :bind ("M-s" . avy-goto-char-timer)
+    )
+#+END_SRC
+
+* company
+#+BEGIN_SRC emacs-lisp
+(use-package company
+  :ensure t
+  :config
+  (add-hook 'after-init-hook 'global-company-mode))
+#+END_SRC
 * Org
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
@@ -33,48 +189,6 @@
     (add-hook 'org-mode-hook #'org-bullets-mode))
 #+END_SRC
 
-* evil
-#+BEGIN_SRC emacs-lisp
-(use-package evil
-  :ensure t
-  :config
-  (evil-mode 1))
-
-(setq evil-emacs-state-modes nil)
-;; don't put into normal mode in REPL (setq evil-insert-state-modes nil)
-(setq evil-motion-state-modes nil)
-#+END_SRC
-
-* counsel/swiper/ivy
-#+BEGIN_SRC emacs-lisp
-(use-package counsel
-  :ensure t
-  :config
-  (ivy-mode 1))
-
-(setq ivy-use-virtual-buffers t)
-(setq enable-recursive-minibuffers t)
-;; enable this if you want `swiper' to use it
-(setq search-default-mode #'char-fold-to-regexp)
-(define-key evil-normal-state-map (kbd "/") 'swiper)
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
-(global-set-key (kbd "<f6>") 'ivy-resume)
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "<f1> f") 'counsel-describe-function)
-(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-(global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
-(global-set-key (kbd "<f1> l") 'counsel-find-library)
-(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-(global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c j") 'counsel-git-grep)
-(global-set-key (kbd "C-c k") 'counsel-ag)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-#+END_SRC
-
 * tabbar
 #+BEGIN_SRC emacs-lisp
 ;; (use-package tabbar
@@ -83,37 +197,3 @@
 ;;   (tabbar-mode 1))
 #+END_SRC
 
-* ibuffer
-#+BEGIN_SRC emacs-lisp
-(defalias 'list-buffers 'ibuffer)
-#+END_SRC
-
-* ace window
-#+BEGIN_SRC emacs-lisp
-(use-package ace-window
-  :ensure t
-  :init
-  (progn
-    (global-set-key [remap other-window] 'ace-window)
-    (custom-set-faces
-     '(aw-leading-char-face
-       ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
-
-(setq aw-keys '(?a ?o ?e ?u ?i ?d ?h ?t ?n ?s))
-#+END_SRC
-
-* avy
-#+BEGIN_SRC emacs-lisp
-(use-package avy
-  :ensure t
-  :bind ("M-s" . avy-goto-char-timer)
-  )
-#+END_SRC
-
-* company
-#+BEGIN_SRC emacs-lisp
-(use-package company
-  :ensure t
-  :config
-  (add-hook 'after-init-hook 'global-company-mode))
-#+END_SRC

@@ -23,7 +23,7 @@
    '("e6ff132edb1bfa0645e2ba032c44ce94a3bd3c15e3929cdf6c049802cf059a2a" default))
  '(menu-bar-mode nil)
  '(package-selected-packages
-   '(company company-mode ace-window tabbar counsel doom-themes evil org-bullets try use-package))
+   '(diminish general company company-mode ace-window tabbar counsel doom-themes evil org-bullets try use-package))
  '(scroll-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
