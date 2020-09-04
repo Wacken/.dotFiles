@@ -1,2 +1,3 @@
-[[ -f ~/.config/Xmodmap ]] && xmodmap ~/.config/Xmodmap 
+[[ -f ~/.config/Xmodmap ]] && xmodmap ~/.config/Xmodmap
+xrdb -load ~/.config/X11/Xresources
 exec xmonad 
