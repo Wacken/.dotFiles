@@ -273,6 +273,7 @@ myStartupHook = do
   spawnOnce "redshift -l 48:11 &"
   spawnOnce "nitrogen --restore &"
   spawnOnce "compton &"
+  spawnOnce "/usr/bin/emacs --daemon &"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.

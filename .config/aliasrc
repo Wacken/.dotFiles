@@ -8,4 +8,5 @@ alias \
       alias config='/usr/bin/git --git-dir=$HOME/.config/dotFiles --work-tree=$HOME' \
       alias history='history 0' \
       alias funk='pacmd set-default-sink alsa_output.usb-Logitech_G533_Gaming_Headset-00.analog-stereo' \
-      alias emown='emacs --with-profile own'
+      alias emown='emacs --with-profile own' \
+      #alias emacs='emacsclient -c -a 'emacs''
