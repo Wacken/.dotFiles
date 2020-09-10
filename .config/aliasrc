@@ -2,12 +2,10 @@
 
 alias \
       ls='ls -Alh --color=always' \
-      #alias emacs='emacsclient -nc -s 1' \
+      alias emacs='emacsclient -nc' \
       alias br='broot -dp' \
       alias mv='mv -i' \
       alias rm='rm -i' \
       alias config='/usr/bin/git --git-dir=$HOME/.config/dotFiles --work-tree=$HOME' \
       alias history='history 0' \
       alias funk='pacmd set-default-sink alsa_output.usb-Logitech_G533_Gaming_Headset-00.analog-stereo' \
-      #alias emdoom='emacs --with-profile doom' \
-      alias emacs='emacsclient -c -a 'emacs''
