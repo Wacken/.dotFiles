@@ -1,3 +1,4 @@
+#+STARTUP: overview
 * Setup
 ** constants
  #+BEGIN_SRC emacs-lisp
@@ -6,26 +7,36 @@
 ** sensible defaults
  #+BEGIN_SRC emacs-lisp
    (setq byte-compile-warnings '(cl-functions)) ; ignore Package cl is depcrecated warning
-   (setq delete-old-versions -1 )		; delete excess backup versions silently
-   (setq version-control t )		; use version control
-   (setq vc-make-backup-files t )		; make backups file even when in version controlled dir
-   (setq backup-directory-alist `(("." . ,(concat emacs-config-path "backups"))) ) ; which directory to put backups file
-   (setq vc-follow-symlinks t )				       ; don't ask for confirmation when opening symlinked file
-   (setq auto-save-file-name-transforms `((".*" ,(concat emacs-config-path "auto-save-list/") t)) ) ;transform backups file name
-   (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
-   (setq ring-bell-function 'ignore )	; silent bell when you make a mistake
-   (setq coding-system-for-read 'utf-8 )	; use utf-8 by default
-   (setq coding-system-for-write 'utf-8 )
-   (setq sentence-end-double-space nil)	; sentence SHOULD end with only a point.
+   (setq delete-old-versions -1)    ; delete excess backup versions silently
+   (setq version-control t)    ; use version control
+   (setq vc-make-backup-files t)    ; make backups file even when in version controlled dir
+   (setq backup-directory-alist
+         `(("." . ,(concat emacs-config-path "backups")))) ; which directory to put backups file
+   (setq vc-follow-symlinks t)               ; don't ask for confirmation when opening symlinked file
+   (setq auto-save-file-name-transforms
+         `((".*" ,(concat emacs-config-path "auto-save-list/") t))) ;transform backups file name
+   (setq inhibit-startup-screen t)  ; inhibit useless and old-school startup screen
+   (setq ring-bell-function 'ignore)  ; silent bell when you make a mistake
+   (setq coding-system-for-read 'utf-8)  ; use utf-8 by default
+   (setq coding-system-for-write 'utf-8)
+   (setq sentence-end-double-space nil)  ; sentence SHOULD end with only a point.
    (global-auto-revert-mode)
    (setq auto-revert-verbose nil)
+   (setq recentf-max-saved-items nil)
    (setq save-interprogram-paste-before-kill t)
-   (setq default-fill-column 80)		; toggle wrapping text at the 80th character
-   (setq initial-scratch-message "Welcome in Emacs") ; print a default message in the empty scratch buffer opened at startup 
+   (setq default-fill-column 80)    ; toggle wrapping text at the 80th character
+   (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+   (setq initial-scratch-message "Welcome in Emacs") 
    (setq inhibit-startup-message t)
    (setq menu-bar-mode nil)
    (setq display-line-numbers-type 'relative)
-   (global-display-line-numbers-mode)
+   (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+   (add-hook 'text-mode-hook #'display-line-numbers-mode)
+   (add-hook 'org-mode-hook #'display-line-numbers-mode)
+   ;; (add-hook 'ansi-term
+   ;;           (lambda ()
+   ;;             (interactive)
+   ;;             (setq global-display-line-numbers-mode nil)))
    (global-hl-line-mode)
    (setq blink-cursor-mode nil)
    (setq scroll-bar-mode nil)
@@ -34,6 +45,16 @@
    (defalias 'list-buffers 'ibuffer)
  #+END_SRC
  
+** auto-update-packages
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-package-update
+    :ensure t
+    :config
+    (setq auto-package-update-delete-old-versions t)
+    (setq auto-package-update-hide-results t)
+    (auto-package-update-maybe))
+#+END_SRC
+
 * keybindings
   bindings with general.el
 ** setup
@@ -43,7 +64,8 @@
   (defconst my-leader "SPC")
   (general-create-definer my-leader-def
     :prefix my-leader
-    :non-normal-prefix (concat "C-" my-leader))
+    :keymaps 'override
+    :non-normal-prefix (concat "S-" my-leader))
 #+END_SRC
 
 ** simple commands
@@ -63,10 +85,24 @@
    "/" 'swiper
    "C-+" 'er/expand-region
    "C--" 'er/contract-region)
+  (general-define-key
+   :keymaps '(elfeed-search-mode-map elfeed-show-mode-map)
+   :states '(normal visual)
+   "SPC" nil)
   ;; (general-define-key
   ;;  :states '(insert emacs)
   ;;  :keymaps 'yas-minor-mode-map
   ;;  "SPC" 'yas-maybe-expand)
+#+END_SRC
+
+** buffers
+#+BEGIN_SRC emacs-lisp
+  (my-leader-def
+    :states '(normal visual insert emacs)
+    "b" '(:ignore t :which-key "buffers")
+    "bl" 'list-buffers
+    "bs" 'switch-to-buffer
+    "bc" 'kill-current-buffer)
 #+END_SRC
 
 ** files
@@ -77,17 +113,6 @@
      "ff" 'counsel-find-file
      "fs" 'save-buffer
      "fr" 'counsel-recentf
-     )
-#+END_SRC
-
-** buffers
-#+BEGIN_SRC emacs-lisp
-  (my-leader-def
-     :states '(normal visual insert emacs)
-     "b" '(:ignore t :which-key "buffers")
-     "bl" 'list-buffers
-     "bs" 'switch-to-buffer
-     "bc" 'kill-current-buffer
      )
 #+END_SRC
 
@@ -103,6 +128,14 @@
     "ws" 'ace-swap-window)
 #+END_SRC
 
+** code
+#+BEGIN_SRC emacs-lisp
+  (my-leader-def
+    :states '(normal visual insert emacs)
+    "c" '(:ignore t :which-key "code")
+    "cc" 'comment-or-uncomment-region)
+#+END_SRC
+
 ** lisp
 #+BEGIN_SRC emacs-lisp
   (my-leader-def
@@ -112,8 +145,24 @@
      "lb" 'eval-buffer
      )
 #+END_SRC
-
+ 
 * tools
+** dired
+*** dired+
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package dired+
+  ;;   :ensure t
+  ;;   :config
+  ;;   (require 'dired+))
+#+END_SRC
+
+*** peep
+#+BEGIN_SRC emacs-lisp
+  (use-package peep-dired
+    :ensure t
+    :defer t)
+#+END_SRC
+
 ** hydra
  #+BEGIN_SRC emacs-lisp
    (use-package hydra
@@ -150,9 +199,29 @@
  #+BEGIN_SRC emacs-lisp
    (use-package evil
      :ensure t
+     :init
+     (setq evil-want-keybinding nil)
      :config
      (evil-mode))
  #+END_SRC
+*** Colletion 
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-collection
+    :ensure t
+    :custom (evil-collection-company-setup nil)
+    :config
+    (evil-collection-init
+     '(elfeed
+       dired
+       ibuffer
+       image
+       ivy
+       flycheck
+       hungry-delete
+       omnisharp
+       which-key)))
+#+END_SRC
+
 *** Other
     Normal state as default
 
@@ -160,6 +229,11 @@
    (setq evil-emacs-state-modes nil)
    ;; don't put into normal mode in REPL (setq evil-insert-state-modes nil)
    (setq evil-motion-state-modes nil)
+   (setq evil-normal-state-cursor '(box "#c792ea")
+         evil-insert-state-cursor '((bar . 2) "#c792ea")
+         evil-visual-state-cursor '(box "yellow")
+         evil-emacs-state-cursor '((bar . 4) "#6785c6")
+         evil-replace-state-cursor '(hbar "orange"))
  #+END_SRC
 
 ** counsel/swiper/ivy
@@ -172,7 +246,7 @@
      (ivy-mode)
      (counsel-mode)
      (setq ivy-height 20)
-     (setq ivy-count-format "(%d/%d)")
+     (setq ivy-count-format "[%d/%d]")
      (setq ivy-use-virtual-buffers t)
      (setq enable-recursive-minibuffers t)
      (setq search-default-mode #'char-fold-to-regexp))
@@ -185,7 +259,10 @@
    (global-set-key (kbd "C-c k") 'counsel-ag)
    (global-set-key (kbd "C-x l") 'counsel-locate)
    (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+   (define-key minibuffer-local-map
+     (kbd "C-r") 'counsel-minibuffer-history)
+   (use-package swiper
+     :ensure t)
  #+END_SRC
 
 *** Prescient (recently used ivy)
@@ -201,8 +278,42 @@
 
 *** ivy-rich
 #+BEGIN_SRC emacs-lisp
-  (use-package ivy-rich
-    :ensure t)
+  ;; (use-package ivy-rich
+  ;;   :ensure t)
+#+END_SRC
+
+** IBuffer
+#+BEGIN_SRC emacs-lisp
+  (setq ibuffer-saved-filter-groups
+        (quote (("default"
+                 ("dired" (mode . dired-mode))
+                 ("org" (name . "^.*org$"))
+
+                 ("web" (or (mode . web-mode) (mode . js2-mode)))
+                 ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
+                 ("mu4e" (name . "\*mu4e\*"))
+                 ("programming" (or
+                                 (mode . python-mode)
+                                 (mode . c++-mode)
+                                 (mode . clojure-mode)
+                                 (mode . csharp-mode)
+                                 (mode . haskell-mode)))
+                 ("emacs" (or
+                           (name . "^\\*scratch\\*$")
+                           (name . "^\\*Messages\\*$")))))))
+
+  (add-hook 'ibuffer-mode-hook
+            (lambda ()
+              (ibuffer-auto-mode)
+              (ibuffer-switch-to-saved-filter-groups "default")))
+
+  ;; don't show these
+  ;(add-to-list 'ibuffer-never-show-predicates "zowie")
+  ;; Don't show filter groups if there are no buffers in that group
+  (setq ibuffer-show-empty-filter-groups nil)
+
+  ;; Don't ask for confirmation to delete marked buffers
+  (setq ibuffer-expert t)
 #+END_SRC
 
 ** ace window
@@ -228,19 +339,39 @@
  #+END_SRC
 
 ** projectile
+*** setup
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :ensure t
     :config
-    (projectile-mode))
+    (projectile-global-mode)
+    (setq projectile-completion-system 'ivy))
 #+END_SRC
 
-** perp-mode
+*** counsel
+#+BEGIN_SRC emacs-lisp
+  (use-package counsel-projectile
+    :ensure t
+    :config
+    (counsel-projectile-mode))
+#+END_SRC
+
+** dumb-jump
+#+BEGIN_SRC emacs-lisp
+  (use-package dumb-jump
+    :ensure t
+    :config
+    (dumb-jump-mode)
+    (setq dumb-jump-selector 'ivy))
+#+END_SRC
+
+** persp-mode
 #+BEGIN_SRC emacs-lisp
   (use-package persp-mode
     :ensure t
     :config
     (persp-mode))
+    ;; (setq persp-auto-resume-time -1))
 #+END_SRC
 
 ** tabbar
@@ -271,7 +402,8 @@
   (use-package rainbow-delimiters
     :ensure t
     :config
-    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+    (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode))
 #+END_SRC
 
 ** iedit
@@ -342,14 +474,14 @@
 #+END_SRC
 
 **** autocomplete
-  # #+begin_src emacs-lisp
-  #   (use-package auto-complete
-  #     :ensure t
-  #     :init
-  #     (progn
-  #       (ac-config-default)
-  #       (global-auto-complete-mode))
-  # #+end_src
+  #+begin_src emacs-lisp
+    ;; (use-package auto-complete
+    ;;   :ensure t
+    ;;   :init
+    ;;   (progn
+    ;;     (ac-config-default)
+    ;;     (global-auto-complete-mode))
+  #+end_src
 *** Yasnippets
 **** setup
  #+begin_src emacs-lisp
@@ -375,6 +507,12 @@
   ;; (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
 #+END_SRC
 
+*** paredit
+#+BEGIN_SRC emacs-lisp
+  (use-package paredit
+    :ensure t)
+#+END_SRC
+
 *** parinfer
  #+BEGIN_SRC emacs-lisp
    (use-package parinfer
@@ -388,7 +526,7 @@
 		pretty-parens  ; different paren styles for different modes.
 		evil           ; If you use Evil.
 		;;lispy          ; If you use Lispy. With this extension, you should install Lispy and do not enable lispy-mode directly.
-		;;paredit        ; Introduce some paredit commands.
+		paredit        ; Introduce some paredit commands.
 		smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
 		smart-yank))   ; Yank behavior depend on mode.
        (add-hook 'clojure-mode-hook #'parinfer-mode)
@@ -398,7 +536,6 @@
        (add-hook 'lisp-mode-hook #'parinfer-mode)))
 
  #+END_SRC
-
 ** C#
 *** setup
 #+BEGIN_SRC emacs-lisp
@@ -430,7 +567,8 @@
     :config
     (setq
      cider-repl-history-file ".cider-repl-history"  ;; not squiggly-related, but I like it
-     nrepl-log-messages t))                          ;; not necessary, but useful for trouble-shooting
+     nrepl-log-messages t)                          ;; not necessary, but useful for trouble-shooting
+    (add-hook 'cider-repl-mode-hook #'paredit-mode))
 #+END_SRC
 
 *** flycheck
@@ -439,7 +577,8 @@
     :ensure t
     :config
     (eval-after-load 'flycheck
-      '(setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))
+      '(setq flycheck-display-errors-function
+             #'flycheck-pos-tip-error-messages)))
 #+END_SRC
 
 *** hydra
@@ -460,6 +599,21 @@
 #+end_src
 
 ** Org
+*** Setup
+#+BEGIN_SRC emacs-lisp
+  (custom-set-variables
+   '(org-directory "~/Files/Org")
+   '(org-startup-folded 'overview)
+   '(org-startup-indented t))
+  (setq org-file-apps
+        (append
+         '(("\\.pdf\\'" . "zathura %s"))
+         org-file-apps))
+  (setq org-agenda-files
+        '("~/Files/Org/gcal.org"
+          "~/Files/Org/i.org"))
+#+END_SRC
+
 *** Bullets
  #+BEGIN_SRC emacs-lisp
    (use-package org-bullets
@@ -477,6 +631,19 @@
     :ensure t)
 #+END_SRC
 
+** C++
+#+BEGIN_SRC emacs-lisp
+  (use-package ggtags
+    :ensure t
+    :config
+    (add-hook 'c-mode-common-hook
+              (lambda ()
+                (when
+                    (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+                  (ggtags-mode 1)))))
+
+#+END_SRC
+
 * UI
 ** all-the-icons
 #+BEGIN_SRC emacs-lisp
@@ -487,6 +654,7 @@
 ** Themes
 #+BEGIN_SRC emacs-lisp
   (use-package doom-themes
+    :ensure t
     :config
     ;; Global settings (defaults)
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
@@ -530,7 +698,9 @@
 #+begin_src emacs-lisp
   (use-package fira-code-mode
     :ensure t
-    :config (global-fira-code-mode))
+    :config
+    (add-hook 'prog-mode-hook 'fira-code-mode))
+    ;; (global-fira-code-mode))
 #+end_src
    
 ** dashboard
@@ -547,12 +717,28 @@
 *** setup
     #+BEGIN_SRC emacs-lisp
       (use-package elfeed
-	:ensure t)
+        :ensure t)
+      (setq elfeed-db-directory "~/Files/elfeedDB")
+      ;; (defface important-elfeed-entry
+      ;;   '((t :foreground "#f77"))
+      ;;   "Marks an important Elfeed entry.")
+      ;; (push '(important important-elfeed-entry)
+      ;;       elfeed-search-face-alist)
     #+END_SRC
+
 *** org
     #+BEGIN_SRC emacs-lisp
       (use-package elfeed-org
-	:ensure t
-	:config
-	(elfeed-org))
+        :ensure t
+        :config
+        (elfeed-org)
+        (setq rmh-elfeed-org-files (list "~/Files/Org/elfeed.org")))
     #+END_SRC
+
+*** goodies
+#+BEGIN_SRC emacs-lisp
+  (use-package elfeed-goodies
+    :ensure t
+    :config
+    (elfeed-goodies/setup))
+#+END_SRC
