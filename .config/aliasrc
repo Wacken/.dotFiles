@@ -2,7 +2,7 @@
 
 alias \
       ls='ls -Alh --color=always' \
-      alias emacs='emacsclient -nc' \
+      alias emcli='emacsclient -nc' \
       alias br='broot -dp' \
       alias mv='mv -i' \
       alias rm='rm -i' \
