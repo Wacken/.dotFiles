@@ -2,10 +2,11 @@
 
 alias \
       ls='ls -Alh --color=always' \
-      alias emcli='emacsclient -nc' \
-      alias br='broot -dp' \
-      alias mv='mv -i' \
-      alias rm='rm -i' \
-      alias config='/usr/bin/git --git-dir=$HOME/.config/dotFiles --work-tree=$HOME' \
-      alias history='history 0' \
-      alias funk='pacmd set-default-sink alsa_output.usb-Logitech_G533_Gaming_Headset-00.analog-stereo' \
+      emcli='emacsclient -nc' \
+      br='broot -dp' \
+      mv='mv -i' \
+      rm='rm -i' \
+      config='/usr/bin/git --git-dir=$HOME/.config/dotFiles --work-tree=$HOME' \
+      history='history 0' \
+      funk='pacmd set-default-sink alsa_output.usb-Logitech_G533_Gaming_Headset-00.analog-stereo' \
+      startx='startx "$XDG_CONFIG_HOME/X11/xinitrc" -- "$XDG_CONFIG_HOME/X11/xserverrc" vt1'
