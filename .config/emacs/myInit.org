@@ -33,10 +33,6 @@
    (add-hook 'prog-mode-hook #'display-line-numbers-mode)
    (add-hook 'text-mode-hook #'display-line-numbers-mode)
    (add-hook 'org-mode-hook #'display-line-numbers-mode)
-   ;; (add-hook 'ansi-term
-   ;;           (lambda ()
-   ;;             (interactive)
-   ;;             (setq global-display-line-numbers-mode nil)))
    (global-hl-line-mode)
    (setq blink-cursor-mode nil)
    (setq scroll-bar-mode nil)
@@ -148,6 +144,12 @@
  
 * tools
 ** dired
+*** setup
+dired multiple windows
+#+BEGIN_SRC emacs-lisp
+  (setq dired-dwim-target t) 
+#+END_SRC
+
 *** dired+
 #+BEGIN_SRC emacs-lisp
   ;; (use-package dired+
@@ -571,6 +573,14 @@
     (add-hook 'cider-repl-mode-hook #'paredit-mode))
 #+END_SRC
 
+*** refactor
+#+BEGIN_SRC emacs-lisp
+  (use-package clj-refactor
+    :ensure t
+    :config
+    (add-hook 'clojure-mode #'clj-refactor-mode))
+#+END_SRC
+
 *** flycheck
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck-clj-kondo
@@ -683,7 +693,9 @@
     :config
     (setq doom-modeline-minor-modes t)
     (setq doom-modeline-buffer-encoding nil)
-    (column-number-mode))
+    (column-number-mode)
+    (when (daemonp)
+      (setq doom-modeline-icon t)))
 #+END_SRC
 
 *** powerline

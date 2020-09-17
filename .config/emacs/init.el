@@ -36,7 +36,7 @@ tangled, and the tangled file is compiled."
  '(org-startup-folded 'overview)
  '(org-startup-indented t)
  '(package-selected-packages
-   '(peep-dired dired+ dumb-jump elfeed-goodies paredit evil-collection auto-package-update haskell-mode dashboard elfeed-org elfeed persp-mode company-fuzzy company-statistics company-tabnine projectile projetile all-the-icons-ivy-rich cider-hydra flycheck-clj-kondo flycheck-clojure aggressive-indent agressive-indent cider clojure-mode beacon iedit org-mind-map parinfer rainbow-delimiters rainbow-delimiter expand-region hungry-delete fira-code-mode linum-relative omnisharp yasnippet-snippets yasnippet company-quickhelp powerline auto-complete flycheck org-tempo ivy-rich ivy-prescient doom-modeline hydra diminish general company company-mode ace-window tabbar counsel doom-themes evil org-bullets try use-package)))
+   '(clj-refactor peep-dired dired+ dumb-jump elfeed-goodies paredit evil-collection auto-package-update haskell-mode dashboard elfeed-org elfeed persp-mode company-fuzzy company-statistics company-tabnine projectile projetile all-the-icons-ivy-rich cider-hydra flycheck-clj-kondo flycheck-clojure aggressive-indent agressive-indent cider clojure-mode beacon iedit org-mind-map parinfer rainbow-delimiters rainbow-delimiter expand-region hungry-delete fira-code-mode linum-relative omnisharp yasnippet-snippets yasnippet company-quickhelp powerline auto-complete flycheck org-tempo ivy-rich ivy-prescient doom-modeline hydra diminish general company company-mode ace-window tabbar counsel doom-themes evil org-bullets try use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
