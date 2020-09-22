@@ -3,6 +3,7 @@
 alias \
       ls='ls -Alh --color=always' \
       em='emacsclient -nc' \
+      emdi="emacsclient -c -a '' --eval '(dired nil)'" \
       br='broot -dp' \
       mv='mv -i' \
       rm='rm -i' \
