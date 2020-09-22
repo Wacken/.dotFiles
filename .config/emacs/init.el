@@ -1,7 +1,7 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives
-	     '("melpa" . "https://melpa.org/packages/"))
+       '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (package-initialize)
@@ -37,8 +37,8 @@
  '(org-directory "~/Files/Org")
  '(org-startup-folded 'overview)
  '(org-startup-indented t)
- '(package-selected-packages
-   '(smartparens smartparens-config dired-x all-the-icons-dired dired-rsync diredfl all-the-icons-ivy company-tng evil-org clj-refactor peep-dired dumb-jump elfeed-goodies paredit evil-collection auto-package-update haskell-mode elfeed-org elfeed persp-mode company-fuzzy company-statistics projectile projetile cider-hydra flycheck-clj-kondo flycheck-clojure aggressive-indent agressive-indent cider clojure-mode beacon iedit parinfer rainbow-delimiters rainbow-delimiter expand-region hungry-delete fira-code-mode omnisharp yasnippet-snippets yasnippet company-quickhelp flycheck org-tempo ivy-prescient doom-modeline hydra diminish general company company-mode ace-window counsel doom-themes evil org-bullets try use-package)))
+ '(package-selected-packages '()))
+   ;; '(smartparens smartparens-config dired-x all-the-icons-dired dired-rsync diredfl all-the-icons-ivy company-tng evil-org clj-refactor peep-dired dumb-jump elfeed-goodies paredit evil-collection auto-package-update haskell-mode elfeed-org elfeed persp-mode company-fuzzy company-statistics projectile projetile cider-hydra flycheck-clj-kondo flycheck-clojure aggressive-indent agressive-indent cider clojure-mode beacon iedit parinfer rainbow-delimiters rainbow-delimiter expand-region hungry-delete fira-code-mode omnisharp yasnippet-snippets yasnippet company-quickhelp flycheck org-tempo ivy-prescient doom-modeline hydra diminish general company company-mode ace-window counsel doom-themes evil org-bullets try use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
