@@ -2,6 +2,8 @@
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -10,17 +12,17 @@
 
 (defconst init-org-path "~/.config/emacs/myInit.org")
 
-(defun tangle-init ()
-  "If the current buffer is 'init.org' the code-blocks are
-tangled, and the tangled file is compiled."
-  (when (equal (buffer-file-name)
-               (expand-file-name (concat user-emacs-directory "init.org")))
-    ;; Avoid running hooks when tangling.
-    (let ((prog-mode-hook nil))
-      (org-babel-tangle)
-      (byte-compile-file (concat user-emacs-directory "init.el")))))
+;; (defun tangle-init ()
+;;   "If the current buffer is 'init.org' the code-blocks are
+;;  tangled, and the tangled file is compiled."
+;;   (when (equal (buffer-file-name)
+;; 	       (expand-file-name (concat user-emacs-directory "init.org")))
+;;     ;; Avoid running hooks when tangling.
+;;     (let ((prog-mode-hook nil))
+;;       (org-babel-tangle)
+;;       (byte-compile-file (concat user-emacs-directory "init.el")))))
 
-(add-hook 'after-save-hook 'tangle-init)
+;; (add-hook 'after-save-hook 'tangle-init)
 
 (org-babel-load-file (expand-file-name init-org-path))
 
@@ -36,7 +38,7 @@ tangled, and the tangled file is compiled."
  '(org-startup-folded 'overview)
  '(org-startup-indented t)
  '(package-selected-packages
-   '(clj-refactor peep-dired dired+ dumb-jump elfeed-goodies paredit evil-collection auto-package-update haskell-mode dashboard elfeed-org elfeed persp-mode company-fuzzy company-statistics company-tabnine projectile projetile all-the-icons-ivy-rich cider-hydra flycheck-clj-kondo flycheck-clojure aggressive-indent agressive-indent cider clojure-mode beacon iedit org-mind-map parinfer rainbow-delimiters rainbow-delimiter expand-region hungry-delete fira-code-mode linum-relative omnisharp yasnippet-snippets yasnippet company-quickhelp powerline auto-complete flycheck org-tempo ivy-rich ivy-prescient doom-modeline hydra diminish general company company-mode ace-window tabbar counsel doom-themes evil org-bullets try use-package)))
+   '(dired-x all-the-icons-dired dired-rsync diredfl all-the-icons-ivy company-tng evil-org clj-refactor peep-dired dumb-jump elfeed-goodies paredit evil-collection auto-package-update haskell-mode elfeed-org elfeed persp-mode company-fuzzy company-statistics projectile projetile cider-hydra flycheck-clj-kondo flycheck-clojure aggressive-indent agressive-indent cider clojure-mode beacon iedit parinfer rainbow-delimiters rainbow-delimiter expand-region hungry-delete fira-code-mode omnisharp yasnippet-snippets yasnippet company-quickhelp flycheck org-tempo ivy-prescient doom-modeline hydra diminish general company company-mode ace-window counsel doom-themes evil org-bullets try use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

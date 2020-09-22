@@ -39,6 +39,24 @@
    (setq tool-bar-mode nil)
    (fset 'yes-or-no-p 'y-or-n-p) ; instead af yes or no type onl y or p
    (defalias 'list-buffers 'ibuffer)
+   (defmacro plist-put! (plist &rest rest)
+     "Set each PROP VALUE pair in REST to PLIST in-place."
+     `(cl-loop for (prop value)
+               on (list ,@rest) by #'cddr
+               do ,(if (symbolp plist)
+                       `(setq ,plist (plist-put ,plist prop value))
+                     `(plist-put ,plist prop value))))
+   ;; (defmacro setq-hook! (hooks &rest var-vals)
+   ;;   "Sets buffer-local variables on HOOKS.
+   ;; \(fn HOOKS &rest [SYM VAL]...)"
+   ;;   (declare (indent 1))
+   ;;   (macroexp-progn
+   ;;    (cl-loop for (var val hook fn) in (hooks var-vals)
+   ;;             collect `(defun ,fn (&rest _)
+   ;;                        ,(format "%s = %s" var (pp-to-string val))
+   ;;                        (setq-local ,var ,val))
+   ;;             collect `(remove-hook ',hook #',fn) ; ensure set order
+   ;;             collect `(add-hook ',hook #',fn))))
  #+END_SRC
  
 ** auto-update-packages
@@ -58,16 +76,22 @@
   (use-package general :ensure t)
 
   (defconst my-leader "SPC")
+  (defconst my-major "SPC m")
   (general-create-definer my-leader-def
+    :states '(normal visual insert emacs motion)
     :prefix my-leader
     :keymaps 'override
     :non-normal-prefix (concat "S-" my-leader))
+  (general-create-definer my-major-def
+    :states '(normal visual insert emacs motion)
+    :prefix my-major
+    :keymaps 'override
+    :non-normal-prefix (concat "S-" my-major))
 #+END_SRC
 
 ** simple commands
 #+BEGIN_SRC emacs-lisp
   (my-leader-def
-    :states '(normal visual insert emacs)
     "." 'counsel-find-file
     "SPC" 'counsel-M-x
     "RET" 'counsel-bookmark)
@@ -81,20 +105,11 @@
    "/" 'swiper
    "C-+" 'er/expand-region
    "C--" 'er/contract-region)
-  (general-define-key
-   :keymaps '(elfeed-search-mode-map elfeed-show-mode-map)
-   :states '(normal visual)
-   "SPC" nil)
-  ;; (general-define-key
-  ;;  :states '(insert emacs)
-  ;;  :keymaps 'yas-minor-mode-map
-  ;;  "SPC" 'yas-maybe-expand)
 #+END_SRC
 
 ** buffers
 #+BEGIN_SRC emacs-lisp
   (my-leader-def
-    :states '(normal visual insert emacs)
     "b" '(:ignore t :which-key "buffers")
     "bl" 'list-buffers
     "bs" 'switch-to-buffer
@@ -104,7 +119,6 @@
 ** files
 #+BEGIN_SRC emacs-lisp
   (my-leader-def
-     :states '(normal visual insert emacs)
      "f" '(:ignore t :which-key "files")
      "ff" 'counsel-find-file
      "fs" 'save-buffer
@@ -115,7 +129,6 @@
 ** window
 #+BEGIN_SRC emacs-lisp
   (my-leader-def
-    :states '(normal visual insert emacs)
     "w" '(:ignore t :which-key "windows")
     "wv" 'evil-window-vsplit
     "wa" 'ace-window
@@ -127,7 +140,6 @@
 ** code
 #+BEGIN_SRC emacs-lisp
   (my-leader-def
-    :states '(normal visual insert emacs)
     "c" '(:ignore t :which-key "code")
     "cc" 'comment-or-uncomment-region)
 #+END_SRC
@@ -135,7 +147,6 @@
 ** lisp
 #+BEGIN_SRC emacs-lisp
   (my-leader-def
-     :states '(normal visual insert emacs)
      "l" '(:ignore t :which-key "lisp")
      "ll" 'eval-last-sexp
      "lb" 'eval-buffer
@@ -145,24 +156,56 @@
 * tools
 ** dired
 *** setup
-dired multiple windows
+dired multiple windows and other defaults
 #+BEGIN_SRC emacs-lisp
-  (setq dired-dwim-target t) 
+  (setq dired-dwim-target t 
+        dired-hide-details-hide-symlink-targets nil
+        image-dired-thumb-size 150
+        dired-recursive-copies 'always)
+  ;; (setq dired-omit-verbose nil
+  ;;       dired-omit-files
+  ;;         (concat dired-omit-files
+  ;;                 "\\|^.DS_Store\\'"
+  ;;                 "\\|^.project\\(?:ile\\)?\\'"
+  ;;                 "\\|^.\\(svn\\|git\\)\\'"
+  ;;                 "\\|^.ccls-cache\\'"
+  ;;                 "\\|\\(?:\\.js\\)?\\.meta\\'"
+  ;;                 "\\|\\.\\(?:elc\\|o\\|pyo\\|swp\\|class\\)\\'"))
+  ;; (add-hook 'dired-mode-hook #'dired-omit-mode)  
 #+END_SRC
 
-*** dired+
+*** dfl
+some more colour
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package dired+
-  ;;   :ensure t
-  ;;   :config
-  ;;   (require 'dired+))
-#+END_SRC
-
-*** peep
-#+BEGIN_SRC emacs-lisp
-  (use-package peep-dired
+  (use-package diredfl
     :ensure t
-    :defer t)
+    :config
+    (diredfl-global-mode))
+#+END_SRC
+
+*** rsync
+#+BEGIN_SRC emacs-lisp
+  (use-package dired-rsync
+    :ensure t
+    :general
+    (dired-mode-map
+     "C-c s" 'dired-rsync))
+#+END_SRC
+
+*** all-the-icons
+TODO: change off before wdired mode
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package all-the-icons-dired
+  ;;   :ensure t
+  ;;   :hook (dired-mode . all-the-icons-dired-mode)
+  ;;   :config
+  ;;   (add-hook 'wdired-mode-hook '(lambda () (all-the-icons-dired-mode -1)))) 
+#+END_SRC
+
+*** dired-x
+#+BEGIN_SRC emacs-lisp
+  ;; (add-hook 'dired-load-hook
+  ;;             (function (lambda () (load "dired-x"))))
 #+END_SRC
 
 ** hydra
@@ -203,9 +246,12 @@ dired multiple windows
      :ensure t
      :init
      (setq evil-want-keybinding nil)
+     (setq evil-want-C-u-scroll t)
+     (setq evil-want-C-u-delete t)
      :config
      (evil-mode))
  #+END_SRC
+
 *** Colletion 
 #+BEGIN_SRC emacs-lisp
   (use-package evil-collection
@@ -214,6 +260,7 @@ dired multiple windows
     :config
     (evil-collection-init
      '(elfeed
+       dashboard
        dired
        ibuffer
        image
@@ -222,6 +269,22 @@ dired multiple windows
        hungry-delete
        omnisharp
        which-key)))
+#+END_SRC
+
+*** Org
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-org
+    :ensure t
+    :after org
+    :diminish evil-org-mode
+    :hook
+    (org-mode . evil-org-mode)
+    :config
+    (add-hook 'evil-org-mode-hook
+              (lambda ()
+                (evil-org-set-key-theme)))
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys))
 #+END_SRC
 
 *** Other
@@ -247,11 +310,15 @@ dired multiple windows
      :config
      (ivy-mode)
      (counsel-mode)
-     (setq ivy-height 20)
+     (setq ivy-height 20
+           projectile-completion-system 'ivy
+           ivy-wrap t
+           ivy-use-selectable-prompt t)
      (setq ivy-count-format "[%d/%d]")
      (setq ivy-use-virtual-buffers t)
      (setq enable-recursive-minibuffers t)
-     (setq search-default-mode #'char-fold-to-regexp))
+     (setq search-default-mode #'char-fold-to-regexp)
+     (setq ivy-sort-max-size 7500))
    (global-set-key (kbd "C-c C-r") 'ivy-resume)
    (global-set-key (kbd "<f6>") 'ivy-resume)
    (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
@@ -265,6 +332,7 @@ dired multiple windows
      (kbd "C-r") 'counsel-minibuffer-history)
    (use-package swiper
      :ensure t)
+
  #+END_SRC
 
 *** Prescient (recently used ivy)
@@ -278,10 +346,38 @@ dired multiple windows
      (ivy-prescient-mode))
  #+END_SRC
 
-*** ivy-rich
+*** ivy-rich (help for M-x)
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package ivy-rich
-  ;;   :ensure t)
+  (use-package ivy-rich
+    :after ivy
+    :ensure t
+    :config
+     (plist-put! ivy-rich-display-transformers-list
+                'counsel-describe-variable
+                '(:columns
+                  ((counsel-describe-variable-transformer (:width 40)) ; the original transformer
+                   (+ivy-rich-describe-variable-transformer (:width 50)) ; display variable value
+                   (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
+                'counsel-M-x
+                '(:columns
+                  ((counsel-M-x-transformer (:width 60))
+                   (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
+                ;; Apply switch buffer transformers to `counsel-projectile-switch-to-buffer' as well
+                'counsel-projectile-switch-to-buffer
+                (plist-get ivy-rich-display-transformers-list 'ivy-switch-buffer)
+                'counsel-bookmark
+                '(:columns
+                  ((ivy-rich-candidate (:width 0.5))
+                   (ivy-rich-bookmark-filename (:width 60)))))
+    (ivy-rich-mode +1))
+#+END_SRC
+
+*** all-the-icons-ivy
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons-ivy
+    :ensure t
+    :after ivy
+    :config (all-the-icons-ivy-setup))
 #+END_SRC
 
 ** IBuffer
@@ -347,7 +443,11 @@ dired multiple windows
     :ensure t
     :config
     (projectile-global-mode)
-    (setq projectile-completion-system 'ivy))
+    (setq projectile-completion-system 'ivy)
+    :general
+    (my-leader-def
+      "p" '(:ignore t :which-key "project")
+      "ps" 'projectile-toggle-between-implementation-and-test))
 #+END_SRC
 
 *** counsel
@@ -372,8 +472,8 @@ dired multiple windows
   (use-package persp-mode
     :ensure t
     :config
-    (persp-mode))
-    ;; (setq persp-auto-resume-time -1))
+    (persp-mode)
+    (setq persp-auto-resume-time -1))
 #+END_SRC
 
 ** tabbar
@@ -403,9 +503,9 @@ dired multiple windows
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-delimiters
     :ensure t
-    :config
-    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-    (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode))
+    :hook
+    (prog-mode . rainbow-delimiters-mode)
+    (cider-repl-mode . rainbow-delimiters-mode))
 #+END_SRC
 
 ** iedit
@@ -429,8 +529,13 @@ dired multiple windows
   #+begin_src emacs-lisp
     (use-package flycheck
       :ensure t
+      :hook
+      (prog-mode . flycheck-mode)
       :config
-      (global-flycheck-mode))
+      (setq flycheck-check-syntax-automatically
+            '(save mode-enabled idle-buffer-switch))
+      (setq flycheck-buffer-switch-check-intermediate-buffers t)
+      (setq flycheck-display-errors-delay 0.25))
     (use-package flycheck-pos-tip
       :ensure t
       :after flycheck)
@@ -442,13 +547,19 @@ dired multiple windows
      (use-package company
        :ensure t
        :diminish company-mode
+       :hook ((prog-mode text-mode cider-repl-mode) . company-mode) 
        :config
-       (setq company-idle-delay 0.2)
-       (setq company-minimum-prefix-length 1)
-       (setq company-require-match nil)
+       (setq company-idle-delay 0.2
+             company-minimum-prefix-length 2
+             company-tooltip-limit 14
+             company-tooltip-align-annotations t
+             company-require-match 'never
+             company-frontends '(company-pseudo-tooltip-frontend
+                                 company-echo-metadata-frontend)
+             company-auto-complete nil
+             company-auto-complete-chars nil)
        (add-to-list 'company-backends 'company-omnisharp)
-       ;;(add-to-list 'company-backends #'company-tabnine)
-       (add-hook 'after-init-hook 'global-company-mode))
+       (company-tng-configure-default))
    #+END_SRC
 
 ***** quickhelp 
@@ -460,30 +571,21 @@ dired multiple windows
    #+end_src
 
 ***** box
+Doesn't work with tng (tab completion) configuration
 #+BEGIN_SRC emacs-lisp
-  (use-package company-box
-    :diminish company-box-mode
-    :ensure t
-    :hook (company-mode . company-box-mode))
+  ;; (use-package company-box
+  ;;   :diminish company-box-mode
+  ;;   :ensure t
+  ;;   :hook (company-mode . company-box-mode))
 #+END_SRC
 
 ***** statistics
 #+BEGIN_SRC emacs-lisp
   (use-package company-statistics
     :ensure t
-    :config
-    (add-hook 'after-init-hook 'company-statistics-mode))
+    :hook (company-mode . company-statistics-mode))
 #+END_SRC
 
-**** autocomplete
-  #+begin_src emacs-lisp
-    ;; (use-package auto-complete
-    ;;   :ensure t
-    ;;   :init
-    ;;   (progn
-    ;;     (ac-config-default)
-    ;;     (global-auto-complete-mode))
-  #+end_src
 *** Yasnippets
 **** setup
  #+begin_src emacs-lisp
@@ -503,9 +605,9 @@ dired multiple windows
 #+BEGIN_SRC emacs-lisp
   (use-package aggressive-indent
     :ensure t
-    :config
-    (add-hook 'csharp-mode-hook #'aggressive-indent-mode)
-    (add-hook 'python-mode-hook #'aggressive-indent-mode))
+    :hook
+    (csharp-mode . aggressive-indent-mode)
+    (python-mode . aggressive-indent-mode))
   ;; (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
 #+END_SRC
 
@@ -524,13 +626,13 @@ dired multiple windows
      :init
      (progn
        (setq parinfer-extensions
-	     '(defaults       ; should be included.
-		pretty-parens  ; different paren styles for different modes.
-		evil           ; If you use Evil.
-		;;lispy          ; If you use Lispy. With this extension, you should install Lispy and do not enable lispy-mode directly.
-		paredit        ; Introduce some paredit commands.
-		smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
-		smart-yank))   ; Yank behavior depend on mode.
+             '(defaults       ; should be included.
+                pretty-parens  ; different paren styles for different modes.
+                evil           ; If you use Evil.
+                ;;lispy          ; If you use Lispy. With this extension, you should install Lispy and do not enable lispy-mode directly.
+                paredit        ; Introduce some paredit commands.
+                smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
+                smart-yank))   ; Yank behavior depend on mode.
        (add-hook 'clojure-mode-hook #'parinfer-mode)
        (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
        (add-hook 'common-lisp-mode-hook #'parinfer-mode)
@@ -543,10 +645,8 @@ dired multiple windows
 #+BEGIN_SRC emacs-lisp
   (use-package omnisharp
     :ensure t
-    :config
-    (add-hook 'csharp-mode-hook 'omnisharp-mode)
-    (add-hook 'csharp-mode-hook #'company-mode)
-    (add-hook 'csharp-mode-hook #'flycheck-mode))
+    :hook
+    (csharp-mode . omnisharp-mode))
 #+END_SRC
 
 *** repl
@@ -566,19 +666,26 @@ dired multiple windows
 #+BEGIN_SRC emacs-lisp
   (use-package cider
     :ensure t
+    :hook (cider-repl-mode . paredit-mode)
     :config
     (setq
      cider-repl-history-file ".cider-repl-history"  ;; not squiggly-related, but I like it
      nrepl-log-messages t)                          ;; not necessary, but useful for trouble-shooting
-    (add-hook 'cider-repl-mode-hook #'paredit-mode))
+    :general
+    (my-major-def clojure-mode-map
+      "j" 'cider-jack-in
+      "l" 'cider-load-buffer-and-switch-to-repl-buffer))
 #+END_SRC
 
 *** refactor
 #+BEGIN_SRC emacs-lisp
   (use-package clj-refactor
     :ensure t
-    :config
-    (add-hook 'clojure-mode #'clj-refactor-mode))
+    :hook
+    (clojure-mode . clj-refactor-mode)
+    :general
+    (my-major-def clojure-mode-map
+      "r" 'hydra-cljr-help-menu/body))
 #+END_SRC
 
 *** flycheck
@@ -595,8 +702,8 @@ dired multiple windows
 #+BEGIN_SRC emacs-lisp
   (use-package cider-hydra
     :ensure t
-    :config
-    (add-hook 'clojure-mode #'cider-hydra-mode))
+    :hook
+    (clojure-mode . cider-hydra-mode))
 #+END_SRC
 
 ** Python
@@ -630,9 +737,9 @@ dired multiple windows
      :ensure t
      :init
      (setq org-bullets-bullet-list
-	   '("▶" "✚" "●" "◆" "◇"))
-     :config
-     (add-hook 'org-mode-hook #'org-bullets-mode))
+           '("▶" "✚" "●" "◆" "◇"))
+     :hook
+     (org-mode . org-bullets-mode))
  #+END_SRC
 
 ** Haskell
@@ -710,27 +817,58 @@ dired multiple windows
 #+begin_src emacs-lisp
   (use-package fira-code-mode
     :ensure t
-    :config
-    (add-hook 'prog-mode-hook 'fira-code-mode))
-    ;; (global-fira-code-mode))
+    :hook
+    (prog-mode . fira-code-mode))
 #+end_src
    
 ** dashboard
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package dashboard
-  ;;   :ensure t
-  ;;   :config
-  ;;   (dashboard-setup-startup-hook)
-  ;;   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
+  (use-package dashboard
+    :ensure t
+    :config
+    (dashboard-setup-startup-hook)
+    (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+    (setq dashboard-startup-banner "/data/GoogleDrive/Pictures/Profilbild/Wacken Logo.png")
+    (setq dashboard-show-shortcuts nil)
+    (setq dashboard-items '((recents  . 5)
+                            (bookmarks . 5)
+                            (projects . 5)
+                            (agenda . 5)
+                            (registers . 5)))
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-file-icons t))
 #+END_SRC
 
 * Other
 ** elfeed
 *** setup
     #+BEGIN_SRC emacs-lisp
+      ;; (defun +rss-put-sliced-image-fn (spec alt &optional flags)
+      ;;   "TODO"
+      ;;   (defun insert-image (image &optional alt _area _slice)
+      ;;            (let ((height (cdr (image-size image t))))
+      ;;              (insert-sliced-image image alt nil (max 1 (/ height 20.0)) 1))
+      ;;     (shr-put-image spec alt flags)))
+      ;; (defun +rss-render-image-tag-without-underline-fn (dom &optional url)
+      ;;   "TODO"
+      ;;   (let ((start (point)))
+      ;;     (shr-tag-img dom url)
+      ;;     ;; And remove underlines in case images are links, otherwise we get an
+      ;;     ;; underline beneath every slice.
+      ;;     (put-text-property start (point) 'face '(:underline nil))))
       (use-package elfeed
-        :ensure t)
-      (setq elfeed-db-directory "~/Files/elfeedDB")
+        :ensure t
+        :hook (elfeed-search-mode . 'elfeed-update)
+        :config
+        (setq elfeed-db-directory "~/Files/elfeedDB")
+        (make-directory elfeed-db-directory t))
+        ;; (setq-hook! 'elfeed-show-mode-hook
+        ;;     shr-put-image-function #'+rss-put-sliced-image-fn
+        ;;     shr-external-rendering-functions '((img . +rss-render-image-tag-without-underline-fn))))
+        ;; (add-hook 'elfeed-show-mode-map
+        ;;     '(lambda () (setq-local shr-put-image-function #'+rss-put-sliced-image-fn)))
+        ;; (add-hook 'elfeed-show-mode-map
+        ;;           '(lambda () (setq-local shr-external-rendering-functions '((img . +rss-render-image-tag-without-underline-fn))))))
       ;; (defface important-elfeed-entry
       ;;   '((t :foreground "#f77"))
       ;;   "Marks an important Elfeed entry.")
