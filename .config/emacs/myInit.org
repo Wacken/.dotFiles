@@ -15,7 +15,6 @@
    (setq vc-follow-symlinks t)               ; don't ask for confirmation when opening symlinked file
    (setq auto-save-file-name-transforms
          `((".*" ,(concat emacs-config-path "auto-save-list/") t))) ;transform backups file name
-   (setq inhibit-startup-screen t)  ; inhibit useless and old-school startup screen
    (setq ring-bell-function 'ignore)  ; silent bell when you make a mistake
    (setq coding-system-for-read 'utf-8)  ; use utf-8 by default
    (setq coding-system-for-write 'utf-8)
@@ -24,28 +23,17 @@
    (setq auto-revert-verbose nil)
    (setq recentf-max-saved-items nil)
    (setq save-interprogram-paste-before-kill t)
-   (setq default-fill-column 80)    ; toggle wrapping text at the 80th character
-   (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
-   (setq initial-scratch-message "Welcome in Emacs") 
-   (setq inhibit-startup-message t)
-   (setq menu-bar-mode nil)
-   (setq display-line-numbers-type 'relative)
-   (add-hook 'prog-mode-hook #'display-line-numbers-mode)
-   (add-hook 'text-mode-hook #'display-line-numbers-mode)
-   (add-hook 'org-mode-hook #'display-line-numbers-mode)
-   (global-hl-line-mode)
-   (setq blink-cursor-mode nil)
-   (setq scroll-bar-mode nil)
-   (setq tool-bar-mode nil)
-   (fset 'yes-or-no-p 'y-or-n-p) ; instead af yes or no type onl y or p
-   (defalias 'list-buffers 'ibuffer)
+ #+END_SRC
+ 
+** macros
+ #+BEGIN_SRC emacs-lisp
    (defmacro plist-put! (plist &rest rest)
      "Set each PROP VALUE pair in REST to PLIST in-place."
      `(cl-loop for (prop value)
                on (list ,@rest) by #'cddr
                do ,(if (symbolp plist)
-                       `(setq ,plist (plist-put ,plist prop value))
-                     `(plist-put ,plist prop value))))
+                     `(setq ,plist (plist-put ,plist prop value))
+                    `(plist-put ,plist prop value))))
    ;; (defmacro setq-hook! (hooks &rest var-vals)
    ;;   "Sets buffer-local variables on HOOKS.
    ;; \(fn HOOKS &rest [SYM VAL]...)"
@@ -58,7 +46,7 @@
    ;;             collect `(remove-hook ',hook #',fn) ; ensure set order
    ;;             collect `(add-hook ',hook #',fn))))
  #+END_SRC
- 
+
 ** auto-update-packages
 #+BEGIN_SRC emacs-lisp
   (use-package auto-package-update
@@ -69,9 +57,22 @@
     (auto-package-update-maybe))
 #+END_SRC
 
+** diminish
+ #+BEGIN_SRC emacs-lisp
+   (use-package diminish
+     :ensure t)
+ #+END_SRC
+
+** try
+ #+BEGIN_SRC emacs-lisp
+   (use-package try
+     :commands (try)
+     :ensure t)
+ #+END_SRC
+
 * keybindings
-  bindings with general.el
-** setup
+** general
+*** setup
 #+BEGIN_SRC emacs-lisp
   (use-package general :ensure t)
 
@@ -89,7 +90,7 @@
     :non-normal-prefix (concat "S-" my-major))
 #+END_SRC
 
-** simple commands
+*** simple commands
 #+BEGIN_SRC emacs-lisp
   (my-leader-def
     "." 'counsel-find-file
@@ -107,16 +108,16 @@
    "C--" 'er/contract-region)
 #+END_SRC
 
-** buffers
+*** buffers
 #+BEGIN_SRC emacs-lisp
   (my-leader-def
     "b" '(:ignore t :which-key "buffers")
-    "bl" 'list-buffers
-    "bs" 'switch-to-buffer
+    "bl" 'ibuffer
+    "bs" 'counsel-switch-buffer
     "bc" 'kill-current-buffer)
 #+END_SRC
 
-** files
+*** files
 #+BEGIN_SRC emacs-lisp
   (my-leader-def
      "f" '(:ignore t :which-key "files")
@@ -126,7 +127,7 @@
      )
 #+END_SRC
 
-** window
+*** window
 #+BEGIN_SRC emacs-lisp
   (my-leader-def
     "w" '(:ignore t :which-key "windows")
@@ -137,14 +138,14 @@
     "ws" 'ace-swap-window)
 #+END_SRC
 
-** code
+*** code
 #+BEGIN_SRC emacs-lisp
   (my-leader-def
     "c" '(:ignore t :which-key "code")
     "cc" 'comment-or-uncomment-region)
 #+END_SRC
 
-** lisp
+*** lisp
 #+BEGIN_SRC emacs-lisp
   (my-leader-def
      "l" '(:ignore t :which-key "lisp")
@@ -153,7 +154,78 @@
      )
 #+END_SRC
  
-* tools
+** evil
+*** Setup
+ #+BEGIN_SRC emacs-lisp
+   (use-package evil
+     :ensure t
+     :init
+     (setq evil-want-keybinding nil)
+     (setq evil-want-C-u-scroll t)
+     (setq evil-want-C-u-delete t)
+     :config
+     (evil-mode)
+     (setq evil-emacs-state-modes nil)
+     ;; don't put into normal mode in REPL (setq evil-insert-state-modes nil)
+     (setq evil-motion-state-modes nil))
+ #+END_SRC
+ 
+*** Colletion 
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-collection
+    :ensure t
+    :custom (evil-collection-company-setup nil)
+    :config
+    (evil-collection-init
+     '(elfeed
+       dashboard
+       dired
+       ibuffer
+       image
+       ivy
+       flycheck
+       hungry-delete
+       omnisharp
+       which-key)))
+#+END_SRC
+
+*** Org
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-org
+    :ensure t
+    :after org
+    :diminish evil-org-mode
+    :hook
+    (org-mode . evil-org-mode)
+    :config
+    (add-hook 'evil-org-mode-hook
+              (lambda ()
+                (evil-org-set-key-theme)))
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys))
+#+END_SRC
+ #+BEGIN_SRC emacs-lisp
+ #+END_SRC
+
+** which-key
+ #+BEGIN_SRC emacs-lisp
+   (use-package which-key
+     :ensure t
+     :diminish which-key-mode 
+     :config
+     (which-key-mode)
+     (setq which-key-idle-delay 1
+	   which-key-show-operator-state-maps t)
+     )
+ #+END_SRC
+
+** hydra
+ #+BEGIN_SRC emacs-lisp
+   (use-package hydra
+     :ensure t)
+ #+END_SRC
+ 
+* navigation
 ** dired
 *** setup
 dired multiple windows and other defaults
@@ -208,99 +280,6 @@ TODO: change off before wdired mode
   ;;             (function (lambda () (load "dired-x"))))
 #+END_SRC
 
-** hydra
- #+BEGIN_SRC emacs-lisp
-   (use-package hydra
-     :ensure t)
- #+END_SRC
-
-** diminish
- #+BEGIN_SRC emacs-lisp
-   (use-package diminish
-     :ensure t)
- #+END_SRC
-
-** try
- #+BEGIN_SRC emacs-lisp
-   (use-package try
-     :commands (try)
-     :ensure t)
- #+END_SRC
-
-** which-key
- #+BEGIN_SRC emacs-lisp
-   (use-package which-key
-     :ensure t
-     :diminish which-key-mode 
-     :config
-     (which-key-mode)
-     (setq which-key-idle-delay 1
-	   which-key-show-operator-state-maps t)
-     )
- #+END_SRC
-
-** evil
-*** Setup
- #+BEGIN_SRC emacs-lisp
-   (use-package evil
-     :ensure t
-     :init
-     (setq evil-want-keybinding nil)
-     (setq evil-want-C-u-scroll t)
-     (setq evil-want-C-u-delete t)
-     :config
-     (evil-mode))
- #+END_SRC
-
-*** Colletion 
-#+BEGIN_SRC emacs-lisp
-  (use-package evil-collection
-    :ensure t
-    :custom (evil-collection-company-setup nil)
-    :config
-    (evil-collection-init
-     '(elfeed
-       dashboard
-       dired
-       ibuffer
-       image
-       ivy
-       flycheck
-       hungry-delete
-       omnisharp
-       which-key)))
-#+END_SRC
-
-*** Org
-#+BEGIN_SRC emacs-lisp
-  (use-package evil-org
-    :ensure t
-    :after org
-    :diminish evil-org-mode
-    :hook
-    (org-mode . evil-org-mode)
-    :config
-    (add-hook 'evil-org-mode-hook
-              (lambda ()
-                (evil-org-set-key-theme)))
-    (require 'evil-org-agenda)
-    (evil-org-agenda-set-keys))
-#+END_SRC
-
-*** Other
-    Normal state as default
-
- #+BEGIN_SRC emacs-lisp
-   (setq evil-emacs-state-modes nil)
-   ;; don't put into normal mode in REPL (setq evil-insert-state-modes nil)
-   (setq evil-motion-state-modes nil)
-   (setq evil-normal-state-cursor '(box "#c792ea")
-         evil-insert-state-cursor '((bar . 2) "#c792ea")
-         evil-visual-state-cursor '(box "yellow")
-         evil-emacs-state-cursor '((bar . 4) "#6785c6")
-         evil-replace-state-cursor '(hbar "orange"))
- #+END_SRC
-
 ** counsel/swiper/ivy
 *** Counsel
  #+BEGIN_SRC emacs-lisp
@@ -352,7 +331,7 @@ TODO: change off before wdired mode
     :after ivy
     :ensure t
     :config
-     (plist-put! ivy-rich-display-transformers-list
+    (plist-put! ivy-rich-display-transformers-list
                 'counsel-describe-variable
                 '(:columns
                   ((counsel-describe-variable-transformer (:width 40)) ; the original transformer
@@ -386,10 +365,10 @@ TODO: change off before wdired mode
         (quote (("default"
                  ("dired" (mode . dired-mode))
                  ("org" (name . "^.*org$"))
-
                  ("web" (or (mode . web-mode) (mode . js2-mode)))
                  ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
                  ("mu4e" (name . "\*mu4e\*"))
+                 ("elfeed" (name . "\*elfeed\*"))
                  ("programming" (or
                                  (mode . python-mode)
                                  (mode . c++-mode)
@@ -398,7 +377,8 @@ TODO: change off before wdired mode
                                  (mode . haskell-mode)))
                  ("emacs" (or
                            (name . "^\\*scratch\\*$")
-                           (name . "^\\*Messages\\*$")))))))
+                           (name . "^\\*Messages\\*$")
+                           (name . "^\\*Dashboard\\*$")))))))
 
   (add-hook 'ibuffer-mode-hook
             (lambda ()
@@ -423,17 +403,17 @@ TODO: change off before wdired mode
      (progn
        (global-set-key [remap other-window] 'ace-window)
        (custom-set-faces
-	'(aw-leading-char-face
-	  ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
-   (setq aw-keys '(?a ?o ?e ?u ?i ?d ?h ?t ?n ?s))
+        '(aw-leading-char-face
+          ((t (:inherit ace-jump-face-foreground :height 3.0))))))
+     :config
+     (setq aw-keys '(?a ?o ?e ?u ?i ?d ?h ?t ?n ?s)))
  #+END_SRC
 
 ** avy
  #+BEGIN_SRC emacs-lisp
    (use-package avy
      :commands avy-goto-char-timer
-     :ensure t
-     )
+     :ensure t)
  #+END_SRC
 
 ** projectile
@@ -467,60 +447,123 @@ TODO: change off before wdired mode
     (setq dumb-jump-selector 'ivy))
 #+END_SRC
 
-** persp-mode
+** -persp-mode
 #+BEGIN_SRC emacs-lisp
-  (use-package persp-mode
-    :ensure t
-    :config
-    (persp-mode)
-    (setq persp-auto-resume-time -1))
+  ;; (use-package persp-mode
+  ;;   :ensure t
+  ;;   :config
+  ;;   (persp-mode)
+  ;;   (setq persp-auto-resume-time -1))
 #+END_SRC
 
-** tabbar
- #+BEGIN_SRC emacs-lisp
- ;; (use-package tabbar
- ;;   :ensure t
- ;;   :config
- ;;   (tabbar-mode 1))
- #+END_SRC
-
-** hungry-delete
+* texteditor
+** lines
 #+BEGIN_SRC emacs-lisp
-  (use-package hungry-delete
-    :ensure t
-    :diminish hungry-delete-mode
-    :config
-    (global-hungry-delete-mode))
+  (setq default-fill-column 80)    ; toggle wrapping text at the 80th character
+  (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+  (setq display-line-numbers-type 'relative)
+  (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+  (add-hook 'text-mode-hook #'display-line-numbers-mode)
+  (add-hook 'org-mode-hook #'display-line-numbers-mode)
+  (global-hl-line-mode)
+#+END_SRC
+
+** cursor
+#+BEGIN_SRC emacs-lisp
+  (setq evil-normal-state-cursor '(box "#c792ea")
+        evil-insert-state-cursor '((bar . 2) "#c792ea")
+        evil-visual-state-cursor '(box "yellow")
+        evil-emacs-state-cursor '((bar . 4) "#6785c6")
+        evil-replace-state-cursor '(hbar "orange"))
+  (setq blink-cursor-mode nil)
+#+END_SRC
+
+** -beacon
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package beacon
+  ;;   :ensure t
+  ;;   :diminish beacon-mode
+  ;;   :config
+  ;;   (beacon-mode))
+#+END_SRC
+
+* code-transform
+** -hungry-delete
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package hungry-delete
+  ;;   :ensure t
+  ;;   :diminish hungry-delete-mode
+  ;;   :config
+  ;;   (global-hungry-delete-mode))
 #+END_SRC
 
 ** expand-region
 #+BEGIN_SRC emacs-lisp
   (use-package expand-region
-    :ensure t)
-#+END_SRC
-
-** rainbow-delimiter
-#+BEGIN_SRC emacs-lisp
-  (use-package rainbow-delimiters
     :ensure t
-    :hook
-    (prog-mode . rainbow-delimiters-mode)
-    (cider-repl-mode . rainbow-delimiters-mode))
+    :general
+    (:states '(visual motion)
+     "C-+" 'er/expand-region
+     "C--" 'er/contract-region))
 #+END_SRC
 
+** -rainbow-delimiter
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package rainbow-delimiters
+  ;;   :ensure t
+  ;;   :hook
+  ;;   (prog-mode . rainbow-delimiters-mode)
+  ;;   (cider-repl-mode . rainbow-delimiters-mode))
+#+END_SRC
+
+** -paredit
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package paredit
+  ;;   :ensure t)
+#+END_SRC
+
+** -agressive-indent
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package aggressive-indent
+  ;;   :ensure t
+  ;;   :hook
+  ;;   (csharp-mode . aggressive-indent-mode)
+  ;;   (python-mode . aggressive-indent-mode))
+  ;; (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
+#+END_SRC
+
+** -smartparens
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package smartparens
+  ;;   :ensure t
+  ;;   :config
+  ;;   (smartparens-global-mode)
+  ;;   (smartparens-global-strict-mode))
+#+END_SRC
+
+** parinfer
+ #+BEGIN_SRC emacs-lisp
+   (use-package parinfer
+     :ensure t
+     :hook
+     (clojure-mode . parinfer-mode)
+     (emacs-lisp-mode . parinfer-mode)
+     :general
+     ("C-," 'parinfer-toggle-mode)
+     :init
+     (setq parinfer-extensions '(defaults       ; should be included.
+                                  pretty-parens  ; different paren styles for different modes.
+                                  evil)))
+                                  ;; lispy          ; If you use Lispy. With this extension, you should install Lispy and do not enable lispy-mode directly.
+                                  ;; paredit)))        ; Introduce some paredit commands.
+                                  ;; smart-tab)))      ; C-b & C-f jump positions and smart shift with tab & S-tab.
+                                  ;; smart-yank)))  ; Yank behavior depend on mode.
+ #+END_SRC
+ 
 ** iedit
 #+BEGIN_SRC emacs-lisp
   (use-package iedit
     :ensure t)
-#+END_SRC
-
-** beacon
-#+BEGIN_SRC emacs-lisp
-  (use-package beacon
-    :ensure t
-    :diminish beacon-mode
-    :config
-    (beacon-mode))
 #+END_SRC
 
 * languages
@@ -601,45 +644,6 @@ Doesn't work with tng (tab completion) configuration
      :ensure t)
  #+end_src
 
-*** agressive-indent
-#+BEGIN_SRC emacs-lisp
-  (use-package aggressive-indent
-    :ensure t
-    :hook
-    (csharp-mode . aggressive-indent-mode)
-    (python-mode . aggressive-indent-mode))
-  ;; (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
-#+END_SRC
-
-*** paredit
-#+BEGIN_SRC emacs-lisp
-  (use-package paredit
-    :ensure t)
-#+END_SRC
-
-*** parinfer
- #+BEGIN_SRC emacs-lisp
-   (use-package parinfer
-     :ensure t
-     :bind
-     (("C-," . parinfer-toggle-mode))
-     :init
-     (progn
-       (setq parinfer-extensions
-             '(defaults       ; should be included.
-                pretty-parens  ; different paren styles for different modes.
-                evil           ; If you use Evil.
-                ;;lispy          ; If you use Lispy. With this extension, you should install Lispy and do not enable lispy-mode directly.
-                paredit        ; Introduce some paredit commands.
-                smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
-                smart-yank))   ; Yank behavior depend on mode.
-       (add-hook 'clojure-mode-hook #'parinfer-mode)
-       (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
-       (add-hook 'common-lisp-mode-hook #'parinfer-mode)
-       (add-hook 'scheme-mode-hook #'parinfer-mode)
-       (add-hook 'lisp-mode-hook #'parinfer-mode)))
-
- #+END_SRC
 ** C#
 *** setup
 #+BEGIN_SRC emacs-lisp
@@ -762,6 +766,17 @@ Doesn't work with tng (tab completion) configuration
 #+END_SRC
 
 * UI
+** setup
+#+BEGIN_SRC emacs-lisp
+  ;; (setq inhibit-startup-screen t)  ; inhibit useless and old-school startup screen
+  ;; (setq initial-scratch-message "Welcome in Emacs") 
+  ;; (setq inhibit-startup-message t)
+  ;; (setq menu-bar-mode nil)
+  ;; (setq scroll-bar-mode nil)
+  ;; (setq tool-bar-mode nil)
+  (fset 'yes-or-no-p 'y-or-n-p) ; instead af yes or no type onl y or p
+#+END_SRC
+
 ** all-the-icons
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons
@@ -792,7 +807,6 @@ Doesn't work with tng (tab completion) configuration
 #+END_SRC
 
 ** Modeline
-*** doom-modeline
 #+BEGIN_SRC emacs-lisp
   (use-package doom-modeline
     :ensure t
@@ -804,14 +818,6 @@ Doesn't work with tng (tab completion) configuration
     (when (daemonp)
       (setq doom-modeline-icon t)))
 #+END_SRC
-
-*** powerline
-#+begin_src emacs-lisp
-  ;; (use-package powerline
-  ;;   :ensure t
-  ;;   :config
-  ;;   (powerline-default-theme))
-#+end_src
 
 ** Font 
 #+begin_src emacs-lisp
