@@ -20,6 +20,8 @@ import XMonad.Layout.Renamed (renamed, Rename(Replace))
 
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
+import XMonad.Util.EZConfig (additionalKeysP)
+import XMonad.Util.NamedScratchpad
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -70,7 +72,32 @@ myNormalBorderColor  = "#dddddd"
 myFocusedBorderColor :: String
 myFocusedBorderColor = "#800080"
 
-------------------------------------------------------------------------
+-- ------------------------------------------------------------------------
+-- -- Scratchpad
+-- --
+-- myScratchPads :: [NamedScratchpad]
+-- myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
+--                 -- , NS "mocp" spawnMocp findMocp manageMocp
+--                 ]
+--   where
+--     spawnTerm  = myTerminal ++ " -n scratchpad"
+--     findTerm   = resource =? "scratchpad"
+--     manageTerm = customFloating $ W.RationalRect l t w h
+--                where
+--                  h = 0.9
+--                  w = 0.9
+--                  t = 0.95 -h
+--                  l = 0.95 -w
+--     -- spawnMocp  = myTerminal ++ " -n mocp 'mocp'"
+--     -- findMocp   = resource =? "mocp"
+--     -- manageMocp = customFloating $ W.RationalRect l t w h
+--     --            where
+--     --              h = 0.9
+--     --              w = 0.9
+--     --              t = 0.95 -h
+--     --              l = 0.95 -w
+
+-- ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 --
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
@@ -172,6 +199,18 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
   where noNSP          = WSIs (return (\ws -> W.tag ws /= "nsp"))
 
 
+myKeysEz :: [(String, X ())]
+myKeysEz =
+  [
+    -- Emacs
+    ("M4-e e", spawn "emacsclient -c -a ''")
+  , ("M4-e d", spawn "emacsclient -c -a '' --eval '(dired nil)'")
+  , ("M4-e n", spawn "emacsclient -c -a '' --eval '(elfeed)'") 
+
+-- Scratchpads
+  -- , ("M4-t", namedScratchpadAction myScratchPads "terminal")
+  ] -- where nonNSP          = WSIs (return (\ws -> W.tag ws /= "nsp"))
+    --       nonEmptyNonNSP  = WSIs (return (\ws -> isJust (W.stack ws) && W.tag ws /= "nsp"))
 
 ------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
@@ -193,6 +232,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
     ]
 
+  
 ------------------------------------------------------------------------
 -- Layouts:
 tall :: ModifiedLayout Rename ResizableTall a
@@ -236,7 +276,7 @@ myManageHook = composeAll
     , title =? "Picture-in-picture" --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
-    ]
+    ] -- <+> namedScratchpadManageHook myScratchPads
 
 ------------------------------------------------------------------------
 -- Event handling
@@ -273,7 +313,7 @@ myStartupHook = do
   spawnOnce "redshift -l 48:11 &"
   spawnOnce "nitrogen --restore &"
   spawnOnce "compton &"
-  -- spawnOnce "/usr/bin/emacs --daemon &"
+  spawnOnce "/usr/bin/emacs --daemon &"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
@@ -317,7 +357,7 @@ main = do
           ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]
         },
         startupHook        = myStartupHook
-    }
+    } `additionalKeysP` myKeysEz
 
 -- | Finally, a copy of the default bindings in simple textual tabular format.
 help :: String
