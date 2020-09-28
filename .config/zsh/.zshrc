@@ -4,8 +4,6 @@ PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magent
 setopt autocd		# Automatically cd into typed directory.
 stty stop undef		# Disable ctrl-s to freeze terminal.
 
-export PATH="${XDG_CONFIG_HOME:-$HOME/.config}/emacs/bin:$PATH"
-
 # History in cache directory:
 HISTSIZE=1000000
 HISTFILESIZE=1000000
