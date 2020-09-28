@@ -503,6 +503,14 @@ TODO: change off before wdired mode
     :ensure t)
 #+END_SRC
 
+** rainbow-delimiter
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-delimiters
+    :ensure t
+    :ghook ('(prog-mode-hook
+              cider-repl-mode-hook)))
+#+END_SRC
+
 ** -hungry-delete
 #+BEGIN_SRC emacs-lisp
   ;; (use-package hungry-delete
@@ -514,30 +522,46 @@ TODO: change off before wdired mode
   ;;             haskell-mode-hook)))
 #+END_SRC
 
-** -rainbow-delimiter
+** lispy
+*** setup
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package rainbow-delimiters
-  ;;   :ensure t
-  ;;   :hook
-  ;;   (prog-mode . rainbow-delimiters-mode)
-  ;;   (cider-repl-mode . rainbow-delimiters-mode))
+  (use-package lispy
+    :ensure t
+    :ghook ('(emacs-lisp-mode-hook
+              clojure-mode-hook
+              cider-repl-mode-hook
+              ;; python-mode-hook
+              ))
+    :general
+    (:states '(normal insert motion emacs visual)
+             "C-d" 'lispy-delete)
+    :config
+    (setq lispy-compat t))
 #+END_SRC
 
-** -paredit
+*** lispyville
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package paredit
-  ;;   :ensure t)
+  (use-package lispyville
+    :ensure t
+    :ghook ('(emacs-lisp-mode-hook
+              clojure-mode-hook)))
 #+END_SRC
 
 ** agressive-indent
 #+BEGIN_SRC emacs-lisp
   (use-package aggressive-indent
     :ensure t
-    :ghook ('(python-mode-hook
+    :ghook ('(;; python-mode-hook
               csharp-mode-hook
               c++-mode-hook
               haskell-mode-hook)))
-  ;; (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
+  ;; (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+#+END_SRC
+
+** -paredit
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package paredit
+  ;;   :ensure t)
 #+END_SRC
 
 ** -smartparens

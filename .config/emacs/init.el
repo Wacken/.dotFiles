@@ -37,7 +37,8 @@
  '(org-directory "~/Files/Org")
  '(org-startup-folded 'overview)
  '(org-startup-indented t)
- '(package-selected-packages '()))
+ '(package-selected-packages
+   '(lispyville lispy yasnippet-snippets which-key use-package try smartparens rainbow-delimiters persp-mode peep-dired parinfer org-bullets omnisharp jedi ivy-rich ivy-prescient iedit hungry-delete haskell-mode ggtags general flycheck-pos-tip flycheck-clj-kondo fira-code-mode expand-region evil-org evil-collection elfeed-org elfeed-goodies dumb-jump doom-themes doom-modeline diredfl dired-rsync diminish dashboard counsel-projectile company-statistics company-quickhelp company-box clj-refactor cider-hydra beacon auto-package-update all-the-icons-ivy all-the-icons-dired aggressive-indent ace-window)))
    ;; '(smartparens smartparens-config dired-x all-the-icons-dired dired-rsync diredfl all-the-icons-ivy company-tng evil-org clj-refactor peep-dired dumb-jump elfeed-goodies paredit evil-collection auto-package-update haskell-mode elfeed-org elfeed persp-mode company-fuzzy company-statistics projectile projetile cider-hydra flycheck-clj-kondo flycheck-clojure aggressive-indent agressive-indent cider clojure-mode beacon iedit parinfer rainbow-delimiters rainbow-delimiter expand-region hungry-delete fira-code-mode omnisharp yasnippet-snippets yasnippet company-quickhelp flycheck org-tempo ivy-prescient doom-modeline hydra diminish general company company-mode ace-window counsel doom-themes evil org-bullets try use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
