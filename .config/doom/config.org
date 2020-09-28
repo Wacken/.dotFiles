@@ -4,34 +4,17 @@
 ;; Plac your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
-
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
 (setq user-full-name "Wacken Desktop Arch"
       user-mail-address "wackenmail@gmail.com")
 
-;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
-;; are the three important ones:
-;;
-;; + `doom-font'
-;; + `doom-variable-pitch-font'
-;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
-;;
-;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
-;; font string. You generally only need these two:
-;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
-;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "Fira Code" :size 16)
-      doom-variable-pitch-font (font-spec :family "FreeSans"))
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-dracula)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Files/Org")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -75,6 +58,7 @@
 *** !setup
 #+begin_src emacs-lisp
 ;; (defconst my-leader "spc")
+(setq org-directory "~/Files/Org")
 ;; (defconst my-major "spc m")
 ;; (general-create-definer my-leader-def
 ;;   :states '(normal visual insert emacs motion)
@@ -456,80 +440,16 @@
 ** +tools
 *** +flycheck
 #+begin_src emacs-lisp
-;; (use-package flycheck
-;;   :ensure t
-;;   :ghook
-;;   'prog-mode-hook
-;;   :config
-;;   (setq flycheck-check-syntax-automatically
-;;         '(save mode-enabled idle-buffer-switch))
-;;   (setq flycheck-buffer-switch-check-intermediate-buffers t)
-;;   (setq flycheck-display-errors-delay 0.25))
 ;; (use-package flycheck-pos-tip
 ;;   :ensure t
 ;;   :after flycheck)
 #+end_src
 
-*** +completion
-**** setup
-#+begin_src emacs-lisp
-;; (use-package company
-;;   :ensure t
-;;   :diminish company-mode
-;;   :ghook ('(prog-mode-hook
-;;             text-mode-hook
-;;             cider-repl-mode-hook))
-;;   :config
-;;   (setq company-idle-delay 0.2
-;;         company-minimum-prefix-length 2
-;;         company-tooltip-limit 14
-;;         company-tooltip-align-annotations t
-;;         company-require-match 'never
-;;         company-frontends '(company-pseudo-tooltip-frontend
-;;                             company-echo-metadata-frontend)
-;;         company-auto-complete nil
-;;         company-auto-complete-chars nil)
-;;   (add-to-list 'company-backends 'company-omnisharp)
-;;   (company-tng-configure-default))
-#+end_src
-
-**** quickhelp
-#+begin_src emacs-lisp
-;; (use-package company-quickhelp
-;;   :ensure t
-;;   :config
-;;   (company-quickhelp-mode))
-#+end_src
-
-**** box
-doesn't work with tng (tab completion) configuration
-#+begin_src emacs-lisp
-;; (use-package company-box
-;;   :diminish company-box-mode
-;;   :ensure t
-;;   :hook (company-mode . company-box-mode))
-#+end_src
-
+*** company
 **** statistics
 #+begin_src emacs-lisp
-;; (use-package company-statistics
-;;   :ensure t
-;;   :ghook 'company-mode-hook)
-#+end_src
-
-*** +yasnippets
-**** setup
-#+begin_src emacs-lisp
-;; (use-package yasnippet
-;;   :ensure t
-;;   :config
-;;   (yas-global-mode))
-#+end_src
-
-**** snippets
-#+begin_src emacs-lisp
-;; (use-package yasnippet-snippets
-;;   :ensure t)
+(use-package! company-statistics
+  :ghook 'company-mode-hook)
 #+end_src
 
 ** +c#
@@ -603,30 +523,32 @@ doesn't work with tng (tab completion) configuration
 ;;   (add-hook 'python-mode-hook 'jedi:ac-setup))
 #+end_src
 
-** +org
+** org
 *** setup
 #+begin_src emacs-lisp
-;; (custom-set-variables
-;;  '(org-directory "~/files/org")
-;;  '(org-startup-folded 'overview)
-;;  '(org-startup-indented t))
+(custom-set-variables
+ '(org-startup-folded 'overview)
+ '(org-startup-indented t))
+(defconst org-dir "~/Files/Org")
+(setq org-directory org-dir)
+;; somehow broken
 ;; (setq org-file-apps
 ;;       (append
 ;;        '(("\\.pdf\\'" . "zathura %s"))
 ;;        org-file-apps))
-;; (setq org-agenda-files
-;;       '("~/files/org/gcal.org"
-;;         "~/files/org/i.org"))
+(setq org-agenda-files
+      `(,(concat org-dir "/gcal.org")
+        ,(concat org-dir "/i.org")))
+(setq org-log-done 'time)
 #+end_src
 
 *** bullets
 #+begin_src emacs-lisp
-;; (use-package org-bullets
-;;   :ensure t
-;;   :init
-;;   (setq org-bullets-bullet-list
-;;         '("▶" "✚" "●" "◆" "◇"))
-;;   :ghook 'org-mode-hook)
+(use-package! org-bullets
+  :init
+  (setq org-bullets-bullet-list
+        '("▶" "✚" "●" "◆" "◇"))
+  (add-hook! 'org-mode-hook (lambda () (org-bullets-mode))))
 #+end_src
 
 ** +c++
@@ -643,68 +565,55 @@ doesn't work with tng (tab completion) configuration
 #+end_src
 
 * ui
-** +themes
+** themes
 #+begin_src emacs-lisp
-;; (use-package! doom-themes
-;;   :config
-;;   ;; global settings (defaults)
-;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-;;   (load-theme 'doom-palenight t)
+(use-package! doom-themes
+  :config
+  ;; global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
-;;   ;; enable flashing mode-line on errors
-;;   (doom-themes-visual-bell-config)
+  ;; enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
 
-;;   ;; enable custom neotree theme (all-the-icons must be installed!)
-;;   (doom-themes-neotree-config)
-;;   ;; or for treemacs users
-;;   (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-;;   (doom-themes-treemacs-config)
+  ;; or for treemacs users
+  (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+  (doom-themes-treemacs-config)
 
-;;   ;; corrects (and improves) org-mode's native fontification.
-;;   (doom-themes-org-config))
-(custom-theme-set-faces! 'doom-dracula
-  `(markdown-code-face :background ,(doom-darken 'bg 0.075))
-  `(font-lock-variable-name-face :foreground ,(doom-lighten 'magenta 0.6)))
+  ;; corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config)
+  (custom-theme-set-faces! 'doom-dracula
+    `(markdown-code-face :background ,(doom-darken 'bg 0.075))
+    `(font-lock-variable-name-face :foreground ,(doom-lighten 'magenta 0.6)))
+  (setq doom-theme 'doom-dracula))
 #+end_src
 
 ** +modeline
 #+begin_src emacs-lisp
-;; (use-package doom-modeline
+;; (use-package! doom-modeline
 ;;   :config
 ;;   (setq doom-modeline-minor-modes t)
-;;   (setq doom-modeline-buffer-encoding nil)
-;;   (column-number-mode)
-;;   (when (daemonp)
-;;     (setq doom-modeline-icon t)))
+;;   (setq doom-modeline-buffer-encoding nil))
 #+end_src
 
-** +font
+** font
 #+begin_src emacs-lisp
+(setq doom-font (font-spec :family "Fira Code" :size 16)
+      doom-variable-pitch-font (font-spec :family "FreeSans")
+      doom-big-font (font-spec :family "Fira Code" :size 25))
 ;; (use-package! fira-code-mode
 ;;   :ghook 'prog-mode-hook)
 #+end_src
 
-** +dashboard
-#+begin_src emacs-lisp
-;; (use-package dashboard
-;;   :ensure t
-;;   :config
-;;   (dashboard-setup-startup-hook)
-;;   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-;;   (setq dashboard-startup-banner "/data/googledrive/pictures/profilbild/wacken logo.png")
-;;   (setq dashboard-show-shortcuts nil)
-;;   (setq dashboard-items '((recents  . 5)
-;;                           (bookmarks . 5)
-;;                           (projects . 5)
-;;                           (agenda . 5)
-;;                           (registers . 5)))
-;;   (setq dashboard-set-heading-icons t)
-;;   (setq dashboard-set-file-icons t))
-#+end_src
-
 * other
 ** elfeed
+*** setup
+#+begin_src emacs-lisp
+(after! elfeed
+  (setq elfeed-search-filter "@1-month-ago +unread"))
+(add-hook! 'elfeed-search-mode-hook 'elfeed-update)
+#+end_src
+
 *** goodies
 #+begin_src emacs-lisp
 (use-package! elfeed-goodies

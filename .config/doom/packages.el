@@ -49,4 +49,7 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
+(package! company-statistics)
+(package! yasnippet-snippets)
+(package! org-bullets)
 (package! elfeed-goodies)
