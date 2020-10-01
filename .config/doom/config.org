@@ -7,18 +7,7 @@
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
 (setq user-full-name "Wacken Desktop Arch"
-      user-mail-address "wackenmail@gmail.com")
-
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
-
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type 'relative)
+      user-mail-address "sebastianwalchi@gmail.com")
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -37,11 +26,10 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-;; (use-package! evil-cleverparens
-;;   :ghook 'prog-mode-hook)
-
+(setq byte-compile-warnings '(cl-functions)) ; ignore Package cl is depcrecated warning
 #+end_src
-* keybindings
+
+* !keybindings
 ** general
 *** doom
 #+begin_src emacs-lisp
@@ -52,24 +40,10 @@
  "wa"              'ace-window
  "ws"              'ace-swap-window
  "wc"              'ace-delete-window
- )
-#+end_src
 
-*** !setup
-#+begin_src emacs-lisp
-;; (defconst my-leader "spc")
-(setq org-directory "~/Files/Org")
-;; (defconst my-major "spc m")
-;; (general-create-definer my-leader-def
-;;   :states '(normal visual insert emacs motion)
-;;   :prefix my-leader
-;;   :keymaps 'override
-;;   :non-normal-prefix (concat "s-" my-leader))
-;; (general-create-definer my-major-def
-;;   :states '(normal visual insert emacs motion)
-;;   :prefix my-major
-;;   :keymaps 'override
-;;   :non-normal-prefix (concat "s-" my-major))
+ :desc "toogle test and implementation" "ps" 'projectile-toggle-between-implementation-and-test
+ "pS"              'projectile-save-project-buffers
+ )
 #+end_src
 
 ** evil
@@ -88,173 +62,52 @@
         which-key-show-operator-state-maps t))
  #+end_src
 
-* navigation
-** +dired
-# *** setup
-# dired multiple windows and other defaults
-# #+begin_src emacs-lisp
-#   (setq dired-dwim-target t
-#         dired-hide-details-hide-symlink-targets nil
-#         image-dired-thumb-size 150
-#         dired-recursive-copies 'always)
-#   ;; (setq dired-omit-verbose nil
-#   ;;       dired-omit-files
-#   ;;         (concat dired-omit-files
-#   ;;                 "\\|^.ds_store\\'"
-#   ;;                 "\\|^.project\\(?:ile\\)?\\'"
-#   ;;                 "\\|^.\\(svn\\|git\\)\\'"
-#   ;;                 "\\|^.ccls-cache\\'"
-#   ;;                 "\\|\\(?:\\.js\\)?\\.meta\\'"
-#   ;;                 "\\|\\.\\(?:elc\\|o\\|pyo\\|swp\\|class\\)\\'"))
-#   ;; (add-hook 'dired-mode-hook #'dired-omit-mode)
-# #+end_src
+* +navigation
+** +counsel
+ #+begin_src emacs-lisp
+(use-package! counsel
+  :init
+  (define-key!
+    [remap describe-symbol] #'counsel-describe-symbol)
+  :config
+  (setq ivy-count-format "[%d/%d]")
+  (setq enable-recursive-minibuffers t)
+  (setq search-default-mode #'char-fold-to-regexp))
+;; (global-set-key (kbd "c-c g") 'counsel-git)
+;; (global-set-key (kbd "c-c j") 'counsel-git-grep)
+;; (global-set-key (kbd "c-c k") 'counsel-ag)
+;; (global-set-key (kbd "c-s-o") 'counsel-rhythmbox)
+ #+end_src
 
-# *** dfl
-# some more colour
-# #+begin_src emacs-lisp
-#   (use-package diredfl
-#     :ensure t
-#     :config
-#     (diredfl-global-mode))
-# #+end_src
-
-# *** rsync
-# #+begin_src emacs-lisp
-#   (use-package dired-rsync
-#     :ensure t
-#     :general
-#     (dired-mode-map
-#      "c-c s" 'dired-rsync))
-# #+end_src
-
-# *** all-the-icons
-# todo: change off before wdired mode
-# #+begin_src emacs-lisp
-#   ;; (use-package all-the-icons-dired
-#   ;;   :ensure t
-#   ;;   :hook (dired-mode . all-the-icons-dired-mode)
-#   ;;   :config
-#   ;;   (add-hook 'wdired-mode-hook '(lambda () (all-the-icons-dired-mode -1))))
-# #+end_src
-
-# *** dired-x
-# #+begin_src emacs-lisp
-#   ;; (add-hook 'dired-load-hook
-#   ;;             (function (lambda () (load "dired-x"))))
-# #+end_src
-
-** +counsel/swiper/ivy
-# *** counsel
-#  #+begin_src emacs-lisp
-#    (use-package counsel
-#      :diminish (ivy-mode counsel-mode)
-#      :ensure t
-#      :config
-#      (ivy-mode)
-#      (counsel-mode)
-#      (setq ivy-height 20
-#            projectile-completion-system 'ivy
-#            ivy-wrap t
-#            ivy-use-selectable-prompt t)
-#      (setq ivy-count-format "[%d/%d]")
-#      (setq ivy-use-virtual-buffers t)
-#      (setq enable-recursive-minibuffers t)
-#      (setq search-default-mode #'char-fold-to-regexp)
-#      (setq ivy-sort-max-size 7500))
-#    (global-set-key (kbd "c-c c-r") 'ivy-resume)
-#    (global-set-key (kbd "<f6>") 'ivy-resume)
-#    (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
-#    (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-#    (global-set-key (kbd "c-c g") 'counsel-git)
-#    (global-set-key (kbd "c-c j") 'counsel-git-grep)
-#    (global-set-key (kbd "c-c k") 'counsel-ag)
-#    (global-set-key (kbd "c-x l") 'counsel-locate)
-#    (global-set-key (kbd "c-s-o") 'counsel-rhythmbox)
-#    (define-key minibuffer-local-map
-#      (kbd "c-r") 'counsel-minibuffer-history)
-#    (use-package swiper
-#      :ensure t)
-
-#  #+end_src
-
-# *** prescient (recently used ivy)
-#  #+begin_src emacs-lisp
-#    (use-package ivy-prescient
-#      :after counsel
-#      :ensure t
-#      :config
-#      (setq ivy-prescient-retain-classic-highlighting t)
-#      (prescient-persist-mode)
-#      (ivy-prescient-mode))
-#  #+end_src
-
-# *** ivy-rich (help for m-x)
-# #+begin_src emacs-lisp
-#   (use-package ivy-rich
-#     :after ivy
-#     :ensure t
-#     :config
-#     (plist-put! ivy-rich-display-transformers-list
-#                 'counsel-describe-variable
-#                 '(:columns
-#                   ((counsel-describe-variable-transformer (:width 40)) ; the original transformer
-#                    (+ivy-rich-describe-variable-transformer (:width 50)) ; display variable value
-#                    (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
-#                 'counsel-m-x
-#                 '(:columns
-#                   ((counsel-m-x-transformer (:width 60))
-#                    (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
-#                 ;; apply switch buffer transformers to `counsel-projectile-switch-to-buffer' as well
-#                 'counsel-projectile-switch-to-buffer
-#                 (plist-get ivy-rich-display-transformers-list 'ivy-switch-buffer)
-#                 'counsel-bookmark
-#                 '(:columns
-#                   ((ivy-rich-candidate (:width 0.5))
-#                    (ivy-rich-bookmark-filename (:width 60)))))
-#     (ivy-rich-mode +1))
-# #+end_src
-
-# *** all-the-icons-ivy
-# #+begin_src emacs-lisp
-#   (use-package all-the-icons-ivy
-#     :ensure t
-#     :after ivy
-#     :config (all-the-icons-ivy-setup))
-# #+end_src
-
-** +ibuffer
+** ibuffer
 #+begin_src emacs-lisp
-  ;; (setq ibuffer-saved-filter-groups
-  ;;       (quote (("default"
-  ;;                ("dired" (mode . dired-mode))
-  ;;                ("org" (name . "^.*org$"))
-  ;;                ("web" (or (mode . web-mode) (mode . js2-mode)))
-  ;;                ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
-  ;;                ("mu4e" (name . "\*mu4e\*"))
-  ;;                ("elfeed" (name . "\*elfeed\*"))
-  ;;                ("programming" (or
-  ;;                                (mode . python-mode)
-  ;;                                (mode . c++-mode)
-  ;;                                (mode . clojure-mode)
-  ;;                                (mode . csharp-mode)
-  ;;                                (mode . haskell-mode)))
-  ;;                ("emacs" (or
-  ;;                          (name . "^\\*scratch\\*$")
-  ;;                          (name . "^\\*messages\\*$")
-  ;;                          (name . "^\\*dashboard\\*$")))))))
+(setq! ibuffer-saved-filter-groups
+      (quote (("default"
+               ("dired" (mode . dired-mode))
+               ("org" (name . "^.*org$"))
+               ("web" (or (mode . web-mode) (mode . js2-mode)))
+               ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
+               ("mu4e" (name . "\*mu4e\*"))
+               ("elfeed" (name . "\*elfeed\*"))
+               ("programming" (or
+                               (mode . python-mode)
+                               (mode . c++-mode)
+                               (mode . clojure-mode)
+                               (mode . csharp-mode)
+                               (mode . haskell-mode)))
+               ("emacs" (or
+                         (name . "^\\*scratch\\*$")
+                         (name . "^\\*messages\\*$")
+                         (name . "^\\*dashboard\\*$")))))))
 
-  ;; (add-hook 'ibuffer-mode-hook
-  ;;           (lambda ()
-  ;;             (ibuffer-auto-mode)
-  ;;             (ibuffer-switch-to-saved-filter-groups "default")))
+(add-hook! 'ibuffer-mode-hook (ibuffer-auto-mode) (ibuffer-switch-to-saved-filter-groups "default"))
 
-  ;; ;; don't show these
-  ;; ;(add-to-list 'ibuffer-never-show-predicates "zowie")
-  ;; ;; don't show filter groups if there are no buffers in that group
-  ;; (setq ibuffer-show-empty-filter-groups nil)
+;; ;; don't show these
+;; ;;(add-to-list 'ibuffer-never-show-predicates "zowie")
+;; ;; don't show filter groups if there are no buffers in that group
 
-  ;; ;; don't ask for confirmation to delete marked buffers
-  ;; (setq ibuffer-expert t)
+;; ;; don't ask for confirmation to delete marked buffers
+;; (setq ibuffer-expert t)
 #+end_src
 
 ** ace window
@@ -268,77 +121,40 @@
        :foreground "red")))
 #+end_src
 
-** +projectile
-# *** setup
-# #+begin_src emacs-lisp
-#   (use-package projectile
-#     :ensure t
-#     :config
-#     (projectile-global-mode)
-#     (setq projectile-completion-system 'ivy)
-#     :general
-#     (my-leader-def
-#       "p" '(:ignore t :which-key "project")
-#       "ps" 'projectile-toggle-between-implementation-and-test))
-# #+end_src
-
-# *** counsel
-# #+begin_src emacs-lisp
-#   (use-package counsel-projectile
-#     :ensure t
-#     :config
-#     (counsel-projectile-mode))
-# #+end_src
-
-** +dumb-jump
-#+begin_src emacs-lisp
-;; (use-package dumb-jump
-;;   :ensure t
-;;   :config
-;;   (dumb-jump-mode)
-;;   (setq dumb-jump-selector 'ivy))
-#+end_src
-
-** -persp-mode
-#+begin_src emacs-lisp
-  ;; (use-package persp-mode
-  ;;   :ensure t
-  ;;   :config
-  ;;   (persp-mode)
-  ;;   (setq persp-auto-resume-time -1))
-#+end_src
-
 * texteditor
-** +lines
+** lines
 #+begin_src emacs-lisp
-;; (setq default-fill-column 80)    ; toggle wrapping text at the 80th character
-;; (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
-;; (setq display-line-numbers-type 'relative)
-;; (add-hook 'prog-mode-hook #'display-line-numbers-mode)
-;; (add-hook 'text-mode-hook #'display-line-numbers-mode)
-;; (add-hook 'org-mode-hook #'display-line-numbers-mode)
 ;; (global-hl-line-mode)
+(setq display-line-numbers-type 'relative)
 #+end_src
 
 ** cursor
 #+begin_src emacs-lisp
 (setq evil-normal-state-cursor  '(box       "#c792ea")
       evil-insert-state-cursor  '((bar . 2) "#c792ea")
-      evil-visual-state-cursor  '(box       "yellow")
+      evil-visual-state-cursor  '(box       "#E9F13B")
       evil-emacs-state-cursor   '((bar . 4) "#6785c6")
-      evil-replace-state-cursor '(hbar      "orange"))
+      evil-replace-state-cursor '(hbar      "#FFB035"))
 #+end_src
+
+** Color
+#+BEGIN_SRC emacs-lisp
+;; (add-hook! 'org-mode-hook (rainbow-mode))
+;; (add-hook! 'prog-mode-hook (rainbow-mode))
+;; (add-hook! 'text-mode-hook (rainbow-mode))
+(add-hook! 'rainbow-mode-hook
+  (hl-line-mode (if rainbow-mode -1 +1)))
+#+END_SRC
 
 ** -beacon
 #+begin_src emacs-lisp
   ;; (use-package beacon
-  ;;   :ensure t
   ;;   :diminish beacon-mode
   ;;   :config
   ;;   (beacon-mode))
 #+end_src
 
-* code-transform
+* +code-transform
 ** +expand-region
 #+begin_src emacs-lisp
 ;; (use-package expand-region
@@ -347,12 +163,6 @@
 ;;   (:states '(visual motion)
 ;;    "c-+" 'er/expand-region
 ;;    "c--" 'er/contract-region))
-#+end_src
-
-** +iedit
-#+begin_src emacs-lisp
-;; (use-package iedit
-;;   :ensure t)
 #+end_src
 
 ** -hungry-delete
@@ -366,31 +176,31 @@
   ;;             haskell-mode-hook)))
 #+end_src
 
-** +lispy
-# *** setup
-# #+begin_src emacs-lisp
-#   (use-package lispy
-#     :ensure t
-#     :ghook ('(emacs-lisp-mode-hook
-#               clojure-mode-hook
-#               cider-repl-mode-hook
-#               ;; python-mode-hook
-#               ))
-#     :general
-#     (:states '(normal insert motion emacs visual)
-#              "c-d" 'lispy-delete)
-#     :config
-#     (setq lispy-compat t))
-# #+end_src
+** +++lispy
+*** setup
+#+begin_src emacs-lisp
+;; (use-package! lispy
+;;   :config
+;;   (add-hook! 'activate-mark-hook #'lispyville--enter-visual)
+;;   (setq lispy-compat t)
+;;   ;; enter visual state after `lispy-mark-symbol' with correct selection
+;;   (evil-define-key 'normal lispyville-mode-map
+;;     "v" (lispyville-wrap-command lispy-mark-symbol visual))
+;;   )
+;; (setq-default mode-line-format
+;;                '(:eval (when (featurep 'lispyville)
+;;                          (lispyville-mode-line-string))))
+;; (defun setup-custorm-doom-modeline
+;;     (doom-modeline-set-modeline 'default))
+;; (add-hook! 'doom-modeline-mode-hook #'lispyville-mode-line-string)
+;; (setq! global-mode-string (lispyville-mode-line-string "insert" "special-lispy"))
+#+end_src
 
-# *** lispyville
-# #+begin_src emacs-lisp
-#   (use-package lispyville
-#     :ensure t
-#     :ghook ('(emacs-lisp-mode-hook
-#               clojure-mode-hook)))
-# #+end_src
-
+*** others
+evil-lispy
+paredit
+smartparens
+evil-cleverparens
 ** +agressive-indent
 #+begin_src emacs-lisp
 ;; (use-package aggressive-indent
@@ -402,49 +212,8 @@
 ;; ;; (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
 #+end_src
 
-** -paredit
-#+begin_src emacs-lisp
-  ;; (use-package paredit
-  ;;   :ensure t)
-#+end_src
-
-** -smartparens
-#+begin_src emacs-lisp
-  ;; (use-package smartparens
-  ;;   :ensure t
-  ;;   :config
-  ;;   (smartparens-global-mode)
-  ;;   (smartparens-global-strict-mode))
-#+end_src
-
-** -parinfer
- #+begin_src emacs-lisp
-   ;; (use-package parinfer
-   ;;   :ensure t
-   ;;   :hook
-   ;;   (clojure-mode . parinfer-mode)
-   ;;   (emacs-lisp-mode . parinfer-mode)
-   ;;   :general
-   ;;   ("c-," 'parinfer-toggle-mode)
-   ;;   :init
-   ;;   (setq parinfer-extensions '(defaults       ; should be included.
-   ;;                                pretty-parens  ; different paren styles for different modes.
-   ;;                                evil)))
-   ;;                                ;; lispy          ; if you use lispy. with this extension, you should install lispy and do not enable lispy-mode directly.
-   ;;                                ;; paredit)))        ; introduce some paredit commands.
-   ;;                                ;; smart-tab)))      ; c-b & c-f jump positions and smart shift with tab & s-tab.
-   ;;                                ;; smart-yank)))  ; yank behavior depend on mode.
- #+end_src
-
-* languages
-** +tools
-*** +flycheck
-#+begin_src emacs-lisp
-;; (use-package flycheck-pos-tip
-;;   :ensure t
-;;   :after flycheck)
-#+end_src
-
+* +languages
+** tools
 *** company
 **** statistics
 #+begin_src emacs-lisp
@@ -452,72 +221,30 @@
   :ghook 'company-mode-hook)
 #+end_src
 
-** +c#
-*** setup
-#+begin_src emacs-lisp
-;; (use-package omnisharp
-;;   :ensure t
-;;   :ghook 'csharp-mode-hook)
-#+end_src
-
+** c#
 *** repl
+need to integrate in doom eval/REPL
 #+begin_src emacs-lisp
-;; (defun my-csharp-repl ()
-;;   "switch to the csharprepl buffer, creating it if necessary."
-;;   (interactive)
-;;   (if-let ((buf (get-buffer "*csharprepl*")))
-;;       (pop-to-buffer buf)
-;;     (when-let ((b (make-comint "csharprepl" "csharp")))
-;;       (switch-to-buffer-other-window b))))
-;; ;; (define-key csharp-mode-map (kbd "c-c c-z") 'my-csharp-repl)
+(defun my-csharp-repl ()
+  "switch to the csharprepl buffer, creating it if necessary."
+  (interactive)
+  (if-let ((buf (get-buffer "*csharprepl*")))
+      (pop-to-buffer buf)
+    (when-let ((b (make-comint "csharprepl" "csharp")))
+      (switch-to-buffer-other-window b))))
+(set-repl-handler! 'csharp-mode #'my-csharp-repl)
 #+end_src
 
-** +clojure
-*** cider
-#+begin_src emacs-lisp
-;; (use-package cider
-;;   :ensure t
-;;   :config
-;;   (setq
-;;    cider-repl-history-file ".cider-repl-history"  ;; not squiggly-related, but i like it
-;;    nrepl-log-messages t)                          ;; not necessary, but useful for trouble-shooting
-;;   :general
-;;   (my-major-def clojure-mode-map
-;;                 "j" 'cider-jack-in
-;;                 "l" 'cider-load-buffer-and-switch-to-repl-buffer))
-#+end_src
-
-*** refactor
-#+begin_src emacs-lisp
-;; (use-package clj-refactor
-;;   :ensure t
-;;   :ghook 'clojure-mod-hook
-;;   :general
-;;   (my-major-def clojure-mode-map
-;;                 "r" 'hydra-cljr-help-menu/body))
-#+end_src
-
-*** flycheck
-#+begin_src emacs-lisp
-;; (use-package flycheck-clj-kondo
-;;   :ensure t
-;;   :config
-;;   (eval-after-load 'flycheck
-;;     '(setq flycheck-display-errors-function
-;;            #'flycheck-pos-tip-error-messages)))
-#+end_src
-
+** clojure
 *** hydra
 #+begin_src emacs-lisp
-;; (use-package cider-hydra
-;;   :ensure t
-;;   :ghook 'clojure-mode-hook)
+(use-package! cider-hydra
+  :ghook 'clojure-mode-hook)
 #+end_src
 
 ** +python
 #+begin_src emacs-lisp
 ;; (use-package jedi
-;;   :ensure t
 ;;   :init
 ;;   (add-hook 'python-mode-hook 'jedi:setup)
 ;;   (add-hook 'python-mode-hook 'jedi:ac-setup))
@@ -542,13 +269,16 @@
 (setq org-log-done 'time)
 #+end_src
 
+#+RESULTS:
+: time
+
 *** bullets
 #+begin_src emacs-lisp
 (use-package! org-bullets
   :init
   (setq org-bullets-bullet-list
         '("▶" "✚" "●" "◆" "◇"))
-  (add-hook! 'org-mode-hook (lambda () (org-bullets-mode))))
+  :ghook 'org-mode-hook)
 #+end_src
 
 ** +c++
@@ -588,12 +318,16 @@
   (setq doom-theme 'doom-dracula))
 #+end_src
 
-** +modeline
+** modeline
 #+begin_src emacs-lisp
 ;; (use-package! doom-modeline
 ;;   :config
 ;;   (setq doom-modeline-minor-modes t)
 ;;   (setq doom-modeline-buffer-encoding nil))
+(after! doom-modeline
+  (doom-modeline-def-modeline 'main
+    '(bar matches buffer-info remote-host buffer-position parrot selection-info)
+    '(misc-info minor-modes checker input-method buffer-encoding major-mode process vcs "  ")))
 #+end_src
 
 ** font

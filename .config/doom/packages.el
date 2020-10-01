@@ -53,3 +53,4 @@
 (package! yasnippet-snippets)
 (package! org-bullets)
 (package! elfeed-goodies)
+(package! cider-hydra)
