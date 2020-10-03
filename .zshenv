@@ -1,12 +1,13 @@
 #!bin/zsh
 
 export PATH=$PATH:/home/wacken/.config/emacs-doom/bin
+export PATH=$PATH:/home/wacken/.local/bin
 
 # Default programs:
 export EDITOR="emacs"
 export TERMINAL="alacritty"
 export BROWSER="brave"
-export READER="zathura"
+export READER="okular"
 export VISUAL="emacs"
 
 # ~/ Clean-up:
