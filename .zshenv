@@ -2,6 +2,7 @@
 
 export PATH=$PATH:/home/wacken/.config/emacs-doom/bin
 export PATH=$PATH:/home/wacken/.local/bin
+export PATH=$PATH:/home/wacken/System/bin
 
 # Default programs:
 export EDITOR="emacs"
@@ -25,8 +26,11 @@ export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/config
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export DOOMDIR="${XDG_CONFIG_HOME:-$HOME/.config}/doom"
+export PASSWORD_STORE_DIR="$XDG_DATA_HOME"/pass
 # export JAVA_OPTIONS="-"
 
 export HISTFILE="$XDG_CACHE_HOME"/zsh/history
 export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
 #export DOTNET_CLI_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/# Environment variables
+
+export XMODIFIERS="@im=ibus"

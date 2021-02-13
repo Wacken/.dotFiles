@@ -1,8 +1,4 @@
-;;; package --- Summary
-;;; Commentary:
-;;; Code:
-(("default" . ((user-emacs-directory . "~/.config/emacs")))
- ("doom" . ((user-emacs-directory . "~/.config/emacs-doom")
-	    (server-name . "doom")
-	    (env . (("DOOMDIR" . "~/.config/doom")))))
- ("spacemacs" . ((user-emacs-directory . "~/.config/spacemacs-config"))))
+(("default" . ((user-emacs-directory . "~/.config/emacs-doom")
+               (env . (("DOOMDIR" . "~/.config/doom")))))
+ ("own" . ((user-emacs-directory . "~/.config/emacs")
+           (serner-name . "own"))))
