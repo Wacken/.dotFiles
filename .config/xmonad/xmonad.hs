@@ -44,7 +44,7 @@ myFont :: String
 myFont = "xft:Ubuntu Mono:bold:size=9:antialias=true:hinting=true"
 
 myTerminal :: String
-myTerminal = "alacritty"
+myTerminal = "kitty"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
