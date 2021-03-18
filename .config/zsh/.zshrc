@@ -1,14 +1,14 @@
-# Enable colors and change prompt:
+# hack for ssh
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
+# Enable colors and change prompt:
 autoload -U colors && colors	# Load colors
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
+
 setopt autocd		# Automatically cd into typed directory.
 stty stop undef		# Disable ctrl-s to freeze terminal.
 
 # History in cache directory:
-HISTSIZE=1000000
-HISTFILESIZE=1000000
-SAVEHIST=1000000
+export HISTFILE="$XDG_CACHE_HOME/zsh/history"
 setopt SHARE_HISTORY
 export HISTTIMEFORMAT="[%F %T] "
 setopt EXTENDED_HISTORY

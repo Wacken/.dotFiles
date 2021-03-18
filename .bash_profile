@@ -1,4 +1,6 @@
-# zsh environment variables, called always (when zsh default shell)
+#
+# ~/.bash_profile
+#
 
 export PATH=$PATH:/home/wacken/.config/emacs-doom/bin
 export PATH=$PATH:/home/wacken/.local/bin
@@ -12,13 +14,6 @@ export BROWSER="brave"
 export READER="okular"
 export VISUAL="emacs"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-
-# default values
-export HISTSIZE=1000000
-export HISTFILESIZE=1000000
-export SAVEHIST=1000000
-
-export XMODIFIERS="@im=ibus"
 
 # ~/ Clean-up:
 export XDG_CONFIG_HOME="$HOME/.config"
@@ -36,11 +31,12 @@ export XMONAD_CACHE_HOME="$XDG_CACHE_HOME/xmonad"
 
 export DOOMDIR="$XDG_CONFIG_HOME/doom"
 
-export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/config"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/pass"
 export NUGET_PACKAGES="$XDG_CACHE_HOME/NuGetPackages"
 
+export XMODIFIERS="@im=ibus"
+
+[[ -f ~/.bashrc ]] && . ~/.bashrc
