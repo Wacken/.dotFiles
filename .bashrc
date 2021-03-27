@@ -7,6 +7,7 @@ export HISTCONTROL=ignoredups:erasedups           # no duplicate entries
 export HISTFILE="$XDG_DATA_HOME/bash/history"
 export HISTFILESIZE=1000000
 export HISTSIZE=1000000
+export PROMPT_COMMAND='history -a'
 
 # vi
 set -o vi
