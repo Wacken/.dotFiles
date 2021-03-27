@@ -1,6 +1,6 @@
 # zsh environment variables, called always (when zsh default shell)
 
-export PATH=$PATH:/home/wacken/.config/emacs-doom/bin
+export PATH=$PATH:/home/wacken/.config/emacs/bin
 export PATH=$PATH:/home/wacken/.local/bin
 export PATH=$PATH:/home/wacken/System/bin
 
@@ -19,6 +19,8 @@ export HISTFILESIZE=1000000
 export SAVEHIST=1000000
 
 export XMODIFIERS="@im=ibus"
+
+export FrameworkPathOverride="/lib/mono/4.8-api"
 
 # ~/ Clean-up:
 export XDG_CONFIG_HOME="$HOME/.config"
