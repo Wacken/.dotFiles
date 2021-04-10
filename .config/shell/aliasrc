@@ -1,11 +1,8 @@
-#!/bin/sh
-
 alias \
 	ls='exa -alh --color=always' \
 	cat='bat' \
 	em='emacsclient -nc' \
 	emdi="emacsclient -c -a '' --eval '(dired nil)'" \
-	br='broot -dp' \
 	mv='mv -i' \
 	rm='rm -i' \
 	config='/usr/bin/git --git-dir=$HOME/.config/dotFiles --work-tree=$HOME' \
@@ -15,5 +12,6 @@ alias \
 	startx='startx "$XDG_CONFIG_HOME/X11/xinitrc" -- "$XDG_CONFIG_HOME/X11/xserverrc" vt1' \
 	mirror-update='sudo reflector -c Germany -a 12 -p https -p http --sort rate --save /etc/pacman.d/mirrorlist' \
 	dropbox-sync='rclone sync Files/Org orgfiles:/ -P --exclude .git/ --exclude Erste\ Schritte.pdf' \
-	jphand='/usr/lib/mozc/mozc_tool --mode=hand_writing'
+	jphand='/usr/lib/mozc/mozc_tool --mode=hand_writing'\
+    stow-bins='stow -d ~/Files/bins -t ~/.local --stow .local -v'
 	# history='history 0' \

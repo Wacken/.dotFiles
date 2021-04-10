@@ -1,0 +1,62 @@
+# We need to set $ENV so that if you use shell X as your login shell,
+# and then start "sh" as a non-login interactive shell the startup scripts will
+# correctly run.
+export ENV=~/.config/sh/interactive
+
+# We also need to set BASH_ENV, which is run for *non-interactive* shells.
+# (unlike $ENV, which is for interactive shells)
+export BASH_ENV=~/.config/bash/env
+
+. ~/.config/shell/env_functions
+
+umask 0077
+
+# ssource ~/.config/shell/env_local
+
+pathappend $(expandHOME ".config/emacs/bin")
+pathappend $(expandHOME ".local/bin")
+
+# Default programs:
+export TERM="xterm-256color"
+export EDITOR="emacs"
+export TERMINAL="kitty"
+export BROWSER="brave"
+export READER="okular"
+export VISUAL="emacs"
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+# Default Values
+export HISTSIZE=1000000
+export HISTFILESIZE=1000000
+export SAVEHIST=1000000
+
+# For Ibus (language input)
+export XMODIFIERS="@im=ibus"
+
+# fix for c# in emacs
+export FrameworkPathOverride="/lib/mono/4.8-api"
+
+# ~/ Clean-up:
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CACHE_HOME="$HOME/.cache"
+
+export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line will break some DMs.
+
+export XINITRC="${XDG_CONFIG_HOME:-$HOME/.config}/X11/xinitrc"
+export XSERVERRC="${XDG_CONFIG_HOME:-$HOME/.config}/X11/xserverrc"
+
+export XMONAD_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/xmonad"
+export XMONAD_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/xmonad"
+export XMONAD_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}/xmonad"
+
+export DOOMDIR="${XDG_CONFIG_HOME:-$HOME/.config}/doom"
+export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
+export INPUTRC="${XDG_CONFIG_HOME:-$HOME/.config}/shell/inputrc"
+export LESSHISTFILE="-"
+
+export GNUPGHOME="${XDG_DATA_HOME:-$HOME/.local/share}/gnupg"
+export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/config"
+export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
+export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/pass"
+export NUGET_PACKAGES="${XDG_CACHE_HOME:-$HOME/.cache}/NuGetPackages"
