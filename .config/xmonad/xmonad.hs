@@ -277,6 +277,7 @@ myKeysEz =
   , ("M4-e d", spawn "emacsclient -c -a '' --eval '(dired nil)'")
   , ("M4-e n", spawn "emacsclient -c -a '' --eval '(elfeed)'")
   , ("M4-e t", spawn "emacsclient -c -a '' --eval '(org-capture)'")
+  , ("M4-e G", spawn "emacsclient -c -a '' --eval '(org-agenda nil \"G\")'")
 
 -- Scratchpads
   -- , ("M4-t", namedScratchpadAction myScratchPads "terminal")

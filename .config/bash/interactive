@@ -1,9 +1,13 @@
 . ~/.config/shell/interactive
 
 # history
-export HISTCONTROL=ignoredups:erasedups           # no duplicate entries
 export HISTFILE="$XDG_CACHE_HOME/bash/history"
+export HISTCONTROL=ignoredups:erasedups           # no duplicate entries
+export HISTIGNORE='ls:bg:fg:history'
 export PROMPT_COMMAND='history -a'
+
+shopt -s cmdhist # save multi-line commands in history as single line
+shopt -s histappend # do not overwrite history
 
 # vi
 set -o vi
@@ -15,8 +19,6 @@ PS1='\[\033[01;31m\][\[\033[01;33m\]\u\[\033[01;32m\]@\[\033[01;34m\]\h \[\033[0
 
 # options
 shopt -s autocd # don't need cd, only file name
-shopt -s cmdhist # save multi-line commands in history as single line
-shopt -s histappend # do not overwrite history
 shopt -s expand_aliases # expand aliases
 
 # better completion

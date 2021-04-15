@@ -12,7 +12,6 @@ stty stop undef		# Disable ctrl-s to freeze terminal.
 # History in cache directory:
 export HISTFILE="$XDG_CACHE_HOME/zsh/history"
 setopt SHARE_HISTORY
-export HISTTIMEFORMAT="[%F %T] "
 setopt EXTENDED_HISTORY
 setopt HIST_IGNORE_ALL_DUPS
 

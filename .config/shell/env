@@ -32,6 +32,7 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export HISTSIZE=1000000
 export HISTFILESIZE=1000000
 export SAVEHIST=1000000
+export HISTTIMEFORMAT="[%F %T] "
 
 # For Ibus (language input)
 export XMODIFIERS="@im=ibus"
