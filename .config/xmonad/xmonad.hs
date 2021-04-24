@@ -277,7 +277,7 @@ myKeysEz =
   , ("M4-e d", spawn "emacsclient -c -a '' --eval '(dired nil)'")
   , ("M4-e n", spawn "emacsclient -c -a '' --eval '(elfeed)'")
   , ("M4-e t", spawn "emacsclient -c -a '' --eval '(org-capture)'")
-  , ("M4-e G", spawn "emacsclient -c -a '' --eval '(org-agenda nil \"G\")'")
+  , ("M4-e g", spawn "emacsclient -c -a '' --eval '(org-agenda nil \"G\")'")
 
 -- Scratchpads
   -- , ("M4-t", namedScratchpadAction myScratchPads "terminal")
@@ -392,7 +392,6 @@ myLogHook = return ()
 -- By default, do nothing.
 myStartupHook :: X ()
 myStartupHook = do
-  spawnOnce "rescuetime &"
   spawnOnce "redshift -l 48:11 &"
   spawnOnce "nitrogen --restore &"
   spawnOnce "picom &"
@@ -406,7 +405,7 @@ myStartupHook = do
 --
 main :: IO ()
 main = do
-  xmproc <- spawnPipe ("sudo xmobar " ++ myXmobarrc)
+  xmproc <- spawnPipe ("xmobar " ++ myXmobarrc)
   xmonad
     $                 ewmh def
                         {
