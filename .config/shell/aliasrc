@@ -15,4 +15,9 @@ alias \
 	jphand='/usr/lib/mozc/mozc_tool --mode=hand_writing'\
     stow-bins='stow -d ~/Files/shell-scripts -t ~ --stow bins -v'\
 	add-gitignore='npx add-gitignore'\
+	pstree='pstree -p'\
+	pgrep='pgrep -a'\
+	pkill='pkill -e'\
+	permission-octal="stat -c '%A %a %n'"\
+	local-file-server="python -m http.server 7777"
 	# history='history 0' \
