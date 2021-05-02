@@ -40,9 +40,6 @@ import qualified Data.Map                      as M
 -- certain contrib modules.
 --
 
-myFont :: String
-myFont = "xft:Ubuntu Mono:bold:size=9:antialias=true:hinting=true"
-
 myTerminal :: String
 myTerminal = "kitty"
 
@@ -392,7 +389,7 @@ myLogHook = return ()
 -- By default, do nothing.
 myStartupHook :: X ()
 myStartupHook = do
-  spawnOnce "redshift -l 48:11 &"
+  spawnOnce "redshift &"
   spawnOnce "nitrogen --restore &"
   spawnOnce "picom &"
   spawnOnce "ibus-daemon -drx &"
