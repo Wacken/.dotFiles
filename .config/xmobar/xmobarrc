@@ -1,7 +1,7 @@
 Config { 
 
    -- appearance
-   font =           "xft:Ubuntu Mono:size=10:bold:antialias=true"
+   font = "xft:Fira Code-9:bold,Source Han Sans JP-9:bold:antialias=true"
    , bgColor =      "#292d3e"
    , fgColor =      "#a1a1a1"
    , position =     Top
