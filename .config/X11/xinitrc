@@ -2,4 +2,5 @@
 
 [[ -f ~/.config/Xmodmap ]] && xmodmap ~/.config/Xmodmap
 xrdb -load ~/.config/X11/Xresources
+xset s off
 exec xmonad
