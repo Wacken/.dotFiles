@@ -16,6 +16,7 @@ umask 0077
 
 # custom
 
+# Add values to $PATH
 pathappend $(expandHOME ".config/emacs/bin")
 pathappend $(expandHOME ".local/bin")
 
@@ -33,11 +34,13 @@ export HISTSIZE=1000000
 export HISTFILESIZE=1000000
 export SAVEHIST=1000000
 export HISTTIMEFORMAT="[%F %T] "
+# change ls, df and du command to display MB,GB.. values instead of bytes
+export BLOCK_SIZE="human-readable"
 
-# For Ibus (language input)
+# For Ibus (Japanese language input)
 export XMODIFIERS="@im=ibus"
 
-# fix for c# in emacs
+# fix for c# in emacs to use not Net Framework
 export FrameworkPathOverride="/lib/mono/4.8-api"
 
 # ~/ Clean-up:
