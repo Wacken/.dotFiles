@@ -129,7 +129,7 @@ myKeys conf@(XConfig { XMonad.modMask = modm }) =
 
     -- launch dmenu
        , ( (modm, xK_p)
-         , spawn "dmenu_run -fn 'sans-9:bold'"
+         , spawn "dmenu_run -fn 'sans-11'"
          )
 
     -- close focused window
