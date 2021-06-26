@@ -2,6 +2,5 @@
 
 [[ -f ~/.config/Xmodmap ]] && xmodmap ~/.config/Xmodmap
 xrdb -load ~/.config/X11/Xresources
-xmodmap -e "keysym Scroll_Lock = Multi_key"
-xset s off
+xset s off # turn off screen saver
 exec xmonad
