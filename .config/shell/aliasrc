@@ -13,11 +13,11 @@ alias \
 	mirror-update='sudo reflector -c Germany -a 12 -p https -p http --sort rate --save /etc/pacman.d/mirrorlist' \
 	dropbox-sync='rclone sync Files/Org orgfiles:/ -P --exclude .git/ --exclude Erste\ Schritte.pdf' \
 	jphand='/usr/lib/mozc/mozc_tool --mode=hand_writing'\
-    stow-bins='stow -d ~/Files/shell-scripts -t ~ --stow bins -v'\
+    stow-bins='stow -d ~/Files/scripts -t ~ -R bins -v'\
 	add-gitignore='npx add-gitignore'\
 	pstree='pstree -p'\
 	pgrep='pgrep -a'\
 	pkill='pkill -e'\
 	permission-octal="stat -c '%A %a %n'"\
 	local-file-server="python -m http.server 7777"
-	# history='history 0' \
+	# history='history 500' \
