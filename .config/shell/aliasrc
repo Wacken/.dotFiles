@@ -19,5 +19,7 @@ alias \
 	pgrep='pgrep -a'\
 	pkill='pkill -e'\
 	permission-octal="stat -c '%A %a %n'"\
-	local-file-server="python -m http.server 7777"
-	# history='history 500' \
+	local-file-server="python -m http.server 7777"\
+	de="setxkbmap -layout de"\
+	dv="xmodmap .config/Xmodmap"\
+	history='history 5000'
