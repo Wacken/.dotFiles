@@ -391,7 +391,7 @@ myStartupHook :: X ()
 myStartupHook = do
   spawnOnce "redshift &"
   spawnOnce "nitrogen --restore &"
-  spawnOnce "picom &"
+  -- spawnOnce "picom &"
   spawnOnce "dunst &"
   spawnOnce "udiskie &"
   spawnOnce "ibus-daemon -drx &"
