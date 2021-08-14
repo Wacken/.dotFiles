@@ -278,6 +278,9 @@ myKeysEz =
 
 -- Scratchpads
   -- , ("M4-t", namedScratchpadAction myScratchPads "terminal")
+  -- Pass
+
+  , ("M4-l", spawn "passmenu")
   ] -- where nonNSP          = WSIs (return (\ws -> W.tag ws /= "nsp"))
     --       nonEmptyNonNSP  = WSIs (return (\ws -> isJust (W.stack ws) && W.tag ws /= "nsp"))
 
