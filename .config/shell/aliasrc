@@ -21,5 +21,5 @@ alias \
 	permission-octal="stat -c '%A %a %n'"\
 	local-file-server="python -m http.server 7777"\
 	de="setxkbmap -layout de"\
-	dv="xmodmap .config/Xmodmap"\
-	history='history 5000'
+	dv="xmodmap .config/Xmodmap"
+	# history='history 5000' # bash doesn't work with this command
