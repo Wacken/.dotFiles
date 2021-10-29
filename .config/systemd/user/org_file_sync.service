@@ -1,0 +1,9 @@
+[Unit]
+Description=Sync my org files continuously
+
+[Service]
+Type=simple
+ExecStart=/home/wacken/Files/scripts/bins/.local/bin/org_file_sync
+
+[Install]
+WantedBy=default.target
