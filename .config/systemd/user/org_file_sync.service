@@ -3,7 +3,7 @@ Description=Sync my org files continuously
 
 [Service]
 Type=simple
-ExecStart=/home/wacken/Files/scripts/bins/.local/bin/org_file_sync
+ExecStart=/home/wacken/Files/scripts/others/org_file_sync.sh
 
 [Install]
 WantedBy=default.target
