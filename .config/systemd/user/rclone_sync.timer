@@ -8,7 +8,7 @@ Persistent=true
 OnBootSec=10m
 # every hour
 OnCalendar=*-*-* *:00:00
-Unit=org_file_sync.service
+Unit=rclone_sync.service
 
 [Install]
 WantedBy=timers.target
