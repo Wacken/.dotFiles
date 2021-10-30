@@ -1,0 +1,13 @@
+[Unit]
+Description=Sync org files every 1 minute
+RefuseManualStart=no
+RefuseManualStop=no
+
+[Timer]
+Persistent=true
+OnBootSec=20m
+# every hour
+OnCalendar=*-*-* 00:00:00
+
+[Install]
+WantedBy=timers.target

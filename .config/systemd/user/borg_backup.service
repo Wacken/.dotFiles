@@ -1,0 +1,9 @@
+[Unit]
+Description=Sync my org files continuously
+
+[Service]
+Type=simple
+ExecStart=/home/wacken/Files/scripts/others/borg_backup_desktop.sh
+
+[Install]
+WantedBy=default.target
