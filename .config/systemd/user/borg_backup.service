@@ -1,5 +1,5 @@
 [Unit]
-Description=Sync my org files continuously
+Description=backup files
 
 [Service]
 Type=simple
