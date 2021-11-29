@@ -21,7 +21,7 @@ alias \
 	permission-octal="stat -c '%A %a %n'"\
 	local-file-server="python -m http.server 7777"\
 	de="setxkbmap -layout de"\
-	dv="xmodmap .config/Xmodmap"\
+	dv="xmodmap ~/.config/Xmodmap"\
 	psc='ps xawf -eo pid,user,cgroup,args'\
 	nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings"'\
     cleanup_packages='(set -x; sudo pacman -Rs $(pacman -Qdtq))'
