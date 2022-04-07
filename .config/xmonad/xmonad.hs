@@ -281,6 +281,7 @@ myKeysEz =
   -- Pass
 
   , ("M4-l", spawn "passmenu")
+  , ("M4-s", spawn "flameshot launcher")
   ] -- where nonNSP          = WSIs (return (\ws -> W.tag ws /= "nsp"))
     --       nonEmptyNonNSP  = WSIs (return (\ws -> isJust (W.stack ws) && W.tag ws /= "nsp"))
 
