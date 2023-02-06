@@ -409,8 +409,7 @@ myStartupHook = do
 main :: IO ()
 main = do
   xmproc <- spawnPipe ("xmobar " ++ myXmobarrc)
-  xmonad
-    $                 ewmh def
+  xmonad $ ewmhFullscreen . ewmh . docks $ def
                         {
 
       -- simple stuff
@@ -433,8 +432,6 @@ main = do
                                                <+> myManageHook
                                                <+> manageDocks
                         , handleEventHook    = myEventHook
-                                               <+> docksEventHook
-                                               <+> fullscreenEventHook
                         , logHook = myLogHook <+> dynamicLogWithPP xmobarPP
                                       { ppOutput = \x -> hPutStrLn xmproc x
                                       , ppCurrent = xmobarColor "#c3e88d" "" . wrap "[" "]" -- Current workspace in xmobar
