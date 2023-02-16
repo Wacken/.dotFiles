@@ -34,7 +34,7 @@ export HISTSIZE=1000000
 export HISTFILESIZE=1000000
 export SAVEHIST=1000000
 export HISTTIMEFORMAT="[%F %T] "
-export TZ='Europe/Berlin'
+export TZ='Asia/Tokyo'
 # change ls, df and du command to display MB,GB.. values instead of bytes
 export BLOCK_SIZE="human-readable"
 
@@ -84,5 +84,5 @@ export TEXMFHOME="${XDG_DATA_HOME:-$HOME/.local/share}/texmf"
 export TEXMFVAR="${XDG_CACHE_HOME:-$HOME/.cache}/texlive/texmf-var"
 export TEXMFCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/texlive/texmf-config"
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
-export WINEPREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/wineprefixes/default"
+# export WINEPREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/wineprefixes/default"
 export CUDA_CACHE_PATH="${XDG_CACHE_HOME:-$HOME/.cache}/nv"
