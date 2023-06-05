@@ -24,5 +24,6 @@ alias \
 	dv="xmodmap ~/.config/Xmodmap"\
 	psc='ps xawf -eo pid,user,cgroup,args'\
 	nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings"'\
-    cleanup_packages='(set -x; sudo pacman -Rs $(pacman -Qdtq))'
-	# history='history 5000' # bash doesn't work with this command
+    cleanup_packages='(set -x; sudo pacman -Rs $(pacman -Qdtq))'\
+	mail_sync='mbsync -aVX -c ~/.config/mbsyncrc'\
+	history='history 0'
