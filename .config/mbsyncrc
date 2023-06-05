@@ -24,32 +24,35 @@ Create Both
 Sync All
 SyncState *
 
-# IMAPAccount tum
-# # Address to connect to
-# Host xmail.mwn.de
-# Port 993
-# User s.walchshaeusl@tum.de
-# PassCmd "pass University/tum.de/Main"
-# #
-# # Use SSL
-# SSLType IMAPS
-# CertificateFile /etc/ssl/certs/ca-certificates.crt
+IMAPAccount tum
+# Address to connect to
+# Host mail.tum.de
+Host xmail.mwn.de
+Port 993
+User s.walchshaeusl@tum.de
+# User walchshs@cit.tum.de
+PassCmd "echo thZd1@@0U19T"
+# PassCmd "pass University/tum.de/Rechner_kennung_RBG"
+#
+# Use SSL
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
 
-# IMAPStore tum-remote
-# Account tum
+IMAPStore tum-remote
+Account tum
 
-# MaildirStore tum-local
-# Subfolders Verbatim
-# Path ~/.local/share/mail/tum/
-# Inbox ~/.local/share/mail/tum/INBOX
+MaildirStore tum-local
+Subfolders Verbatim
+Path ~/.local/share/mail/tum/
+Inbox ~/.local/share/mail/tum/INBOX
 
-# Channel tum
-# Master :tum-remote:
-# Slave :tum-local:
-# Patterns "INBOX" "*"
-# Create Both
-# Sync All
-# SyncState *
+Channel tum
+Master :tum-remote:
+Slave :tum-local:
+Patterns "INBOX" "*"
+Create Both
+Sync All
+SyncState *
 
 # IMAPAccount gmail
 # Host imap.gmail.com
