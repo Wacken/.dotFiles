@@ -26,4 +26,5 @@ alias \
 	nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings"'\
     cleanup_packages='(set -x; sudo pacman -Rs $(pacman -Qdtq))'\
 	mail_sync='mbsync -aVX -c ~/.config/mbsyncrc'\
+	charge='upower -i /org/freedesktop/UPower/devices/battery_BAT0'\
 	history='history 0'
