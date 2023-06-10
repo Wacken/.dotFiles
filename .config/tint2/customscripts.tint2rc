@@ -74,7 +74,7 @@ border_color_pressed = #000000 100
 # Panel
 panel_items = E:E:E:EEB
 panel_size = 8% 28
-panel_margin = 150 8
+panel_margin = 110 8
 panel_padding = 9 2 3
 panel_background_id = 5
 wm_menu = 1
@@ -83,7 +83,7 @@ panel_pivot_struts = 0
 panel_position = top right horizontal
 panel_layer = normal
 panel_monitor = all
-panel_shrink = 0
+panel_shrink = 1
 autohide = 0
 autohide_show_timeout = 0
 autohide_hide_timeout = 0.5
@@ -105,33 +105,6 @@ separator_background_id = 5
 separator_color = #777777 80
 separator_style = empty
 separator_size = 2
-separator_padding = 1 0
-
-#-------------------------------------
-# Separator 2
-separator = new
-separator_background_id = 5
-separator_color = #777777 80
-separator_style = empty
-separator_size = 2
-separator_padding = 1 0
-
-#-------------------------------------
-# Separator 3
-separator = new
-separator_background_id = 5
-separator_color = #777777 80
-separator_style = empty
-separator_size = 3
-separator_padding = 1 0
-
-#-------------------------------------
-# Separator 4
-separator = new
-separator_background_id = 0
-separator_color = #777777 80
-separator_style = dots
-separator_size = 3
 separator_padding = 1 0
 
 #-------------------------------------
