@@ -1,0 +1,9 @@
+[Unit]
+Description=reminder for sit positions
+
+[Service]
+Type=simple
+ExecStart=~/.local/bin/reminders
+
+[Install]
+WantedBy=default.target
