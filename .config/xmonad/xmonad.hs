@@ -9,6 +9,10 @@
 import XMonad
 import XMonad.Layout.Fullscreen
     ( fullscreenEventHook, fullscreenManageHook, fullscreenSupport, fullscreenFull )
+import           XMonad.Actions.CycleWS         ( moveTo
+                                                , WSType(..)
+                                                )
+import           XMonad.Actions.CopyWindow
 import Data.Monoid ()
 import System.Exit ()
 import XMonad.Util.SpawnOnce ( spawnOnce )
@@ -138,7 +142,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_b     ), spawn "exec ~/bin/bartoggle")
     , ((modm,               xK_z     ), spawn "exec ~/bin/inhibit_activate")
     , ((modm .|. shiftMask, xK_z     ), spawn "exec ~/bin/inhibit_deactivate")
-    , ((modm .|. shiftMask, xK_a     ), clipboardy)
+    , ((modm .|. shiftMask, xK_b     ), clipboardy)
     -- Turn do not disturb on and off
     , ((modm,               xK_d     ), spawn "exec ~/bin/do_not_disturb.sh")
 
@@ -220,6 +224,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Run xmessage with a summary of the default keybindings (useful for beginners)
     , ((modm .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
+    
+    , ((modm, xK_a), windows copyToAll)   -- copy window to all workspaces
+    , ((modm .|. shiftMask, xK_a), killAllOtherCopies)  -- kill copies of window on other workspaces
     ]
     ++
 
