@@ -19,6 +19,7 @@ umask 0077
 # Add values to $PATH
 pathappend $(expandHOME ".config/emacs/bin")
 pathappend $(expandHOME ".local/bin")
+. "/home/wacken/.local/share/cargo/env"
 
 # Default programs:
 export TERM="xterm-256color"

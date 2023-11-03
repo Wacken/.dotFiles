@@ -1,6 +1,8 @@
 alias \
 	ls='exa -alh --color=always' \
 	cat='bat' \
+	du='dust' \
+	htop='btop'\
 	em='emacsclient -nc' \
 	emdi="emacsclient -c -a '' --eval '(dired nil)'" \
 	mv='mv -i' \
