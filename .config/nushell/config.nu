@@ -147,7 +147,7 @@ $env.config = {
     }
 
     rm: {
-        always_trash: false # always act as if -t was given. Can be overridden with -p
+        always_trash: true # always act as if -t was given. Can be overridden with -p
     }
 
     table: {
@@ -755,4 +755,41 @@ $env.config = {
         }
     ]
 }
+alias ls = exa -alh --color=always
+alias cat = bat
+alias du = dust
+alias htop = btop
+alias diff = delta
+alias cd = z
+alias em = emacsclient -nc
+alias emdi = emacsclient -c -a '' --eval '(dired nil)'
+alias mv = mv -i
+alias rm = rm -i
+alias config = /usr/bin/git --git-dir=$HOME/.config/dotFiles --work-tree=$HOME
+alias funk = pacmd set-default-sink alsa_output.usb-Logitech_G533_Gaming_Headset-00.analog-stereo
+alias hdmi = pacmd "set-default-sink alsa_output.pci-0000_01_00.1.hdmi-stereo-extra1"
+alias bone = pacmd "set-default-sink bluez_sink.20_74_CF_EA_AE_9D.a2dp_sink"
+alias startx = startx "$XDG_CONFIG_HOME/X11/xinitrc" -- "$XDG_CONFIG_HOME/X11/xserverrc" vt1
+alias mirror-update = sudo reflector -c Germany -a 12 -p https -p http --sort rate --save /etc/pacman.d/mirrorlist
+alias dropbox-sync = rclone sync Files/Org orgfiles:/ -P --exclude .git/ --exclude Erste\ Schritte.pdf
+alias jphand = /usr/lib/mozc/mozc_tool --mode=hand_writing
+alias stow-bins = stow -d ~/Files/scripts -t ~ -R bins -v
+alias add-gitignore = npx add-gitignore
+alias pstree = pstree -p
+alias pgrep = pgrep -a
+alias pkill = pkill -e
+alias permission-octal = stat -c '%A %a %n'
+alias local-file-server = python -m http.server 7777
+alias de = setxkbmap -layout de
+alias dv = xmodmap ~/.config/Xmodmap
+# alias psc = ps xawf -eo pid,user,cgroup,args
+alias nvidia-settings = nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings"
+# alias cleanup_packages = (set -x; sudo pacman -Rs $(pacman -Qdtq))
+alias mail_sync = mbsync -aVX -c ~/.config/mbsyncrc
+alias charge = upower -i /org/freedesktop/UPower/devices/battery_BAT0
+alias history = history
+
+# some other config and script loading
 use ~/.cache/starship/init.nu
+
+source ~/.cache/zoxide/zoxide.nu
