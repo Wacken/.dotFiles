@@ -254,6 +254,7 @@ myKeysEz =
     -- Emacs
     ("M4-e e", spawn "emacsclient -c -a ''")
   , ("M4-e d", spawn "emacsclient -c -a '' --eval '(dired nil)'")
+  , ("M4-e h", spawn "emacsclient -c -a '' -–eval '(emacs-everywhere)'")
   , ("M4-e n", spawn "emacsclient -c -a '' --eval '(elfeed)'")
   , ("M4-e t", spawn "emacsclient -c -a '' --eval '(org-capture)'")
   , ("M4-e g", spawn "emacsclient -c -a '' --eval '(org-agenda nil \"G\")'")

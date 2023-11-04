@@ -10,3 +10,5 @@
 	deafultBranch = master
 [pull]
 	rebase = false
+[core]
+	pager = delta
