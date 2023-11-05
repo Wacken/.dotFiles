@@ -15,7 +15,7 @@ alias \
 	hdmi='pacmd "set-default-sink alsa_output.pci-0000_01_00.1.hdmi-stereo-extra1"' \
 	bone='pacmd "set-default-sink bluez_sink.20_74_CF_EA_AE_9D.a2dp_sink"' \
 	startx='startx "$XDG_CONFIG_HOME/X11/xinitrc" -- "$XDG_CONFIG_HOME/X11/xserverrc" vt1' \
-	mirror-update='sudo reflector -c Germany -a 12 -p https -p http --sort rate --save /etc/pacman.d/mirrorlist' \
+	mirror-update='sudo reflector -c Japan -a 12 -p https -p http --sort rate --save /etc/pacman.d/mirrorlist' \
 	dropbox-sync='rclone sync Files/Org orgfiles:/ -P --exclude .git/ --exclude Erste\ Schritte.pdf' \
 	jphand='/usr/lib/mozc/mozc_tool --mode=hand_writing' \
 	stow-bins='stow -d ~/Files/scripts -t ~ -R bins -v' \
