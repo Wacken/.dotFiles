@@ -61,6 +61,8 @@ export XMONAD_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/xmonad"
 export XMONAD_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}/xmonad"
 
 export DOOMDIR="${XDG_CONFIG_HOME:-$HOME/.config}/doom"
+export LSP_USE_PLISTS=true
+# export DOOMPAGER="delta"
 export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 export INPUTRC="${XDG_CONFIG_HOME:-$HOME/.config}/shell/inputrc"
 export LESSHISTFILE="-"
