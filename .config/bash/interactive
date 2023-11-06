@@ -15,9 +15,6 @@ set -o vi
 bind -m vi-command 'Control-l: clear-screen'
 bind -m vi-insert 'Control-l: clear-screen'
 
-# Prompt
-PS1='\[\033[01;31m\][\[\033[01;33m\]\u\[\033[01;32m\]@\[\033[01;34m\]\h \[\033[01;35m\]\W\[\033[01;31m\]]\[\033[01;00m\]$ '
-
 # options
 shopt -s autocd # don't need cd, only file name
 shopt -s expand_aliases # expand aliases
