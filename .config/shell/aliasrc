@@ -10,6 +10,7 @@ alias \
 	emdi="emacsclient -c -a '' --eval '(dired nil)'" \
 	mv='mv -i' \
 	rm='rm -i' \
+	fd='fd -HIip'\
 	config='/usr/bin/git --git-dir=$HOME/.config/dotFiles --work-tree=$HOME' \
 	funk='pacmd set-default-sink alsa_output.usb-Logitech_G533_Gaming_Headset-00.analog-stereo' \
 	hdmi='pacmd "set-default-sink alsa_output.pci-0000_01_00.1.hdmi-stereo-extra1"' \
@@ -33,4 +34,4 @@ alias \
 	cleanup_packages='(set -x; sudo pacman -Rs $(pacman -Qdtq))' \
 	mail_sync='mbsync -aVX -c ~/.config/mbsyncrc' \
 	charge='upower -i /org/freedesktop/UPower/devices/battery_BAT0'\
-	history='history 0'
+	blue='sudo systemctl restart bluetooth; sleep 2; bluetoothctl connect 20:74:CF:4D:A5:B0'\
