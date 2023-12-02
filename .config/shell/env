@@ -31,6 +31,9 @@ export READER="foxitreader"
 export VISUAL="emacs"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
+# Make users be able to use nix
+# export NIX_REMOTE=daemon
+
 # Default Values
 export HISTSIZE=1000000
 export HISTFILESIZE=1000000
