@@ -25,6 +25,7 @@ alias \
 	mirror-update='sudo reflector -c Japan -a 12 -p https -p http --sort rate --save /etc/pacman.d/mirrorlist' \
 	jphand='/usr/lib/mozc/mozc_tool --mode=hand_writing' \
 	stow-bins='stow -d ~/Files/scripts -t ~/.local/bin -R bins -v' \
+	stow-xmonad-bins='stow -d ~/.config -t ~/.local/bin -R xmonad-rice-bins -v' \
 	add-gitignore='npx add-gitignore' \
 	permission-octal="stat -c '%A %a %n'" \
 	local-file-server="python -m http.server 7777" \
