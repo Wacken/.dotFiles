@@ -52,7 +52,7 @@
           (scale :min 0 :active "false" :max 101 :value {battery-remaining}))))
     (defwidget sys_side [] 
       (box :orientation "v" :space-evenly "false" 
-        (button :class "search-side" :onclick "~/bin/launcher.sh" "  Search...")
+        (button :class "search-side" :onclick "~/.local/bin/launcher.sh" "  Search...")
         (box :orientation "h" :halign "center" :class "sysbtn" :space-evenly "true" 
           (button :class "shutdown-side" :onclick "~/.config/eww/scripts/shutdown.sh" :timeout "60s" "")
           (button :class "reboot-side" :onclick "~/.config/eww/scripts/reboot.sh" :timeout "60s" "")
@@ -67,7 +67,7 @@
     )))
     (defwidget search_full [] 
       (box :orientation "h" :space-evenly "true" 
-        (button :class "search-full" :onclick "~/bin/launcher.sh" "")))
+        (button :class "search-full" :onclick "~/.local/bin/launcher.sh" "")))
     (defwidget power_full [] 
       (box :orientation "h" :space-evenly "true" 
         (button :class "power-full" :onclick "~/.config/eww/scripts/shutdown.sh" :timeout "60s" "")))
@@ -85,7 +85,7 @@
         (button :class "logout-full" :onclick "~/.config/eww/scripts/logout.sh" :timeout "60s" "")))
     (defwidget close_full [] 
       (box :orientation "h" :space-evenly "true" 
-        (button :class "power-full" :onclick "~/bin/centerkill" "")))
+        (button :class "power-full" :onclick "~/.local/bin/centerkill" "")))
     (defwidget profile [] 
     (box :orientation "v" :space-evenly "false" :class "profile" 
         (box :orientation "h" :space-evenly "false" 
@@ -123,7 +123,7 @@
               (button :class "vpn-icon" :onclick "~/.config/eww/scripts/vpntoggle" :style "color: ${vpn-hex}" "嬨${getvpnstat}")))
     (defwidget donotdisturb [] 
       (box :orientation "v" :space-evenly "true" :halign "center" 
-        (button :class "disturb-icon" :onclick "~/bin/do_not_disturb.sh" :style "color: ${disturb-hex}" "⏾")))
+        (button :class "disturb-icon" :onclick "~/.local/bin/do_not_disturb.sh" :style "color: ${disturb-hex}" "⏾")))
     (defwidget blur_full [] 
       (box :orientation "v" :space-evenly "true"))
 ;; (defwidget powermenu [] 
@@ -133,7 +133,7 @@
 ;; (button :class "lock-side" :onclick "~/.config/eww/scripts/lockscreen.sh" :timeout 600 "")
 ;; (button :class "suspend-side" :onclick "~/.config/eww/scripts/suspend.sh" :timeout 600 "")
 ;; (button :class "logout-side" :onclick "~/.config/eww/scripts/logout.sh" :timeout 600 "")
-;; (button :class "lock-side" :onclick "exec ~/bin/eww close powermenu" "")
+;; (button :class "lock-side" :onclick "exec ~/.local/bin/eww close powermenu" "")
 ;;)
 ;;)
 
@@ -147,7 +147,7 @@
     (defpoll art :interval "10h"  "~/.config/eww/scripts/getart")
     (defpoll volume :interval "16ms"  "~/.config/eww/scripts/getvol")
     (defpoll bright :interval "16ms"  "~/.config/eww/scripts/getbri")
-    (defpoll musicstat :interval "1s"  "~/bin/spotifystatus")
+    (defpoll musicstat :interval "1s"  "~/.local/bin/spotifystatus")
     (defpoll cover :interval "2s"  "~/.config/eww/scripts/echoart")
     (defpoll title :interval "1s"  "~/.config/eww/scripts/echotitle")
     (defpoll artist :interval "1s"  "cat /tmp/xmonad/spotify/artist")

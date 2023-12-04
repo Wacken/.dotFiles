@@ -97,9 +97,9 @@ addEWMHFullscreen   = do
 clipboardy :: MonadIO m => m () -- Don't question it 
 clipboardy = spawn "rofi -modi \"\63053 :greenclip print\" -show \"\63053 \" -run-command '{cmd}' -theme ~/.config/rofi/launcher/style.rasi"
 
-centerlaunch = spawn "exec ~/bin/eww open-many blur_full weather profile quote search_full disturb-icon vpn-icon home_dir screenshot power_full reboot_full lock_full logout_full suspend_full"
-sidebarlaunch = spawn "exec ~/bin/eww open-many weather_side time_side smol_calendar player_side sys_side sliders_side"
-ewwclose = spawn "exec ~/bin/eww close-all"
+centerlaunch = spawn "exec ~/.local/bin/eww open-many blur_full weather profile quote search_full disturb-icon vpn-icon home_dir screenshot power_full reboot_full lock_full logout_full suspend_full"
+sidebarlaunch = spawn "exec ~/.local/bin/eww open-many weather_side time_side smol_calendar player_side sys_side sliders_side"
+ewwclose = spawn "exec ~/.local/bin/eww close-all"
 maimcopy = spawn "maim -s | xclip -selection clipboard -t image/png && notify-send \"Screenshot\" \"Copied to Clipboard\" -i flameshot"
 maimsave = spawn "maim -s ~/Desktop/$(date +%Y-%m-%d_%H-%M-%S).png && notify-send \"Screenshot\" \"Saved to Desktop\" -i flameshot"
 rofi_launcher = spawn "rofi -show combi -modes combi -combi-modes \"window,drun,run\" -no-lazy-grab -theme $HOME/.config/rofi/launcher/style -drun-icon-theme \"candy-icons\" "
@@ -139,12 +139,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,                 xK_Print), maimsave)
 
     -- My Stuff
-    , ((modm,               xK_b     ), spawn "exec ~/bin/bartoggle")
-    , ((modm,               xK_z     ), spawn "exec ~/bin/inhibit_activate")
-    , ((modm .|. shiftMask, xK_z     ), spawn "exec ~/bin/inhibit_deactivate")
+    , ((modm,               xK_b     ), spawn "exec ~/.local/bin/bartoggle")
+    , ((modm,               xK_z     ), spawn "exec ~/.local/bin/inhibit_activate")
+    , ((modm .|. shiftMask, xK_z     ), spawn "exec ~/.local/bin/inhibit_deactivate")
     , ((modm .|. shiftMask, xK_b     ), clipboardy)
     -- Turn do not disturb on and off
-    , ((modm,               xK_d     ), spawn "exec ~/bin/do_not_disturb.sh")
+    , ((modm,               xK_d     ), spawn "exec ~/.local/bin/do_not_disturb.sh")
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
@@ -217,7 +217,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
 
     -- Quit xmonad
-    , ((modm .|. shiftMask, xK_q     ), spawn "~/bin/powermenu.sh")
+    , ((modm .|. shiftMask, xK_q     ), spawn "~/.local/bin/powermenu.sh")
 
     -- Restart xmonad
     , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
@@ -364,11 +364,11 @@ myLogHook = return ()
 --
 -- By default, do nothing.
 myStartupHook = do
-  spawnOnce "exec ~/bin/bartoggle"
-  spawnOnce "exec ~/bin/eww daemon"
+  spawnOnce "exec ~/.local/bin/bartoggle"
+  spawnOnce "exec ~/.local/bin/eww daemon"
   spawn "xsetroot -cursor_name left_ptr"
-  -- spawn "exec ~/bin/lock.sh"
-  spawnOnce "feh --bg-scale /data/Pictures/Shared/anime/Maou-jou_de_oyasumi_take.jpg"
+  -- spawn "exec ~/.local/bin/lock.sh"
+  spawnOnce "feh --bg-scale /home/wacken/wallpapers/yosemite-lowpoly.jpg"
   spawnOnce "picom --experimental-backends"
   spawnOnce "greenclip daemon"
   spawnOnce "dunst"

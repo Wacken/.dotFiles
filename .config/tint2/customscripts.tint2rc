@@ -154,14 +154,15 @@ execp_icon_w = 20
 execp_icon_h = 20
 
 #-------------------------------------
-# Executor 4
+# Executor 3
 execp = new
-execp_command = ~/bin/notieye
+execp_command = ~/.local/bin/notieye
 execp_interval = 1200
 execp_has_icon = 0
 execp_cache_icon = 1
 execp_continuous = 0
 execp_markup = 1
+execp_monitor = all
 execp_tooltip = 
 execp_lclick_command = 
 execp_rclick_command = 
@@ -176,14 +177,15 @@ execp_icon_w = 0
 execp_icon_h = 0
 
 #-------------------------------------
-# Executor 5
+# Executor 4
 execp = new
-execp_command = ~/bin/notipose
+execp_command = ~/.local/bin/notipose
 execp_interval = 900
 execp_has_icon = 0
 execp_cache_icon = 1
 execp_continuous = 0
 execp_markup = 1
+execp_monitor = all
 execp_tooltip = 
 execp_lclick_command = 
 execp_rclick_command = 
