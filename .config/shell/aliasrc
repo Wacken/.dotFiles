@@ -6,32 +6,31 @@ alias \
 	htop='btop' \
 	diff='delta' \
 	cd='z' \
-	em='emacsclient -nc' \
-	emdi="emacsclient -c -a '' --eval '(dired nil)'" \
+	yay='paru' \
 	mv='mv -i' \
 	rm='rm -i' \
 	fd='fd -HIip'\
-	config='/usr/bin/git --git-dir=$HOME/.config/dotFiles --work-tree=$HOME' \
+	pgrep='pgrep -a' \
+	pkill='pkill -e' \
+	pstree='pstree -p' \
+	psc='ps xawf -eo pid,user,cgroup,args' \
+	em='emacsclient -nc' \
+	emdi="emacsclient -c -a '' --eval '(dired nil)'" \
 	funk='pacmd set-default-sink alsa_output.usb-Logitech_G533_Gaming_Headset-00.analog-stereo' \
 	hdmi='pacmd "set-default-sink alsa_output.pci-0000_01_00.1.hdmi-stereo-extra1"' \
 	bone='pacmd "set-default-sink bluez_sink.20_74_CF_EA_AE_9D.a2dp_sink"' \
-	startx='startx "$XDG_CONFIG_HOME/X11/xinitrc" -- "$XDG_CONFIG_HOME/X11/xserverrc" vt1' \
-	mirror-update='sudo reflector -c Japan -a 12 -p https -p http --sort rate --save /etc/pacman.d/mirrorlist' \
-	dropbox-sync='rclone sync Files/Org orgfiles:/ -P --exclude .git/ --exclude Erste\ Schritte.pdf' \
-	jphand='/usr/lib/mozc/mozc_tool --mode=hand_writing' \
-	stow-bins='stow -d ~/Files/scripts -t ~ -R bins -v' \
-	add-gitignore='npx add-gitignore' \
-	pstree='pstree -p' \
-	pgrep='pgrep -a' \
-	pkill='pkill -e' \
-	permission-octal="stat -c '%A %a %n'" \
-	local-file-server="python -m http.server 7777" \
+	blue='sudo systemctl restart bluetooth; sleep 2; bluetoothctl connect 20:74:CF:4D:A5:B0'\
 	de="setxkbmap -layout de" \
 	dv="xmodmap ~/.config/Xmodmap" \
-	psc='ps xawf -eo pid,user,cgroup,args' \
-	nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings"' \
-	yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"' \
+	mirror-update='sudo reflector -c Japan -a 12 -p https -p http --sort rate --save /etc/pacman.d/mirrorlist' \
+	jphand='/usr/lib/mozc/mozc_tool --mode=hand_writing' \
+	stow-bins='stow -d ~/Files/scripts -t ~/.local/bin -R bins -v' \
+	add-gitignore='npx add-gitignore' \
+	permission-octal="stat -c '%A %a %n'" \
+	local-file-server="python -m http.server 7777" \
 	cleanup_packages='(set -x; sudo pacman -Rs $(pacman -Qdtq))' \
 	mail_sync='mbsync -aVX -c ~/.config/mbsyncrc' \
 	charge='upower -i /org/freedesktop/UPower/devices/battery_BAT0'\
-	blue='sudo systemctl restart bluetooth; sleep 2; bluetoothctl connect 20:74:CF:4D:A5:B0'\
+	startx='startx "$XDG_CONFIG_HOME/X11/xinitrc" -- "$XDG_CONFIG_HOME/X11/xserverrc" vt1' \
+	nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings"' \
+	yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"' \
