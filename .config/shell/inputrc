@@ -1,32 +1,40 @@
-# only used really for bash setup
+# =============================================================================
+# Readline Configuration
+# =============================================================================
 
+# Include system-wide settings
 $include /etc/inputrc
+
+# Vi Mode Configuration
+# -----------------------------------------------------------------------------
 set editing-mode vi
+
 $if mode=vi
+    # Search history with Ctrl-P and Ctrl-N
+    "\C-p": history-search-backward
+    "\C-n": history-search-forward
 
-"\C-p":history-search-backward
-"\C-n":history-search-forward
+    # Show current mode in prompt
+    set show-mode-in-prompt on
+    set vi-ins-mode-string \1\e[6 q\2  # Vertical bar cursor for insert mode
+    set vi-cmd-mode-string \1\e[2 q\2  # Block cursor for command mode
 
-set show-mode-in-prompt on
-set vi-ins-mode-string \1\e[6 q\2
-set vi-cmd-mode-string \1\e[2 q\2
+    # Completion Settings
+    set colored-stats On          # Use colors in completion listings
+    set completion-ignore-case On # Case-insensitive completion
+    set completion-prefix-display-length 3
+    set mark-symlinked-directories On
+    set show-all-if-ambiguous On
+    set show-all-if-unmodified On
+    set visible-stats On
 
-set colored-stats On
-set completion-ignore-case On
-set completion-prefix-display-length 3
-set mark-symlinked-directories On
-set show-all-if-ambiguous On
-set show-all-if-unmodified On
-set visible-stats On
+    # Key Mappings for Command Mode
+    set keymap vi-command
+    Control-l: clear-screen
+    Control-a: beginning-of-line
 
-set keymap vi-command
-# these are for vi-command mode
-Control-l: clear-screen
-Control-a: beginning-of-line
-
-set keymap vi-insert
-# these are for vi-insert mode
-Control-l: clear-screen
-Control-a: beginning-of-line
-
+    # Key Mappings for Insert Mode
+    set keymap vi-insert
+    Control-l: clear-screen
+    Control-a: beginning-of-line
 $endif

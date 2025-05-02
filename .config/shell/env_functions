@@ -1,18 +1,35 @@
 #!/bin/bash
-# Usage: indirect_expand PATH -> $PATH
+
+# =============================================================================
+# Shell Environment Helper Functions
+# =============================================================================
+
+# indirect_expand: Get the value of an environment variable by name
+# -----------------------------------------------------------------------------
+# Args:
+#   $1: Name of the environment variable to expand
+# Returns:
+#   The value of the environment variable
+# Example:
+#   indirect_expand PATH -> $PATH
 indirect_expand() {
     env | sed -n "s/^$1=//p"
 }
 
-# Usage: pathremove /path/to/bin [PATH]
-# Eg, to remove ~/bin from $PATH
-#     pathremove ~/bin PATH
+# pathremove: Remove a directory from a PATH-like variable
+# -----------------------------------------------------------------------------
+# Args:
+#   $1: Directory to remove from path
+#   $2: (Optional) Name of the PATH-like variable (defaults to PATH)
+# Example:
+#   pathremove ~/bin PATH
 pathremove() {
     local IFS=':'
     local newpath
     local dir
     local var=${2:-PATH}
-    # Bash has ${!var}, but this is not portable.
+    
+    # Iterate through current paths and rebuild without the target dir
     for dir in $(indirect_expand "$var"); do
         IFS=''
         if [ "$dir" != "$1" ]; then
@@ -22,41 +39,58 @@ pathremove() {
     export "$var"="${newpath#:}"
 }
 
-# Usage: pathprepend /path/to/bin [PATH]
-# Eg, to prepend ~/bin to $PATH
-#     pathprepend ~/bin PATH
+# pathprepend: Add a directory to the beginning of a PATH-like variable
+# -----------------------------------------------------------------------------
+# Args:
+#   $1: Directory to prepend to path
+#   $2: (Optional) Name of the PATH-like variable (defaults to PATH)
+# Example:
+#   pathprepend ~/bin PATH
 pathprepend() {
-    # if the path is already in the variable,
-    # remove it so we can move it to the front
+    # Remove the path if it already exists to avoid duplication
     pathremove "$1" "$2"
-    #[ -d "${1}" ] || return
     local var="${2:-PATH}"
     local value
     value=$(indirect_expand "$var")
     export "${var}"="${1}${value:+:${value}}"
 }
 
-# Usage: pathappend /path/to/bin [PATH]
-# Eg, to append ~/bin to $PATH
-#     pathappend ~/bin PATH
+# pathappend: Add a directory to the end of a PATH-like variable
+# -----------------------------------------------------------------------------
+# Args:
+#   $1: Directory to append to path
+#   $2: (Optional) Name of the PATH-like variable (defaults to PATH)
+# Example:
+#   pathappend ~/bin PATH
 pathappend() {
+    # Remove the path if it already exists to avoid duplication
     pathremove "${1}" "${2}"
-    #[ -d "${1}" ] || return
     local var=${2:-PATH}
     local value
     value=$(indirect_expand "$var")
     export "$var"="${value:+${value}:}${1}"
 }
 
-# Usage: ssource filename
+# ssource: Safely source a file if it exists
+# -----------------------------------------------------------------------------
+# Args:
+#   $1: Path to the file to source
+# Example:
+#   ssource ~/.config/shell/local_config
 ssource() {
     if [ -r "$1" ]; then
-        #shellcheck disable=SC1090
         . "$1"
     fi
 }
 
-# expand HOME as text
+# expandHOME: Expand a path relative to HOME and return as text
+# -----------------------------------------------------------------------------
+# Args:
+#   $1: Path relative to HOME to expand
+# Returns:
+#   The absolute path with $HOME expanded
+# Example:
+#   expandHOME ".config/shell" -> "/home/user/.config/shell"
 expandHOME() {
     du "$HOME/$1" | cut -f2 | tr -d '\n'
 }

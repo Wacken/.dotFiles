@@ -1,27 +1,38 @@
 #!/bin/bash
-# Load aliases and shortcuts if existent.
+
+# =============================================================================
+# Interactive Shell Configuration
+# =============================================================================
+
+# Source additional configuration files
+# -----------------------------------------------------------------------------
+# Load aliases and shortcuts if they exist
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc" ] && . "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc"
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc" ] && . "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc"
 
-# if in a terminal
+# Terminal-specific settings
+# -----------------------------------------------------------------------------
 if [ -t 0 ]; then
-	# other users shouldn't be able to message by default
+	# Disable messaging from other users by default
 	mesg n
 	# enable colours
 	# if [ $(tput colors) -ge 8 ]; then
 	# fi
 fi
 
-# noClobber
+# Shell Safety Settings
+# -----------------------------------------------------------------------------
+# Prevent overwriting existing files with redirection
 set -C
 
-
-# Nix
-# if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-#   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+# Uncomment to automatically start X on tty1
+# -----------------------------------------------------------------------------
+# if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+#     exec startx "$XDG_CONFIG_HOME/X11/xinitrc" -- "$XDG_CONFIG_HOME/X11/xserverrc" vt1
 # fi
-# End Nix
 
-#if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-# exec startx "$XDG_CONFIG_HOME/X11/xinitrc" -- "$XDG_CONFIG_HOME/X11/xserverrc" vt1
-#fi
+# Nix Package Manager Integration (commented out)
+# -----------------------------------------------------------------------------
+# if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+#     . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+# fi

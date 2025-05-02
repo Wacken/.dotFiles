@@ -1,102 +1,109 @@
 #!/bin/bash
-# Setup
-# We need to set $ENV so that if you use shell X as your login shell,
-# and then start "sh" as a non-login interactive shell the startup scripts will
-# correctly run.
-export ENV=~/.config/sh/interactive
 
-# We also need to set BASH_ENV, which is run for *non-interactive* shells.
-# (unlike $ENV, which is for interactive shells)
-export BASH_ENV=~/.config/bash/env
+# =============================================================================
+# Shell Environment Configuration
+# =============================================================================
 
+# Source helper functions
 . ~/.config/shell/env_functions
 
+# Basic shell setup
+# -----------------------------------------------------------------------------
 umask 0077
+export ENV=~/.config/sh/interactive      # For sh interactive shells
+export BASH_ENV=~/.config/bash/env       # For bash non-interactive shells
 
-# ssource ~/.config/shell/env_local
+# XDG Base Directory Specification
+# -----------------------------------------------------------------------------
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_RUNTIME_DIR="/run/user/$UID"
 
-# custom
-
-# Add values to $PATH
+# Path Configuration
+# -----------------------------------------------------------------------------
 pathappend "$(expandHOME ".config/emacs/bin")"
 pathappend "$(expandHOME ".local/bin")"
 . ~/.local/share/cargo/env
 
-# Default programs:
-export TERM="xterm-256color"
-export EDITOR="emacs"
+# Default Applications
+# -----------------------------------------------------------------------------
+export EDITOR="vim"
+export VISUAL="emacs"
 export TERMINAL="kitty"
 export BROWSER="brave"
 export READER="foxitreader"
-export VISUAL="emacs"
+export TERM="xterm-256color"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
-# Make users be able to use nix
-# export NIX_REMOTE=daemon
-
-# Default Values
+# Shell History Configuration
+# -----------------------------------------------------------------------------
 export HISTSIZE=1000000
 export HISTFILESIZE=1000000
 export SAVEHIST=1000000
 export HISTTIMEFORMAT="[%F %T] "
+
+# Locale and Time
+# -----------------------------------------------------------------------------
 export TZ='Asia/Tokyo'
-# change ls, df and du command to display MB,GB.. values instead of bytes
-export BLOCK_SIZE="human-readable"
+export BLOCK_SIZE="human-readable"  # Human-readable sizes for ls, df, du
 
-# For Ibus (Japanese language input)
-export XMODIFIERS="@im=ibus"
+# Input Method Configuration
+# -----------------------------------------------------------------------------
+export XMODIFIERS="@im=ibus"  # Japanese input support
+export FrameworkPathOverride="/lib/mono/4.8-api"  # C# fix for emacs
 
-# fix for c# in emacs to use not Net Framework
-export FrameworkPathOverride="/lib/mono/4.8-api"
+# X11 Configuration
+# -----------------------------------------------------------------------------
+export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
+export XINITRC="${XDG_CONFIG_HOME}/X11/xinitrc"
+export XSERVERRC="${XDG_CONFIG_HOME}/X11/xserverrc"
 
-# ~/ Clean-up:
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_CACHE_HOME="$HOME/.cache"
+# Window Manager Configuration
+# -----------------------------------------------------------------------------
+export XMONAD_CONFIG_HOME="${XDG_CONFIG_HOME}/xmonad"
+export XMONAD_DATA_HOME="${XDG_DATA_HOME}/xmonad"
+export XMONAD_CACHE_HOME="${XDG_CACHE_HOME}/xmonad"
 
-export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line will break some DMs.
-
-export XINITRC="${XDG_CONFIG_HOME:-$HOME/.config}/X11/xinitrc"
-export XSERVERRC="${XDG_CONFIG_HOME:-$HOME/.config}/X11/xserverrc"
-
-export XMONAD_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/xmonad"
-export XMONAD_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/xmonad"
-export XMONAD_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}/xmonad"
-
-export DOOMDIR="${XDG_CONFIG_HOME:-$HOME/.config}/doom"
-export LSP_USE_PLISTS=true # Optimization for LSP
-# export DOOMPAGER="delta"
-export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
-export INPUTRC="${XDG_CONFIG_HOME:-$HOME/.config}/shell/inputrc"
+# Development Tools Configuration
+# -----------------------------------------------------------------------------
+export DOOMDIR="${XDG_CONFIG_HOME}/doom"
+export LSP_USE_PLISTS=true  # LSP optimization
+export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
+export INPUTRC="${XDG_CONFIG_HOME}/shell/inputrc"
 export LESSHISTFILE="-"
 
-# XDG https://wiki.archlinux.org/title/XDG_Base_Directory
-export ANDROID_SDK_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/android"
-export IPYTHONDIR="${XDG_CONFIG_HOME:-$HOME/.config}/jupyter"
-export JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/jupyter"
-export MPLAYER_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/mplayer"
-export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/npmrc"
-export OMNISHARPHOME="${XDG_CONFIG_HOME:-$HOME/.config}/omnisharp"
-export TEXMFCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/texlive/texmf-config"
-export WGETRC="${XDG_CONFIG_HOME:-$HOME/.config}/wgetrc"
-export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="${XDG_CONFIG_HOME:-$HOME/.config}/java"
-export ASPELL_CONF="per-conf ${XDG_CONFIG_HOME:-$HOME/.config}/aspell/aspell.conf; personal ${XDG_CONFIG_HOME:-$HOME/.config}/aspell/en.pws; repl ${XDG_CONFIG_HOME:-$HOME/.config}/aspell/en.prepl"
+# XDG Compliance - Config Directories
+# -----------------------------------------------------------------------------
+export ANDROID_SDK_HOME="${XDG_CONFIG_HOME}/android"
+export IPYTHONDIR="${XDG_CONFIG_HOME}/jupyter"
+export JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME}/jupyter"
+export MPLAYER_HOME="${XDG_CONFIG_HOME}/mplayer"
+export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
+export OMNISHARPHOME="${XDG_CONFIG_HOME}/omnisharp"
+export TEXMFCONFIG="${XDG_CONFIG_HOME}/texlive/texmf-config"
+export WGETRC="${XDG_CONFIG_HOME}/wgetrc"
+export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="${XDG_CONFIG_HOME}/java"
+export ASPELL_CONF="per-conf ${XDG_CONFIG_HOME}/aspell/aspell.conf; personal ${XDG_CONFIG_HOME}/aspell/en.pws; repl ${XDG_CONFIG_HOME}/aspell/en.prepl"
 
-export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
-export GNUPGHOME="${XDG_DATA_HOME:-$HOME/.local/share}/gnupg"
-export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
-export GRADLE_USER_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/gradle"
-export LEIN_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/lein"
-export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/pass"
-export PYLINTHOME="${XDG_DATA_HOME:-$HOME/.local/share}/pylint"
-export RANDFILE="${XDG_DATA_HOME:-$HOME/.local/share}/rnd"
-export RUSTUP_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/rustup"
-export STACK_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/stack"
-export TEXMFHOME="${XDG_DATA_HOME:-$HOME/.local/share}/texmf"
-export VSCODE_PORTABLE="${XDG_DATA_HOME:-$HOME/.local/share}/vscode"
-export WORKON_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/virtualenvs"
-# export WINEPREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/wineprefixes/default"
+# XDG Compliance - Data Directories
+# -----------------------------------------------------------------------------
+export CARGO_HOME="${XDG_DATA_HOME}/cargo"
+export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
+export GOPATH="${XDG_DATA_HOME}/go"
+export GRADLE_USER_HOME="${XDG_DATA_HOME}/gradle"
+export LEIN_HOME="${XDG_DATA_HOME}/lein"
+export PASSWORD_STORE_DIR="${XDG_DATA_HOME}/pass"
+export PYLINTHOME="${XDG_DATA_HOME}/pylint"
+export RANDFILE="${XDG_DATA_HOME}/rnd"
+export RUSTUP_HOME="${XDG_DATA_HOME}/rustup"
+export STACK_ROOT="${XDG_DATA_HOME}/stack"
+export TEXMFHOME="${XDG_DATA_HOME}/texmf"
+export VSCODE_PORTABLE="${XDG_DATA_HOME}/vscode"
+export WORKON_HOME="${XDG_DATA_HOME}/virtualenvs"
 
-export CUDA_CACHE_PATH="${XDG_CACHE_HOME:-$HOME/.cache}/nv"
-export NUGET_PACKAGES="${XDG_CACHE_HOME:-$HOME/.cache}/NuGetPackages"
-export TEXMFVAR="${XDG_CACHE_HOME:-$HOME/.cache}/texlive/texmf-var"
+# XDG Compliance - Cache Directories
+# -----------------------------------------------------------------------------
+export CUDA_CACHE_PATH="${XDG_CACHE_HOME}/nv"
+export NUGET_PACKAGES="${XDG_CACHE_HOME}/NuGetPackages"
+export TEXMFVAR="${XDG_CACHE_HOME}/texlive/texmf-var"

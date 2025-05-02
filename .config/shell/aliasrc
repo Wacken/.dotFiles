@@ -1,37 +1,88 @@
 # -*- mode: conf[unix] -*-
+
+# =============================================================================
+# Shell Aliases Configuration
+# =============================================================================
+
+# Modern Command Replacements
+# -----------------------------------------------------------------------------
 alias \
 	ls='exa -alh --color=always' \
 	cat='bat' \
 	du='dust' \
 	htop='btop' \
-	diff='delta' \
 	cd='z' \
+	diff='delta'
+
+# Package Management
+# -----------------------------------------------------------------------------
+alias \
 	yay='paru' \
+	mirror-update='sudo reflector -c Japan -a 12 -p https -p http --sort rate --save /etc/pacman.d/mirrorlist' \
+	cleanup_packages='(set -x; sudo pacman -Rs $(pacman -Qdtq))'
+
+# File Operations Safety
+# -----------------------------------------------------------------------------
+alias \
 	mv='mv -i' \
 	rm='rm -i' \
-	fd='fd -HIip'\
+	fd='fd -HIip'
+
+# Process Management
+# -----------------------------------------------------------------------------
+alias \
 	pgrep='pgrep -a' \
 	pkill='pkill -e' \
 	pstree='pstree -p' \
-	psc='ps xawf -eo pid,user,cgroup,args' \
+	psc='ps xawf -eo pid,user,cgroup,args'
+
+# Emacs Integration
+# -----------------------------------------------------------------------------
+alias \
 	em='emacsclient -nc' \
-	emdi="emacsclient -c -a '' --eval '(dired nil)'" \
+	emdi="emacsclient -c -a '' --eval '(dired nil)'"
+
+# Audio Device Management
+# -----------------------------------------------------------------------------
+alias \
 	funk='pacmd set-default-sink alsa_output.usb-Logitech_G533_Gaming_Headset-00.analog-stereo' \
 	hdmi='pacmd "set-default-sink alsa_output.pci-0000_01_00.1.hdmi-stereo-extra1"' \
 	bone='pacmd "set-default-sink bluez_sink.20_74_CF_EA_AE_9D.a2dp_sink"' \
-	blue='sudo systemctl restart bluetooth; sleep 2; bluetoothctl connect 20:74:CF:4D:A5:B0'\
+	blue='sudo systemctl restart bluetooth; sleep 2; bluetoothctl connect 20:74:CF:4D:A5:B0'
+
+# Keyboard Layout
+# -----------------------------------------------------------------------------
+alias \
 	de="setxkbmap -layout de" \
-	dv="xmodmap ~/.config/Xmodmap" \
-	mirror-update='sudo reflector -c Japan -a 12 -p https -p http --sort rate --save /etc/pacman.d/mirrorlist' \
+	dv="xmodmap ~/.config/Xmodmap"
+
+# Development Tools
+# -----------------------------------------------------------------------------
+alias \
 	jphand='/usr/lib/mozc/mozc_tool --mode=hand_writing' \
 	stow-bins='stow -d ~/Files/scripts -t ~/.local/bin -R bins -v' \
 	stow-xmonad-bins='stow -d ~/.config -t ~/.local/bin -R xmonad-rice-bins -v' \
 	add-gitignore='npx add-gitignore' \
 	permission-octal="stat -c '%A %a %n'" \
-	local-file-server="python -m http.server 7777" \
-	cleanup_packages='(set -x; sudo pacman -Rs $(pacman -Qdtq))' \
+	local-file-server="python -m http.server 7777"
+
+# System Management
+# -----------------------------------------------------------------------------
+alias \
 	mail_sync='mbsync -aVX -c ~/.config/mbsyncrc' \
-	charge='upower -i /org/freedesktop/UPower/devices/battery_BAT0'\
-	startx='startx "$XDG_CONFIG_HOME/X11/xinitrc" -- "$XDG_CONFIG_HOME/X11/xserverrc" vt1' \
+	charge='upower -i /org/freedesktop/UPower/devices/battery_BAT0' \
+	startx='startx "$XDG_CONFIG_HOME/X11/xinitrc" -- "$XDG_CONFIG_HOME/X11/xserverrc" vt1'
+
+# XDG Compliance
+# -----------------------------------------------------------------------------
+alias \
 	nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings"' \
-	yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"' \
+	yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
+
+# AI
+# -----------------------------------------------------------------------------
+alias \
+	pbpaste='xclip -selection clipboard -o'
+# Commented out aliases for future reference
+# -----------------------------------------------------------------------------
+# alias diff='delta'
