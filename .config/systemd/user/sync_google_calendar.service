@@ -1,0 +1,17 @@
+[Unit]
+Description=Sync Google Calendar Events to Postgres
+After=network.target
+
+[Service]
+ExecStart=/home/wacken/Projects/shairi/sync_calendars.sh
+WorkingDirectory=/home/wacken/Projects/shairi
+WorkingDirectory=/home/user/scripts
+StandardOutput=journal
+StandardError=journal
+Restart=always
+User=wacken
+Environment=PATH=/usr/bin:/bin
+Environment=PYTHONPATH=/usr/lib/python3.8/site-packages
+
+[Install]
+WantedBy=multi-user.target

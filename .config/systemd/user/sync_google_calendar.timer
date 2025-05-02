@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Google Calendar Sync Every Hour
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=1h
+Unit=google_calendar_sync.service
+
+[Install]
+WantedBy=timers.target
