@@ -1,5 +1,0 @@
-#!/bin/sh
-POSITION=$(playerctl -p youtube-music position | sed 's/\([a-zA-Z: \t]\)//g' | cut -d . -f 1)
-DURATION=$(playerctl -p youtube-music metadata mpris:length)
-DURSEC=$((DURATION / 1000000))
-echo "scale=2; $POSITION/$DURSEC * 100" | bc | cut -d . -f 1
