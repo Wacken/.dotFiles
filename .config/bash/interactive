@@ -1,27 +1,53 @@
 #!/bin/bash
+
+#-------------------------------------------------------------------------------
+# Source shared shell configuration
+#-------------------------------------------------------------------------------
 . ~/.config/shell/interactive
 
-# history
+#-------------------------------------------------------------------------------
+# History Configuration
+#-------------------------------------------------------------------------------
+# Set history file location (XDG compliance)
 export HISTFILE="$XDG_CACHE_HOME/bash/history"
-export HISTCONTROL=ignoredups:erasedups           # no duplicate entries
-export HISTIGNORE='ls:bg:fg:history'
-export PROMPT_COMMAND='history -a'
 
-shopt -s cmdhist # save multi-line commands in history as single line
-shopt -s histappend # do not overwrite history
+# History behavior configuration
+export HISTCONTROL=ignoredups:erasedups   # Avoid duplicate entries
+export HISTIGNORE='ls:bg:fg:history'      # Commands to ignore in history
+export PROMPT_COMMAND='history -a'         # Append commands to history immediately
+export HISTTIMEFORMAT='%F %T '
 
-# vi
-set -o vi
+# History-related shell options
+shopt -s cmdhist                          # Save multi-line commands as single line
+shopt -s histappend                       # Append to history instead of overwriting
+
+#-------------------------------------------------------------------------------
+# VI Mode Configuration
+#-------------------------------------------------------------------------------
+set -o vi                                 # Enable VI mode
+# Enable clear screen in both command and insert mode
 bind -m vi-command 'Control-l: clear-screen'
 bind -m vi-insert 'Control-l: clear-screen'
 
-# options
-shopt -s autocd # don't need cd, only file name
-shopt -s expand_aliases # expand aliases
+#-------------------------------------------------------------------------------
+# Shell Behavior Options
+#-------------------------------------------------------------------------------
+shopt -s autocd                           # Auto cd into directory names
+shopt -s expand_aliases                   # Expand aliases
+shopt -s checkwinsize
+set -o noclobber
+shopt -s globstar
 
-# better completion
-bind 'set show-all-if-ambiguous on'
-bind 'TAB:menu-complete'
+#-------------------------------------------------------------------------------
+# Completion Configuration
+#-------------------------------------------------------------------------------
+bind 'set show-all-if-ambiguous on'       # Show completion options immediately
+bind 'TAB:menu-complete'                  # Cycle through completion options
 
+#-------------------------------------------------------------------------------
+# External Tools Initialization
+#-------------------------------------------------------------------------------
+# Initialize zoxide (smarter cd command)
 eval "$(zoxide init bash)"
+# Initialize starship prompt
 eval "$(starship init bash)"
