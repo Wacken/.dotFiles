@@ -7,19 +7,39 @@
 # Modern Command Replacements
 # -----------------------------------------------------------------------------
 alias \
-	ls='exa -alh --color=always' \
-	cat='bat' \
 	du='dust' \
 	htop='btop' \
 	cd='z' \
 	diff='delta'
 
+# Replace ls with eza
+if [[ -x /usr/bin/eza ]]; then
+  alias ls='eza -al --color=always --group-directories-first --icons'     # preferred listing
+  alias la='eza -a --color=always --group-directories-first --icons'      # all files and dirs
+  alias ll='eza -l --color=always --group-directories-first --icons'      # long format
+  alias lt='eza -aT --color=always --group-directories-first --icons'     # tree listing
+  alias l.='eza -ald --color=always --group-directories-first --icons .*' # show only dotfiles
+fi
+
+# Replace some more things with better alternatives
+if [[ -x /usr/bin/bat ]]; then
+  alias cat='bat --style header --style snip --style changes --style header'
+fi
+
+[ ! -x /usr/bin/yay ] && [ -x /usr/bin/paru ] && alias yay='paru'
 # Package Management
 # -----------------------------------------------------------------------------
 alias \
-	yay='paru' \
-	mirror-update='sudo reflector -c Japan -a 12 -p https -p http --sort rate --save /etc/pacman.d/mirrorlist' \
-	cleanup_packages='(set -x; sudo pacman -Rs $(pacman -Qdtq))'
+	mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist" \
+	mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist" \
+	mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist" \
+	mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist" \
+	cleanup='sudo pacman -Rns $(pacman -Qtdq)' \
+	rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl" \
+	fixpacman="sudo rm /var/lib/pacman/db.lck" \
+	rmpkg="sudo pacman -Rdd" \
+	big="expac -H M '%m\t%n' | sort -h | nl" \
+	gitpkg='pacman -Q | grep -i "\-git" | wc -l'
 
 # File Operations Safety
 # -----------------------------------------------------------------------------
@@ -34,7 +54,9 @@ alias \
 	pgrep='pgrep -a' \
 	pkill='pkill -e' \
 	pstree='pstree -p' \
-	psc='ps xawf -eo pid,user,cgroup,args'
+	psc='ps xawf -eo pid,user,cgroup,args' \
+	psmem='ps auxf | sort -nr -k 4' \
+	psmem10='ps auxf | sort -nr -k 4 | head -10'
 
 # Emacs Integration
 # -----------------------------------------------------------------------------
@@ -71,7 +93,11 @@ alias \
 alias \
 	mail_sync='mbsync -aVX -c ~/.config/mbsyncrc' \
 	charge='upower -i /org/freedesktop/UPower/devices/battery_BAT0' \
-	startx='startx "$XDG_CONFIG_HOME/X11/xinitrc" -- "$XDG_CONFIG_HOME/X11/xserverrc" vt1'
+	startx='startx "$XDG_CONFIG_HOME/X11/xinitrc" -- "$XDG_CONFIG_HOME/X11/xserverrc" vt1' \
+	grubup="sudo update-grub" \
+	hw='hwinfo --short' \
+	jctl="journalctl -p 3 -xb" \
+	ip='ip -color'
 
 # XDG Compliance
 # -----------------------------------------------------------------------------
@@ -83,6 +109,38 @@ alias \
 # -----------------------------------------------------------------------------
 alias \
 	pbpaste='xclip -selection clipboard -o'
+
+# Directory Navigation Shortcuts
+# -----------------------------------------------------------------------------
+alias \
+	..='cd ..' \
+	...='cd ../..' \
+	....='cd ../../..' \
+	.....='cd ../../../..' \
+	......='cd ../../../../..'
+
+# Arch Linux Helpers
+# -----------------------------------------------------------------------------
+alias \
+	apt='man pacman' \
+	apt-get='man pacman' \
+	please='sudo' \
+	tb='nc termbin.com 9999' \
+	helpme='cht.sh --shell' \
+	pacdiff='sudo -H DIFFPROG=meld pacdiff'
+
+# Archive Operations
+# -----------------------------------------------------------------------------
+alias \
+	tarnow='tar -acf ' \
+	untar='tar -zxvf ' \
+	wget='wget -c '
+
 # Commented out aliases for future reference
 # -----------------------------------------------------------------------------
-# alias diff='delta'
+alias upd='/usr/bin/garuda-update'
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias grep='ugrep --color=auto'
+alias fgrep='ugrep -F --color=auto'
+alias egrep='ugrep -E --color=auto'

@@ -6,6 +6,30 @@
 . ~/.config/shell/interactive
 
 #-------------------------------------------------------------------------------
+# Command Not Found Hook
+#-------------------------------------------------------------------------------
+# Load starship prompt if starship is installed
+if [ -x /usr/bin/starship ]; then
+	__main() {
+		local major="${BASH_VERSINFO[0]}"
+		local minor="${BASH_VERSINFO[1]}"
+
+		if ((major > 4)) || { ((major == 4)) && ((minor >= 1)); }; then
+			source <("/usr/bin/starship" init bash --print-full-init)
+		else
+			source /dev/stdin <<<"$("/usr/bin/starship" init bash --print-full-init)"
+		fi
+	}
+	__main
+	unset -f __main
+fi
+
+
+# Advanced command-not-found hook
+if [[ -f /usr/share/doc/find-the-command/ftc.bash ]]; then
+  source /usr/share/doc/find-the-command/ftc.bash
+fi
+#-------------------------------------------------------------------------------
 # History Configuration
 #-------------------------------------------------------------------------------
 # Set history file location (XDG compliance)
@@ -49,5 +73,3 @@ bind 'TAB:menu-complete'                  # Cycle through completion options
 #-------------------------------------------------------------------------------
 # Initialize zoxide (smarter cd command)
 eval "$(zoxide init bash)"
-# Initialize starship prompt
-eval "$(starship init bash)"
