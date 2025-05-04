@@ -6,11 +6,10 @@
 
 # Modern Command Replacements
 # -----------------------------------------------------------------------------
-alias \
-	du='dust' \
-	htop='btop' \
-	cd='z' \
-	diff='delta'
+alias du='dust'
+alias htop='btop'
+alias cd='z'
+alias diff='delta'
 
 # Replace ls with eza
 if [[ -x /usr/bin/eza ]]; then
@@ -29,112 +28,99 @@ fi
 [ ! -x /usr/bin/yay ] && [ -x /usr/bin/paru ] && alias yay='paru'
 # Package Management
 # -----------------------------------------------------------------------------
-alias \
-	mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist" \
-	mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist" \
-	mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist" \
-	mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist" \
-	cleanup='sudo pacman -Rns $(pacman -Qtdq)' \
-	rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl" \
-	fixpacman="sudo rm /var/lib/pacman/db.lck" \
-	rmpkg="sudo pacman -Rdd" \
-	big="expac -H M '%m\t%n' | sort -h | nl" \
-	gitpkg='pacman -Q | grep -i "\-git" | wc -l'
+alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
+alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
+alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
+alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
+alias cleanup='sudo pacman -Rns $(pacman -Qtdq)'
+alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
+alias fixpacman="sudo rm /var/lib/pacman/db.lck"
+alias rmpkg="sudo pacman -Rdd"
+alias big="expac -H M '%m\t%n' | sort -h | nl"
+alias gitpkg='pacman -Q | grep -i "\-git" | wc -l'
 
 # File Operations Safety
 # -----------------------------------------------------------------------------
-alias \
-	mv='mv -i' \
-	rm='rm -i' \
-	fd='fd -HIip'
+alias mv='mv -i'
+alias rm='rm -i'
+alias fd='fd -HIip'
 
 # Process Management
 # -----------------------------------------------------------------------------
-alias \
-	pgrep='pgrep -a' \
-	pkill='pkill -e' \
-	pstree='pstree -p' \
-	psc='ps xawf -eo pid,user,cgroup,args' \
-	psmem='ps auxf | sort -nr -k 4' \
-	psmem10='ps auxf | sort -nr -k 4 | head -10'
+alias pgrep='pgrep -a'
+alias pkill='pkill -e'
+alias pstree='pstree -p'
+alias psc='ps xawf -eo pid,user,cgroup,args'
+alias psmem='ps auxf | sort -nr -k 4'
+alias psmem10='ps auxf | sort -nr -k 4 | head -10'
 
 # Emacs Integration
 # -----------------------------------------------------------------------------
-alias \
-	em='emacsclient -nc' \
-	emdi="emacsclient -c -a '' --eval '(dired nil)'"
+alias em='emacsclient -nc'
+alias emdi="emacsclient -c -a '' --eval '(dired nil)'"
 
 # Audio Device Management
 # -----------------------------------------------------------------------------
-alias \
-	funk='pacmd set-default-sink alsa_output.usb-Logitech_G533_Gaming_Headset-00.analog-stereo' \
-	hdmi='pacmd "set-default-sink alsa_output.pci-0000_01_00.1.hdmi-stereo-extra1"' \
-	bone='pacmd "set-default-sink bluez_sink.20_74_CF_EA_AE_9D.a2dp_sink"' \
-	blue='sudo systemctl restart bluetooth; sleep 2; bluetoothctl connect 20:74:CF:4D:A5:B0'
+alias funk='pacmd set-default-sink alsa_output.usb-Logitech_G533_Gaming_Headset-00.analog-stereo'
+alias hdmi='pacmd "set-default-sink alsa_output.pci-0000_01_00.1.hdmi-stereo-extra1"'
+alias bone='pacmd "set-default-sink bluez_sink.20_74_CF_EA_AE_9D.a2dp_sink"'
+alias blue='sudo systemctl restart bluetooth; sleep 2; bluetoothctl connect 20:74:CF:4D:A5:B0'
 
 # Keyboard Layout
 # -----------------------------------------------------------------------------
-alias \
-	de="setxkbmap -layout de" \
-	dv="xmodmap ~/.config/Xmodmap"
+alias de="setxkbmap -layout de"
+alias dv="xmodmap ~/.config/Xmodmap"
 
 # Development Tools
 # -----------------------------------------------------------------------------
-alias \
-	jphand='/usr/lib/mozc/mozc_tool --mode=hand_writing' \
-	stow-bins='stow -d ~/Files/scripts -t ~/.local/bin -R bins -v' \
-	stow-xmonad-bins='stow -d ~/.config -t ~/.local/bin -R xmonad-rice-bins -v' \
-	add-gitignore='npx add-gitignore' \
-	permission-octal="stat -c '%A %a %n'" \
-	local-file-server="python -m http.server 7777"
+alias jphand='/usr/lib/mozc/mozc_tool --mode=hand_writing'
+alias stow-bins='stow -d ~/Files/scripts -t ~/.local/bin -R bins -v'
+alias stow-xmonad-bins='stow -d ~/.config -t ~/.local/bin -R xmonad-rice-bins -v'
+alias add-gitignore='npx add-gitignore'
+alias permission-octal="stat -c '%A %a %n'"
+alias local-file-server="python -m http.server 7777"
 
 # System Management
 # -----------------------------------------------------------------------------
-alias \
-	mail_sync='mbsync -aVX -c ~/.config/mbsyncrc' \
-	charge='upower -i /org/freedesktop/UPower/devices/battery_BAT0' \
-	startx='startx "$XDG_CONFIG_HOME/X11/xinitrc" -- "$XDG_CONFIG_HOME/X11/xserverrc" vt1' \
-	grubup="sudo update-grub" \
-	hw='hwinfo --short' \
-	jctl="journalctl -p 3 -xb" \
-	ip='ip -color'
+alias mail_sync='mbsync -aVX -c ~/.config/mbsyncrc'
+alias charge='upower -i /org/freedesktop/UPower/devices/battery_BAT0'
+alias startx='startx "$XDG_CONFIG_HOME/X11/xinitrc" -- "$XDG_CONFIG_HOME/X11/xserverrc" vt1'
+alias grubup="sudo update-grub"
+alias hw='hwinfo --short'
+alias jctl="journalctl -p 3 -xb"
+alias ip='ip -color'
 
 # XDG Compliance
 # -----------------------------------------------------------------------------
-alias \
-	nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings"' \
-	yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
+alias nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings"'
+alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
 
 # AI
 # -----------------------------------------------------------------------------
-alias \
-	pbpaste='xclip -selection clipboard -o'
+alias pbpaste='xclip -selection clipboard -o'
 
 # Directory Navigation Shortcuts
 # -----------------------------------------------------------------------------
-alias \
-	..='cd ..' \
-	...='cd ../..' \
-	....='cd ../../..' \
-	.....='cd ../../../..' \
-	......='cd ../../../../..'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
 
 # Arch Linux Helpers
 # -----------------------------------------------------------------------------
-alias \
-	apt='man pacman' \
-	apt-get='man pacman' \
-	please='sudo' \
-	tb='nc termbin.com 9999' \
-	helpme='cht.sh --shell' \
-	pacdiff='sudo -H DIFFPROG=meld pacdiff'
+alias apt='man pacman'
+alias apt-get='man pacman'
+alias please='sudo'
+alias tb='nc termbin.com 9999'
+alias helpme='cht.sh --shell'
+alias pacdiff='sudo -H DIFFPROG=meld pacdiff'
 
 # Archive Operations
 # -----------------------------------------------------------------------------
-alias \
-	tarnow='tar -acf ' \
-	untar='tar -zxvf ' \
-	wget='wget -c '
+alias tarnow='tar -acf '
+alias untar='tar -zxvf '
+alias wget='wget -c '
 
 # Commented out aliases for future reference
 # -----------------------------------------------------------------------------
