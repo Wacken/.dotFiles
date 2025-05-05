@@ -98,6 +98,7 @@ export GTK2_RC_FILES="${XDG_CONFIG_HOME}/gtk-2.0/gtkrc"
 # -----------------------------------------------------------------------------
 # CARGO_HOME moved above
 export ANSIBLE_HOME="${XDG_DATA_HOME}/ansible"
+export ANSIBLE_LOCAL_TEMP="${XDG_CACHE_HOME}/ansible/tmp"
 export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
 export GOPATH="${XDG_DATA_HOME}/go"
 export GRADLE_USER_HOME="${XDG_DATA_HOME}/gradle"
@@ -114,7 +115,7 @@ export VIMINFO="${XDG_DATA_HOME}/vim/viminfo"
 export VSCODE_PORTABLE="${XDG_DATA_HOME}/vscode"
 export WORKON_HOME="${XDG_DATA_HOME}/virtualenvs"
 export ICONS_HOME="${XDG_DATA_HOME}/icons"
-export XCURSOR_PATH="${XDG_DATA_HOME}/icons:${XCURSOR_PATH}"
+# export XCURSOR_PATH="${XDG_DATA_HOME}/icons:${XCURSOR_PATH}" # cursor may disappear when using xdg for gtk2
 
 # XDG Compliance - Cache Directories
 # -----------------------------------------------------------------------------
