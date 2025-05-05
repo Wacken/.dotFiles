@@ -98,6 +98,7 @@ export GTK2_RC_FILES="${XDG_CONFIG_HOME}/gtk-2.0/gtkrc"
 # -----------------------------------------------------------------------------
 # CARGO_HOME moved above
 export ANSIBLE_HOME="${XDG_DATA_HOME}/ansible"
+export ANSIBLE_CONFIG="${XDG_CONFIG_HOME}/ansible.cfg"
 export ANSIBLE_LOCAL_TEMP="${XDG_CACHE_HOME}/ansible/tmp"
 export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
 export GOPATH="${XDG_DATA_HOME}/go"
@@ -122,3 +123,4 @@ export ICONS_HOME="${XDG_DATA_HOME}/icons"
 export CUDA_CACHE_PATH="${XDG_CACHE_HOME}/nv"
 export NUGET_PACKAGES="${XDG_CACHE_HOME}/NuGetPackages"
 export TEXMFVAR="${XDG_CACHE_HOME}/texlive/texmf-var"
+export ANSIBLE_GALAXY_CACHE_DIR="${XDG_CACHE_HOME}/ansible/galaxy_cache"
