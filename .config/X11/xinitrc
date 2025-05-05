@@ -1,6 +1,0 @@
-#!/bin/sh
-
-[[ -f ~/.config/Xmodmap ]] && xmodmap ~/.config/Xmodmap
-xrdb -load ~/.config/X11/Xresources
-xset s off # turn off screen saver
-exec xmonad
