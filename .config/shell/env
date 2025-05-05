@@ -20,11 +20,15 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_RUNTIME_DIR="/run/user/$UID"
 
+# Define CARGO_HOME early since it's used in Path Configuration
+export CARGO_HOME="${XDG_DATA_HOME}/cargo"
+
 # Path Configuration
 # -----------------------------------------------------------------------------
 pathappend "$(expandHOME ".config/emacs/bin")"
 pathappend "$(expandHOME ".local/bin")"
-. ~/.local/share/cargo/env
+# Source cargo environment from XDG location
+[ -f "$CARGO_HOME/env" ] && . "$CARGO_HOME/env"
 
 # Default Applications
 # -----------------------------------------------------------------------------
@@ -85,10 +89,11 @@ export TEXMFCONFIG="${XDG_CONFIG_HOME}/texlive/texmf-config"
 export WGETRC="${XDG_CONFIG_HOME}/wgetrc"
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="${XDG_CONFIG_HOME}/java"
 export ASPELL_CONF="per-conf ${XDG_CONFIG_HOME}/aspell/aspell.conf; personal ${XDG_CONFIG_HOME}/aspell/en.pws; repl ${XDG_CONFIG_HOME}/aspell/en.prepl"
+export GTK2_RC_FILES="${XDG_CONFIG_HOME}/gtk-2.0/gtkrc"
 
 # XDG Compliance - Data Directories
 # -----------------------------------------------------------------------------
-export CARGO_HOME="${XDG_DATA_HOME}/cargo"
+# CARGO_HOME moved above
 export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
 export GOPATH="${XDG_DATA_HOME}/go"
 export GRADLE_USER_HOME="${XDG_DATA_HOME}/gradle"
