@@ -1,6 +1,6 @@
 [user]
-	email = sebastianwalchi@gmail.com
-	name = wacken
+	email = s.walchshaeusl@gmail.com
+	name = Sebastian Walchshaeusl
 [filter "lfs"]
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
