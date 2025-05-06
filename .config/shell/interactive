@@ -24,15 +24,3 @@ fi
 # -----------------------------------------------------------------------------
 # Prevent overwriting existing files with redirection
 set -C
-
-# Uncomment to automatically start X on tty1
-# -----------------------------------------------------------------------------
-# if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-#     exec startx "$XDG_CONFIG_HOME/X11/xinitrc" -- "$XDG_CONFIG_HOME/X11/xserverrc" vt1
-# fi
-
-# Nix Package Manager Integration (commented out)
-# -----------------------------------------------------------------------------
-# if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-#     . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-# fi

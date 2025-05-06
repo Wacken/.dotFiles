@@ -67,9 +67,3 @@ shopt -s globstar
 #-------------------------------------------------------------------------------
 bind 'set show-all-if-ambiguous on'       # Show completion options immediately
 bind 'TAB:menu-complete'                  # Cycle through completion options
-
-#-------------------------------------------------------------------------------
-# External Tools Initialization
-#-------------------------------------------------------------------------------
-# Initialize zoxide (smarter cd command)
-eval "$(zoxide init bash)"

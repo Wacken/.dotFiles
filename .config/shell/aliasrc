@@ -7,8 +7,6 @@
 # Modern Command Replacements
 # -----------------------------------------------------------------------------
 alias du='dust'
-alias htop='btop'
-alias cd='z'
 alias diff='delta'
 
 # Replace ls with eza
@@ -59,23 +57,10 @@ alias psmem10='ps auxf | sort -nr -k 4 | head -10'
 alias em='emacsclient -nc'
 alias emdi="emacsclient -c -a '' --eval '(dired nil)'"
 
-# Audio Device Management
-# -----------------------------------------------------------------------------
-alias funk='pacmd set-default-sink alsa_output.usb-Logitech_G533_Gaming_Headset-00.analog-stereo'
-alias hdmi='pacmd "set-default-sink alsa_output.pci-0000_01_00.1.hdmi-stereo-extra1"'
-alias bone='pacmd "set-default-sink bluez_sink.20_74_CF_EA_AE_9D.a2dp_sink"'
-alias blue='sudo systemctl restart bluetooth; sleep 2; bluetoothctl connect 20:74:CF:4D:A5:B0'
-
-# Keyboard Layout
-# -----------------------------------------------------------------------------
-alias de="setxkbmap -layout de"
-alias dv="xmodmap ~/.config/Xmodmap"
-
 # Development Tools
 # -----------------------------------------------------------------------------
 alias jphand='/usr/lib/mozc/mozc_tool --mode=hand_writing'
 alias stow-bins='stow -d ~/Files/scripts -t ~/.local/bin -R bins -v'
-alias stow-xmonad-bins='stow -d ~/.config -t ~/.local/bin -R xmonad-rice-bins -v'
 alias add-gitignore='npx add-gitignore'
 alias permission-octal="stat -c '%A %a %n'"
 alias local-file-server="python -m http.server 7777"
@@ -83,8 +68,6 @@ alias local-file-server="python -m http.server 7777"
 # System Management
 # -----------------------------------------------------------------------------
 alias mail_sync='mbsync -aVX -c ~/.config/mbsyncrc'
-alias charge='upower -i /org/freedesktop/UPower/devices/battery_BAT0'
-alias startx='startx "$XDG_CONFIG_HOME/X11/xinitrc" -- "$XDG_CONFIG_HOME/X11/xserverrc" vt1'
 alias grubup="sudo update-grub"
 alias hw='hwinfo --short'
 alias jctl="journalctl -p 3 -xb"
