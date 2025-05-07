@@ -119,6 +119,8 @@ export VSCODE_PORTABLE="${XDG_DATA_HOME}/vscode"
 export WORKON_HOME="${XDG_DATA_HOME}/virtualenvs"
 export ICONS_HOME="${XDG_DATA_HOME}/icons"
 export OLLAMA_HOME="${XDG_DATA_HOME}/ollama"
+export OLLAMA_MODELS="${OLLAMA_HOME}/models"
+export OLLAMA_HISTORY="${OLLAMA_HOME}/history"
 
 # export XCURSOR_PATH="${XDG_DATA_HOME}/icons:${XCURSOR_PATH}" # cursor may disappear when using xdg for gtk2
 
