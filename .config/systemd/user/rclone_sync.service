@@ -1,9 +1,0 @@
-[Unit]
-Description=Sync my local files continuously
-
-[Service]
-Type=simple
-ExecStart=/home/wacken/Files/scripts/others/rclone_sync_desktop.sh
-
-[Install]
-WantedBy=default.target
